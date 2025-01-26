@@ -15,5 +15,10 @@ namespace EMIM.Controllers
             return View();
         }
 
+        public ActionResult StoreProfile()
+        {
+            return View();
+        }
+
     }
 }

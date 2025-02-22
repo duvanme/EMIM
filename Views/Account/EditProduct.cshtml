@@ -5,7 +5,6 @@
             <div class="flex items-center">
                 <img src="img/logo.jpeg" alt="logo" class="h-16 w-auto p-2">
             </div>
-
             <!-- Barra de búsqueda -->
             <form class="flex items-center w-full lg:w-auto max-w-md my-2 lg:my-0 lg:mx-4" action="/buscar"
                 method="GET">
@@ -21,11 +20,10 @@
                     </svg>
                 </button>
             </form>
-
             <!-- Enlaces y botones -->
             <div class="flex items-center gap-2">
                 <a class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center"
-                    href="profileUser.html">
+                    href="#">
                     Me
                     <img id="navbar-user-image" src="" alt="user" class="h-6 w-6 ml-2 rounded-full">
                 </a>
@@ -50,7 +48,7 @@
         <!--FLECHA HACIA ATRAS-->
         <div class="container">
             <div class="flex justify-start items-center p-4">
-                <a class="focus:outline-none">
+                <a class="focus:outline-none" href="profileUser.html">
                     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>
@@ -77,38 +75,47 @@
 
     <section class="flex justify-center w-full py-6">
         <div class="bg-white rounded-lg shadow-lg w-4/5 p-6 mx-auto">
-            <h2 class="text-2xl text-center font-bold mb-4">Nuevo Producto</h2>
+            <h2 class="text-2xl text-center font-bold mb-4">Editar Producto</h2>
             <form id="new-product-form" class="grid grid-cols-2 md:grid-cols-1 gap-4">
                 <!-- Columna izquierda -->
                 <div class="col-span-2 md:col-span-1">
                     <label for="nombreproducto" class="block text-left">Nombre del Producto</label>
                     <input type="text" id="nombreproducto"
-                        class="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required />
+                        class="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
                 <!--Insertar imagenes-->
                 <div class="col-span-2 md:col-span-1 flex flex-col items-center">
                     <div id="image-preview"
                         class="w-32 h-32 border border-gray-300 rounded-lg flex items-center justify-center flex-wrap overflow-hidden">
-                        <input type="file" id="image-upload" multiple accept="image/*" class="hidden">
-                        <button type="button" onclick="document.getElementById('image-upload').click();"
-                            class="mt-2 text-gray-500 underline">Seleccionar imágenes</button>
+                        <input type="file" id="image-update" multiple accept="image/*" class="hidden">
+                        <button id="edit-image-button" class="text-gray-400 p-2 rounded">Editar Imagen</button>
                     </div>
+                </div>
 
+                <!-- Modal -->
+                <div id="image-modal"
+                    class="fixed inset-0 items-center justify-center bg-black bg-opacity-50 hidden">
+                    <div class="bg-white rounded-lg p-4 w-2/3 max-h-[80vh] overflow-y-auto">
+                        <h2 class="text-lg font-bold mb-4">Editar Imagen</h2>
+                        <!-- Contenedor de imágenes -->
+                        <div id="image-gallery" class="flex flex-wrap justify-center mb-4">
+                            <!-- Las imágenes se agregarán -->
+                        </div>
+                        <input type="file" id="image-input" accept=".jpeg,.jpg" multiple class="flex mb-4 gap-2" />
+                        <button id="close-modal" class="bg-red-500 text-white p-2 rounded">Cerrar</button>
+                    </div>
                 </div>
 
                 <div class="col-span-2">
                     <label for="descripcionproducto" class="block text-left">Descripción del Producto</label>
                     <textarea id="descripcionproducto" rows="4"
-                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required></textarea>
+                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                 </div>
 
-                <div>
-                    <label for="precioproducto" class="block text-left">Precio del Producto</label>
+                <div class="">
+                    <label for="precioproducto" class="block text-left md:flex-col">Precio del Producto</label>
                     <input type="number" id="precioproducto"
-                        class="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required />
+                        class="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
 
                 <div>
@@ -150,4 +157,4 @@
         </div>
     </section>
 </main>
-<script src="~js/NewProduct.js"></script>
+<script src="~js/editProduct.js"></script>

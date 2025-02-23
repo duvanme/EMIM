@@ -11,14 +11,14 @@
 
        
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="w-100 h-auto">
             @RenderBody()
 
-            <h1 class="text-sky-700 text-5xl">test hello world, this is duvan</h1>
         </main>
     </div>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/menu.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -17,6 +17,26 @@ namespace EMIM.Controllers
 
         public ActionResult StoreProfile()
         {
+         return View();
+        }
+
+        public ActionResult Reviews()
+        {
+            return View();
+        }
+
+        public ActionResult ProductDisplay()
+        {
+            return View();
+        }
+
+        public ActionResult NewProduct()
+        {
+            return View();
+        }
+
+        public ActionResult UserProfile()
+        {
             return View();
         }
 

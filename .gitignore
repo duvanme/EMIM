@@ -4,3 +4,8 @@ node_modules/
 # .NET compiled files
 bin/
 obj/
+#VS
+.vs/
+EMIM.csproj.user
+# Ignore specific CSS file
+wwwroot/css/styles.css

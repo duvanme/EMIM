@@ -1,7 +1,12 @@
+using EMIM.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
+var connString = builder.Configuration.GetConnectionString("EMIMDB");
+builder.Services.AddSqlServer<EmimContext>(connString);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 
 var app = builder.Build();
 

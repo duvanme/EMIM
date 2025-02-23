@@ -15,5 +15,25 @@ namespace EMIM.Controllers
             return View();
         }
 
+        public ActionResult Reviews()
+        {
+            return View();
+        }
+
+        public ActionResult ProductDisplay()
+        {
+            return View();
+        }
+
+        public ActionResult NewProduct()
+        {
+            return View();
+        }
+
+        public ActionResult UserProfile()
+        {
+            return View();
+        }
+
     }
 }

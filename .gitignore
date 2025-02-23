@@ -4,3 +4,6 @@ node_modules/
 # .NET compiled files
 bin/
 obj/
+#VS
+.vs/
+EMIM.csproj.user

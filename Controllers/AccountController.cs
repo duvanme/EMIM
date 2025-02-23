@@ -40,5 +40,11 @@ namespace EMIM.Controllers
             return View();
         }
 
+        public ActionResult Help()
+        {
+            return View();
+        }
+
+
     }
 }

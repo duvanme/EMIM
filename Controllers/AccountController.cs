@@ -35,5 +35,10 @@ namespace EMIM.Controllers
             return View();
         }
 
+        public ActionResult TiendasBloqueadas()
+        {
+            return View();
+        }
+
     }
 }

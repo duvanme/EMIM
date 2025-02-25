@@ -40,11 +40,14 @@ namespace EMIM.Controllers
             return View();
         }
 
-        public ActionResult Help()
-        {
+
+        public ActionResult ProductosBloqueados(){
             return View();
         }
 
+        public ActionResult Help(){
+            return View();
+        }
 
     }
 }

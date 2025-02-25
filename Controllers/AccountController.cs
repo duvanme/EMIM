@@ -41,6 +41,12 @@ namespace EMIM.Controllers
         }
 
 
+        public ActionResult ShoppingCar()
+        {
+            return View();
+        }
+
+
         public ActionResult TiendasBloqueadas()
             return View();
         {
@@ -53,6 +59,7 @@ namespace EMIM.Controllers
         public ActionResult Help(){
             return View();
         }
+
 
     }
 }

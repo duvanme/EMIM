@@ -8,14 +8,68 @@
     <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
 </head>
 <body>
+    <div>
 
-       
-    <div class="container">
-        <main role="main" class="w-100 h-auto">
+        <header class="bg-[#56B6CC] p-4 flex items-center justify-between">
+            <section class="w-full">
+                <nav style="background-color: #56b6cc;" class="flex flex-wrap items-center justify-between px-4 py-2">
+                    <!-- Logo -->
+                    <div class="flex items-center">
+                        <img src="img/logo.png" alt="logo" class="h-16 w-auto p-2">
+                    </div>
+                    <!-- Barra de búsqueda -->
+                    <form class="flex items-center w-full lg:w-auto max-w-md my-2 lg:my-0 lg:mx-4" action="/buscar"
+                          method="GET">
+                        <input type="text" name="query" placeholder="Buscar productos..."
+                               class="flex-grow py-2 px-4 border border-gray-300 rounded-l-full focus:outline-none focus:ring-2 focus:ring-[#13678A]"
+                               required>
+                        <button type="submit"
+                                class="bg-white p-2 rounded-r-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#13678A]">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none"
+                                 viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M21 21l-4.35-4.35M16.5 10a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" />
+                            </svg>
+                        </button>
+                    </form>
+
+                    <!-- Enlaces y botones -->
+                    <div class="flex items-center gap-2">
+                        <a class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center"
+                           href="profileUser.html">
+                            Me
+                            <img id="navbar-user-image" src="img/user.jpeg" alt="user" class="h-6 w-6 ml-2 rounded-full">
+                        </a>
+                        <a class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center"
+                           href="#">
+                            Mi carrito
+                            <img src="img/carrito.png" alt="carrito" class="h-6 w-6 ml-2">
+                        </a>
+                        <!-- Icono de menú -->
+                        <button id="toggle-menu"
+                                class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                    </div>
+                </nav>
+            </section>
+        </header>
+
+
+        <main role="main">
             @RenderBody()
 
         </main>
     </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - EmimIndex - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/menu.js" asp-append-version="true"></script>

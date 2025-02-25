@@ -15,6 +15,11 @@ namespace EMIM.Controllers
             return View();
         }
 
+        public ActionResult StoreProfile()
+        {
+         return View();
+        }
+
         public ActionResult Reviews()
         {
             return View();
@@ -35,8 +40,12 @@ namespace EMIM.Controllers
             return View();
         }
 
-        public ActionResult ProductosBloqueados()
-        {
+
+        public ActionResult ProductosBloqueados(){
+            return View();
+        }
+
+        public ActionResult Help(){
             return View();
         }
 

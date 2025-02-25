@@ -35,5 +35,11 @@ namespace EMIM.Controllers
             return View();
         }
 
+        public ActionResult ShoppingCar()
+        {
+            return View();
+        }
+
+
     }
 }

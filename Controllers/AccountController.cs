@@ -41,6 +41,11 @@ namespace EMIM.Controllers
         }
 
 
+        public ActionResult TiendasBloqueadas()
+            return View();
+        {
+
+
         public ActionResult ProductosBloqueados(){
             return View();
         }

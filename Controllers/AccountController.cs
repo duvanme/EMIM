@@ -35,11 +35,20 @@ namespace EMIM.Controllers
             return View();
         }
 
+        public ActionResult EditProduct()
+        {
+            return View();
+        }
+
         public ActionResult UserProfile()
         {
             return View();
         }
 
+        public ActionResult EditProfile()
+        {
+            return View();
+        }
 
         public ActionResult ShoppingCar()
         {

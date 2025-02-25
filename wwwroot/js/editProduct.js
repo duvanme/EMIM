@@ -1,6 +1,7 @@
 document.getElementById('edit-image-button').addEventListener('click', function (event) {
     event.preventDefault(); // Prevenir el comportamiento por defecto del botón
     document.getElementById('image-modal').classList.remove('hidden'); // Muestra el modal
+    document.getElementById('image-input').style.display = 'block'; // Forzar visibilidad del input
 });
 
 document.getElementById('close-modal').addEventListener('click', function () {

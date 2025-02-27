@@ -1,6 +1,15 @@
-﻿<main class="w-full h-full flex justify-center items-center">
+﻿@using EMIM.ViewModel
+@model LoginViewModel
 
-    <section class="w-4/5 h-[550px] shadow-2xl  flex flex-col  rounded-2xl md:flex-row mt-[100px] ml-auto">
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+
+}
+
+<main class="w-full h-full flex justify-center items-center">
+
+    <section class="w-4/5 h-[550px] shadow-2xl  flex flex-col place-content-center rounded-2xl md:flex-row mt-[100px] ml-auto">
 
         <section class="w-full md:w-1/2 rounded-2xl">
             <div class="flex items-center mb-6">
@@ -9,78 +18,109 @@
             </div>
 
             <div class="flex justify-center h-screen">
-            <div class="mx-auto max-w-md">
-            <h6 class="font-semibold text-lg ml-[5px]">Ingresar ahora</h6>
-            <form class="space-y-4" action="">
-                
-            <div class="flex">
-       <input class="w-[320px] h-[45px] px-4 py-2 border rounded-full shadow focus:outline-none flex focus:ring-2 focus:ring-[#13678A] mt-[5px]" placeholder="Correo Electrónico" type="email"/>
-      </div>
-      <div class="flex">
-       <input class="w-[320px] h-[45px] px-4 py-2 border rounded-full shadow focus:outline-none flex focus:ring-2 focus:ring-[#13678A] mt-[10px]" placeholder="Contraseña" type="password"/>
-      </div>
+                <div class="mx-auto max-w-md">
 
-            <div class="mb-6">
-                <label class="inline-flex items-center">
-                    <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600 ml-[5px]">
-                    <span class="ml-[5px] text-gray-700">Recordar cuenta</span>
-                </label>
-            </div>
-            <br>
-            <div class="flex justify-center">
- <button class="w-[150px] h-[40px] bg-[#13678A] text-white py-2 rounded-lg shadow-2xl hover:bg-[#56b6cc]" type="submit">
-       Ingresar
-      </button>
-            </div>
-           
+                    <h6 class="font-bold text-xl ml-[5px]">Ingresar ahora</h6>
 
-            <div class="text-center">
-                <a href="#" class="text-gray-500 hover:underline text-sm block">¿Tienes problemas para iniciar sesión?</a>
+                    <h6 class="font-semibold text-lg ml-[5px]">Ingresar ahora</h6>
+
+                    <form class="space-y-4" asp-action="Login" method="post">
+
+                        <div asp-validation-summary="ModelOnly" class="w-auto h-auto"> </div>
+
+                            <div class="flex">
+                                <input asp-for="Email" class="w-[320px] h-[45px] px-4 py-2 border rounded-full shadow focus:outline-none flex focus:ring-2 focus:ring-[#13678A] mt-[5px]" placeholder="Correo Electrónico" type="email" />
+                                <span asp-validation-for="Email"></span>
+                            </div>
+
+                            <div class="flex">
+                                <input asp-for="Password" class="w-[320px] h-[45px] px-4 py-2 border rounded-full shadow focus:outline-none flex focus:ring-2 focus:ring-[#13678A] mt-[10px]" placeholder="Contraseña" type="password" />
+                                <span asp-validation-for="Password"></span>
+                            </div>
+
+                       
+                            <div class="mb-6">
+                                <label class="inline-flex items-center">
+                                    <input asp-for="RememberMe" type="checkbox" class="form-checkbox h-5 w-5 text-blue-600 ml-[5px]">
+                          
+                                    <span class="ml-[5px] text-gray-700">Recordar cuenta</span>
+                                </label>
+                            </div>
+
+                            <br>
+
+                            <div class="flex justify-center">
+                                <button class="w-[150px] h-[40px] bg-[#13678A] text-white py-2 rounded-lg shadow-2xl hover:bg-[#56b6cc]" type="submit" value="Login">
+                                    Ingresar
+                                </button>
+                            </div>
+
+
+                            <div class="text-center">   
+                                <a href="#" class="text-gray-500 hover:underline text-sm block">¿Tienes problemas para iniciar sesión?</a>
+                            </div>
+
+                    </form>
+
+                </div>
+
+                <div class="mt-4 flex justify-between text-sm">
+                    <a asp-controlle="Account" asp-action="VerifyEmail" class="text-gray-500 hover:underline flex mt-[60px]">
+                        Olvidé mi contraseña
+                    </a>
+                    <a class="text-gray-500 hover:underline flex mt-[60px]" asp-controller="Account" asp-action="Register">
+                        Crear cuenta en EMIM
+                    </a>
+                </div>
             </div>
             
-            </form>
-            <div class="mt-4 flex justify-between text-sm">
-      <a class="text-gray-500 hover:underline flex mt-[60px]" href="#">
-       Olvidé mi contraseña
-      </a>
-      <a class="text-gray-500 hover:underline flex mt-[60px]" href="#">
-       Crear cuenta en EMIM
-      </a>
-     </div>
-            </div>
-            </div>
 
-            
+
 
         </section>
 
-        <section class="w-full flex md:w-1/2 rounded-2xl" style="background-color: #56b6cc;">
-        
-            <div class="md:px-20 ">
-                <div class="flex">
-                <img src="../images/logo_sin_fondo.png" alt="logo" class="w-28 h-30 mx-auto mt-[20px]" height="50">
-            </div>
-            <br>
-                <div class="flex">
-                    <img src="../images/person-check.svg" class="w-8 h-8 mx-[10px]" alt="">
-                    <p class="text-xs font-semibold flex items-center">Plataforma de e-commerce para emprendedores locales, enfocada en aumentar la visibilidad y
-                        ventas.</p>
-                </div>
-                <div class="flex mt-[30px]">
-                    <img src="../images/heart.svg" class="w-8 h-8 mx-[10px]" alt="">
-                    <p class="text-xs font-semibold flex items-center">Encuentra una gran variedad de productos únicos de emprendedores locales.</p>
-                </div>
-                <div class="flex mt-[30px]">
-                    <img src="../images/people.svg" class="w-8 h-8 mx-[10px]" alt="">
-                    <p class="text-xs font-semibold flex items-center">Apoya el comercio local y forma parte de una red de emprendedores que impulsa la economía de la
-                        comunidad.</p>
-                </div>
-                <div class="flex mt-[30px]">
-                    <img src="../images/happy.svg" class="w-8 h-8 mx-[10px]" alt="">
-                    <p class="text-xs font-semibold flex items-center">Accede a ofertas exclusivas y descuentos especiales en productos seleccionados.</p>
-                </div>
-            </div>
-        </section>
 
-    </section>
+        <section class="w-full md:w-1/2 rounded-2xl" style="background-color: #56b6cc;">
+
+            <section class="w-full flex md:w-1/2 rounded-2xl" style="background-color: #56b6cc;">
+
+
+                <div class="md:px-20 ">
+                    <div class="flex">
+                        <img src="../images/logo_sin_fondo.png" alt="logo" class="w-28 h-30 mx-auto mt-[20px]" height="50">
+                    </div>
+                    <br>
+                    <div class="flex">
+                        <img src="../images/person-check.svg" class="w-8 h-8 mx-[10px]" alt="">
+                        <p class="text-xs font-semibold flex items-center">
+                            Plataforma de e-commerce para emprendedores locales, enfocada en aumentar la visibilidad y
+                            ventas.
+                        </p>
+                    </div>
+                    <div class="flex mt-[30px]">
+                        <img src="../images/heart.svg" class="w-8 h-8 mx-[10px]" alt="">
+                        <p class="text-xs font-semibold flex items-center">Encuentra una gran variedad de productos únicos de emprendedores locales.</p>
+                    </div>
+                    <div class="flex mt-[30px]">
+                        <img src="../images/people.svg" class="w-8 h-8 mx-[10px]" alt="">
+                        <p class="text-xs font-semibold flex items-center">
+                            Apoya el comercio local y forma parte de una red de emprendedores que impulsa la economía de la
+                            comunidad.
+                        </p>
+                    </div>
+                    <div class="flex mt-[30px]">
+                        <img src="../images/happy.svg" class="w-8 h-8 mx-[10px]" alt="">
+                        <p class="text-xs font-semibold flex items-center">Accede a ofertas exclusivas y descuentos especiales en productos seleccionados.</p>
+                    </div>
+                </div>
+            </section>
+
+        </section>
 </main>
+
+@section Scripts{ 
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial.cshtml");
+
+    }
+}

@@ -1,0 +1,38 @@
+﻿@using EMIM.ViewModel
+@model VerifyEmailViewModel
+
+@{
+    ViewData["Title"] = "Verify Email";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+
+}
+
+<main class="w-full h-full flex justify-center items-center">
+
+
+                    <form class="space-y-4" asp-action="VerifyEmail" method="post">
+
+                        <div asp-validation-summary="ModelOnly" class="w-auto h-auto"> </div>
+
+                        <div class="flex">
+                            <input asp-for="Email" class="w-[320px] h-[45px] px-4 py-2 border rounded-full shadow focus:outline-none flex focus:ring-2 focus:ring-[#13678A] mt-[5px]" placeholder="Correo Electrónico" type="email" />
+                            <span asp-validation-for="Email"></span>
+                        </div>
+
+                        
+
+                        <div class="flex justify-center">
+                            <input class="w-[150px] h-[40px] bg-[#13678A] text-white py-2 rounded-lg shadow-2xl hover:bg-[#56b6cc]" type="submit" value="VerifyEmail"/>
+                                
+                        </div>
+
+
+                    </form>
+</main>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial.cshtml");
+
+    }
+}

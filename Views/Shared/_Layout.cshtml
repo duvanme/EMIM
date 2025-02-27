@@ -38,14 +38,14 @@
                     <!-- Enlaces y botones -->
                     <div class="flex items-center gap-2">
                         <a class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center"
-                            href="@Url.Action("UserProfile", "Account")">
-                            Me
+                            asp-controller="Account" asp-action="Login">
+                            Sign In
                             <img id="navbar-user-image" src="img/user.jpeg" alt="user"
                                 class="h-6 w-6 ml-2 rounded-full">
                         </a>
                         <a class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center"
-                            href="@Url.Action("ShoppingCar", "Account")">
-                            Mi carrito
+                           asp-controller="Account" asp-action="Register">
+                            Sign Up
                             <img src="img/carrito.png" alt="carrito" class="h-6 w-6 ml-2">
                         </a>
                         <!-- Icono de menú -->

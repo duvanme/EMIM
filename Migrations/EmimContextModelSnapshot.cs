@@ -4,19 +4,16 @@ using EMIM.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace EMIM.Data.Migrations
+namespace EMIM.Migrations
 {
     [DbContext(typeof(EmimContext))]
-    [Migration("20250226021446_InitialMigration")]
-    partial class InitialMigration
+    partial class EmimContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,19 +134,19 @@ namespace EMIM.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c597fcba-d2e5-4893-94fa-f6b01a720d84",
+                            Id = "6c746e7c-9494-4e32-9564-a71e2cabe76b",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "fe0b012a-967e-4d34-993c-51fa6609d8ba",
+                            Id = "b64012d1-dbf0-4cce-a4df-98beec2e7677",
                             Name = "Customer",
                             NormalizedName = "Customer"
                         },
                         new
                         {
-                            Id = "fdc7dd3a-9575-4932-8917-59b3e5296eec",
+                            Id = "9f712197-3e42-47cd-af0f-d93b455d21d3",
                             Name = "Vendor",
                             NormalizedName = "Vendor"
                         });

@@ -9,3 +9,4 @@ obj/
 EMIM.csproj.user
 # Ignore specific CSS file
 wwwroot/css/styles.css
+global.json

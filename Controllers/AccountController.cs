@@ -20,6 +20,11 @@ namespace EMIM.Controllers
          return View();
         }
 
+        public ActionResult CreateStore()
+        {
+         return View();
+        }
+
         public ActionResult Reviews()
         {
             return View();

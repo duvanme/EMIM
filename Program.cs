@@ -1,8 +1,12 @@
 using EMIM.Data;
 using EMIM.Models;
+using EMIM.Services;
+using EMIM.Views;
 using Microsoft.AspNetCore.Identity;
 
+
 var builder = WebApplication.CreateBuilder(args);
+
 
 var connString = builder.Configuration.GetConnectionString("EMIMDB");
 builder.Services.AddSqlServer<EmimContext>(connString);
@@ -23,7 +27,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 var app = builder.Build();
 
@@ -37,9 +41,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization(); 
 
@@ -47,4 +49,8 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+
+///
 app.Run();
+
+

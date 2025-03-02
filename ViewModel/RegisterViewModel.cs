@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EMIM.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace EMIM.ViewModel
 {
@@ -21,6 +22,9 @@ namespace EMIM.ViewModel
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         public required string ConfirmPassword { get; set; }
+
+        [Required]
+        public Role Role { get; set; }
 
     }
 }

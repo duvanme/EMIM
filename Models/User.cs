@@ -11,5 +11,6 @@ public class User : IdentityUser
     public Status Status { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime ModifiedAt { get; set; }
+    public ICollection<Store> Stores { get; set; } = new List<Store>();
 
 }

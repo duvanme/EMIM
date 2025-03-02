@@ -21,13 +21,13 @@ public class EmimContext : IdentityDbContext<User>
         base.OnModelCreating(modelBuilder);
 
         var admin = new IdentityRole("Admin");
-        admin.NormalizedName = "Admin";
+        admin.NormalizedName = "ADMIN";
 
         var customer = new IdentityRole("Customer");
-        customer.NormalizedName = "Customer";
+        customer.NormalizedName = "CUSTOMER";
 
         var vendor = new IdentityRole("Vendor");
-        vendor.NormalizedName = "Vendor";
+        vendor.NormalizedName = "VENDOR";
 
         modelBuilder.Entity<IdentityRole>()
         .HasData(admin, customer, vendor);

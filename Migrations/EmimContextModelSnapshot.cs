@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace EMIM.Data.Migrations
+namespace EMIM.Migrations
 {
     [DbContext(typeof(EmimContext))]
     partial class EmimContextModelSnapshot : ModelSnapshot
@@ -134,19 +134,19 @@ namespace EMIM.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c597fcba-d2e5-4893-94fa-f6b01a720d84",
+                            Id = "eb8f7c38-d2e7-4a46-b1af-b20be2e876a9",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "fe0b012a-967e-4d34-993c-51fa6609d8ba",
+                            Id = "f2df46f9-681d-499c-826b-9025853eac49",
                             Name = "Customer",
                             NormalizedName = "Customer"
                         },
                         new
                         {
-                            Id = "fdc7dd3a-9575-4932-8917-59b3e5296eec",
+                            Id = "9a1b3b81-914f-4700-8738-d6b60b6efdd5",
                             Name = "Vendor",
                             NormalizedName = "Vendor"
                         });

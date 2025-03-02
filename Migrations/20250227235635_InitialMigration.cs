@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace EMIM.Data.Migrations
+namespace EMIM.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration
@@ -168,9 +168,9 @@ namespace EMIM.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "c597fcba-d2e5-4893-94fa-f6b01a720d84", null, "Admin", "Admin" },
-                    { "fdc7dd3a-9575-4932-8917-59b3e5296eec", null, "Vendor", "Vendor" },
-                    { "fe0b012a-967e-4d34-993c-51fa6609d8ba", null, "Customer", "Customer" }
+                    { "9a1b3b81-914f-4700-8738-d6b60b6efdd5", null, "Vendor", "Vendor" },
+                    { "eb8f7c38-d2e7-4a46-b1af-b20be2e876a9", null, "Admin", "Admin" },
+                    { "f2df46f9-681d-499c-826b-9025853eac49", null, "Customer", "Customer" }
                 });
 
             migrationBuilder.CreateIndex(

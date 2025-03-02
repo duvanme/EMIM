@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace EMIM.Views.Account
+namespace EMIM.Views.General
 {
-    public class NewProduct : PageModel
+    public class ShoppingCarModel : PageModel
     {
         public void OnGet()
         {

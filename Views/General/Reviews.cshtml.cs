@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace EMIM.Views.Account
+namespace EMIM.Views.General
 {
-    public class Help : PageModel
+    public class Reviews : PageModel
     {
         public void OnGet()
         {

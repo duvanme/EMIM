@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace EMIM.Views.Account
+namespace EMIM.Views.Product
 {
-    public class Reviews : PageModel
+    public class ProductosBloqueadosModel : PageModel
     {
         public void OnGet()
         {

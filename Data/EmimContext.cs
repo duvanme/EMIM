@@ -7,29 +7,34 @@ namespace EMIM.Data;
 
 public class EmimContext : IdentityDbContext<User>
 {
-    public EmimContext(DbContextOptions<EmimContext> options) : base(options)
-    {
-    }
+    public EmimContext(DbContextOptions<EmimContext> options) : base(options){}
 
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Store> Stores { get; set; }
+    public DbSet<Product> Products { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
-        modelBuilder.Entity<User>()
-        .Property(u => u.Status)
-        .HasConversion<string>();
-
         base.OnModelCreating(modelBuilder);
 
-        var admin = new IdentityRole("Admin");
-        admin.NormalizedName = "ADMIN";
+      
+        modelBuilder.Entity<User>()
+            .Property(u => u.Status)
+            .HasConversion<string>();
 
-        var customer = new IdentityRole("Customer");
-        customer.NormalizedName = "CUSTOMER";
+      
+        var admin = new IdentityRole("Admin") { NormalizedName = "ADMIN" };
+        var customer = new IdentityRole("Customer") { NormalizedName = "CUSTOMER" };
+        var vendor = new IdentityRole("Vendor") { NormalizedName = "VENDOR" };
 
-        var vendor = new IdentityRole("Vendor");
-        vendor.NormalizedName = "VENDOR";
+        modelBuilder.Entity<IdentityRole>().HasData(admin, customer, vendor);
 
-        modelBuilder.Entity<IdentityRole>()
-        .HasData(admin, customer, vendor);
+        
+        modelBuilder.Entity<Category>().HasData(
+            new Category { Id = 1, Name = "Ropa" },
+            new Category { Id = 2, Name = "Comida" },
+            new Category { Id = 3, Name = "Tecnología" }
+        );
+
     }
 }

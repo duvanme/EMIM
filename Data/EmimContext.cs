@@ -33,8 +33,8 @@ public class EmimContext : IdentityDbContext<User>
         modelBuilder.Entity<Category>().HasData(
             new Category { Id = 1, Name = "Ropa" },
             new Category { Id = 2, Name = "Comida" },
-            new Category { Id = 3, Name = "Tecnolog�a" }
-        );
+            new Category { Id = 3, Name = "Tecnolog a" }
+        );
 
-    }
+    }
 }

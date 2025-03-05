@@ -1,4 +1,4 @@
-@model EMIM.Models.Product
+@model EMIM.ViewModels.ProductViewModel
 
 <main>
     <section>
@@ -64,11 +64,18 @@
                 <!-- Categoría -->
                 <div class="col-span-2">
                     <label for="CategoryId" class="block text-left">Categoría</label>
-                    <select id="CategoryId" name="CategoryId" required>
+                    <select asp-for="CategoryId" class="form-control" required>
                         <option value="">Seleccione una categoría</option>
-                        @foreach (var category in ViewBag.Categories)
+                        @if (ViewBag.Categories != null)
                         {
-                            <option value="@category.Id">@category.Name</option>
+                            @foreach (var category in ViewBag.Categories)
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
+                        }
+                        else
+                        {
+                            <option value="">No hay categorías disponibles</option>
                         }
                     </select>
                 </div>

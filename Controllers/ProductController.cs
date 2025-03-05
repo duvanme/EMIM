@@ -1,108 +1,70 @@
-﻿using EMIM.Data;
-using EMIM.Models;
+﻿using EMIM.Services;
+using EMIM.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq; // Asegurar que esta librería esté incluida
 
 namespace EMIM.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly EmimContext _context;
+        private readonly ProductService _productService;
 
-        // ✅ Constructor con inyección de dependencias
-        public ProductController(EmimContext context)
+        public ProductController(ProductService productService)
         {
-            _context = context;
+            _productService = productService;
         }
 
-        public IActionResult ProductDisplay() => View();
+        public async Task<IActionResult> ProductDisplay()
+        {
+            var products = await _productService.GetAllProductsAsync();
+            return View(products);
+        }
 
         public IActionResult NewProduct()
         {
-            ViewData["Categories"] = _context.Categories.ToList(); // Mejor que ViewBag
-            return View();
-        }
+            // 🔹 Se cargan las categorías y tiendas en ViewBag antes de renderizar la vista
+            ViewBag.Categories = _productService.GetCategories();
+            ViewBag.Stores = _productService.GetStores();
 
-        public IActionResult EditProduct() => View();
-        public IActionResult ProductosBloqueados() => View();
+            return View(new ProductViewModel()); // 🔹 Se pasa un ViewModel vacío a la vista
+        }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct(Product product)
+        public async Task<IActionResult> CreateProduct(ProductViewModel productVM)
         {
-            Console.WriteLine($"Intentando guardar el producto: \n" +
-                              $"Nombre: {product.Name}\n" +
-                              $"Descripción: {product.Description}\n" +
-                              $"Precio: {product.Price}\n" +
-                              $"Cantidad: {product.Quantity}\n" +
-                              $"Categoría: {product.CategoryId}\n" +
-                              $"Tienda: {product.StoreId}\n");
-
-            // Buscar los objetos relacionados
-            product.Category = _context.Categories.FirstOrDefault(c => c.Id == product.CategoryId);
-            product.Store = _context.Stores.FirstOrDefault(s => s.Id == product.StoreId);
-
-            if (product.Category == null)
-            {
-                ModelState.AddModelError("Category", "La categoría seleccionada no existe.");
-                Console.WriteLine("❌ Error: La categoría no existe.");
-            }
-
-            if (product.Store == null)
-            {
-                ModelState.AddModelError("Store", "La tienda seleccionada no existe.");
-                Console.WriteLine("❌ Error: La tienda no existe.");
-            }
-
-            // 🔹 Verifica si hay una imagen cargada
-            if (product.ImageFile != null)
-            {
-                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + product.ImageFile.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                // 🔹 Crea la carpeta si no existe
-                if (!Directory.Exists(uploadsFolder))
-                {
-                    Directory.CreateDirectory(uploadsFolder);
-                }
-
-                // 🔹 Guarda la imagen en el servidor
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await product.ImageFile.CopyToAsync(fileStream);
-                }
-
-                // 🔹 Guarda la ruta en la base de datos
-                product.ImageUrl = "/images/" + uniqueFileName;
-            }
-
             if (!ModelState.IsValid)
             {
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                ViewBag.Categories = _productService.GetCategories();
+                ViewBag.Stores = _productService.GetStores();
+                return View("NewProduct", productVM);
+            }
+
+            // Procesar la imagen si se subió
+            if (productVM.ImageFile != null)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                Directory.CreateDirectory(uploadsFolder); // Asegurar que la carpeta existe
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(productVM.ImageFile.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    Console.WriteLine($"Error de validación: {error.ErrorMessage}");
+                    await productVM.ImageFile.CopyToAsync(fileStream);
                 }
 
-                ViewBag.Categories = _context.Categories.ToList();
-                ViewBag.Stores = _context.Stores.ToList();
-                return View("NewProduct", product);
+                productVM.ImageUrl = "/images/" + fileName;
             }
 
-            try
+            var success = await _productService.CreateProductAsync(productVM);
+            if (!success)
             {
-                _context.Products.Add(product);
-                int changes = await _context.SaveChangesAsync();
-                Console.WriteLine($"✅ Producto guardado con éxito. Registros guardados: {changes}");
-                return RedirectToAction("ProductDisplay");
+                ModelState.AddModelError("", "Error al crear el producto.");
+                ViewBag.Categories = _productService.GetCategories();
+                ViewBag.Stores = _productService.GetStores();
+                return View("NewProduct", productVM);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"❌ Error al guardar en la BD: {ex.Message}");
-                ViewBag.Categories = _context.Categories.ToList();
-                ViewBag.Stores = _context.Stores.ToList();
-                ModelState.AddModelError("", "Ocurrió un error al guardar el producto.");
-                return View("NewProduct", product);
-            }
+
+            return RedirectToAction("ProductDisplay");
         }
+
     }
 }

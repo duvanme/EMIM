@@ -28,6 +28,8 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IStoreService, StoreService>();
+
 
 var app = builder.Build();
 

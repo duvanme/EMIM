@@ -29,6 +29,8 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<IStoreService, StoreService>();
+
 
 var app = builder.Build();
 

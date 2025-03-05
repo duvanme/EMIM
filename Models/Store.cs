@@ -13,6 +13,7 @@ namespace EMIM.Models
 
         public string? Description { get; set; }
 
+        public string? StoreProfilePicture { get; set; }
         
         [Required]
         public string UserId { get; set; }

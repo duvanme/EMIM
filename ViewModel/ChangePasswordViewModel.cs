@@ -13,12 +13,12 @@ namespace EMIM.ViewModel
         [DataType(DataType.Password)]
         [Compare("ConfirmNewPassword", ErrorMessage = "Password does not match")]
         [Display(Name = "New password")]
-        public string NewPassword { get; set; }
+        public required string NewPassword { get; set; }
 
         [Required(ErrorMessage = "Conmfirmed password is required characters long")]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm new password")]
-        public string ConfirmNewPassword { get; set; }
+        public required string ConfirmNewPassword { get; set; }
 
     }
 }

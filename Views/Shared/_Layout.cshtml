@@ -20,17 +20,15 @@
                         <img src="img/logo.png" alt="logo" class="h-16 w-auto p-2">
                     </div>
                     <!-- Barra de búsqueda -->
-                    <form class="flex items-center w-full lg:w-auto max-w-md my-2 lg:my-0 lg:mx-4" action="/buscar"
-                        method="GET">
-                        <input type="text" name="query" placeholder="Buscar productos..."
-                            class="flex-grow py-2 px-4 border border-gray-300 rounded-l-full focus:outline-none focus:ring-2 focus:ring-[#13678A]"
-                            required>
-                        <button type="submit"
-                            class="bg-white p-2 rounded-r-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#13678A]">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-4.35-4.35M16.5 10a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z" />
+                    <form class="relative w-full max-w-md my-2" action="/buscar" method="GET">
+                        <input name="query" type="search" placeholder="Buscar productos..."
+                            class="shadow-lg border-gray-300 px-5 py-3 rounded-xl w-56 transition-all focus:w-64 focus:outline-none focus:ring-2 focus:ring-[#13678A]"
+                            required />
+                        <button type="submit" class="absolute top-3 ml-[-30px]">
+                            <svg class="size-6 text-gray-500" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                                    stroke-linejoin="round" stroke-linecap="round"></path>
                             </svg>
                         </button>
                     </form>
@@ -69,11 +67,11 @@
                         <a class="hover:text-gray-700 mb-1" asp-controller="Store" asp-action="CreateStore">Crear tienda</a>
                         <a class="hover:text-gray-700 mb-1" href="@Url.Action("EditProfile", "Account")">Actualizar datos</a>
                         <a class="hover:text-gray-700 mb-1" href="@Url.Action("#", "Account")">Mis pedidos</a>
-                        <a class="hover:text-gray-700 mb-1" href="@Url.Action("Reviews", "Account")">Mis reseñas</a>
-                        <a class="hover:text-gray-700 mb-1" href="@Url.Action("Help", "Account")">Necesito ayuda</a>
+                        <a class="hover:text-gray-700 mb-1" href="@Url.Action("Reviews", "General")">Mis reseñas</a>
+                        <a class="hover:text-gray-700 mb-1" href="@Url.Action("Help", "General")">Necesito ayuda</a>
                         <hr class="my-2">
                         <i class="text-gray-700">
-                            <a class="hover:text-gray-700">Cerrar sesión</a>
+                            <a class="hover:text-gray-700" href="@Url.Action("Login", "Account")">Cerrar sesión</a>
                         </i>
                     </div>
                 </div>

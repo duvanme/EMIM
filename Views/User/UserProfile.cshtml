@@ -1,3 +1,4 @@
+@model User
 <main>
     <section>
         <div class="container">
@@ -25,13 +26,13 @@
             </div>
             <div class="flex flex-col justify-center items-center ml-8 md:flex h-full w-full md:w-1/2">
                 <div class="flex flex-col">
-                    <h2 class="text-2xl font-bold mb-2 name">Sara Gutierrez</h2>
+                    <h2 class="text-2xl font-bold mb-2 name">@Model.FirstName @Model.LastName</h2>
                     <p>Información</p>
                     <hr>
                     <div class="flex justify-between">
                         <div class="w-1/2 py-2 pr-2 md:w-1/2">
                             <h5>Correo electrónico</h5>
-                            <p class="mb-2 text-gray-500 email">saragutierrez@gmail.com</p>
+                            <p class="mb-2 text-gray-500 email">@Model.Email</p>
                         </div>
                         <div class="w-1/2 py-2 pr-2">
                             <button class="bg-[#A9C8CF] rounded-lg shadow-lg flex flex-row md:flex-col">35
@@ -39,9 +40,9 @@
                         </div>
                     </div>
                     <h5>Número de contacto</h5>
-                    <p class="mb-2 text-gray-500 phone">3012184415</p>
+                    <p class="mb-2 text-gray-500 phone">@Model.PhoneNumber</p>
                     <h5>Dirección</h5>
-                    <p class="mb-2 text-gray-500 address">cl 98 n 34-30</p>
+                    <p class="mb-2 text-gray-500 address">NULL</p>
                 </div>
             </div>
         </div>

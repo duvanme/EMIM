@@ -78,5 +78,10 @@ namespace EMIM.Services
         {
             return await userManager.FindByEmailAsync(email);
         }
+
+        public async Task<User> FindUserByIdAsync(string id)
+        {
+            return await userManager.FindByIdAsync(id);
+        }
     }
 }

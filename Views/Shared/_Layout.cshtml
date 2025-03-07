@@ -17,8 +17,11 @@
                 <nav style="background-color: #56b6cc;" class="flex flex-wrap items-center justify-between px-4 py-2">
                     <!-- Logo -->
                     <div class="flex items-center">
-                        <img src="img/logo.png" alt="logo" class="h-16 w-auto p-2">
+                        <a href="@Url.Action("Index", "Home")">
+                            <img src="../images/logo_sin_fondo.png" alt="logo" class="h-16 w-auto p-2 cursor-pointer">
+                        </a>
                     </div>
+
                     <!-- Barra de búsqueda -->
                     <form class="relative w-full max-w-md my-2" action="/buscar" method="GET">
                         <input name="query" type="search" placeholder="Buscar productos..."
@@ -35,37 +38,39 @@
 
                     <!-- Enlaces y botones -->
                     <div class="flex items-center gap-2">
-                        <a class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center"
+                        <a class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center transition-transform duration-200 hover:scale-110"
                             asp-controller="Account" asp-action="Login">
-                            Sign In
-                            <img id="navbar-user-image" src="img/user.jpeg" alt="user"
-                                class="h-6 w-6 ml-2 rounded-full">
+                            Iniciar
                         </a>
-                        <a class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center"
-                           asp-controller="Account" asp-action="Register">
-                            Sign Up
-                            <img src="img/carrito.png" alt="carrito" class="h-6 w-6 ml-2">
+
+                        <a class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center transition-transform duration-200 hover:scale-110"
+                            asp-controller="Account" asp-action="Register">
+                            Registrarse
                         </a>
+
                         <!-- Icono de menú -->
                         <button id="toggle-menu"
-                            class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center">
+                            class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center transition-transform duration-200 hover:scale-110">
                             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
                         </button>
+
                     </div>
                 </nav>
             </section>
             <section>
                 <!--CONTENIDO DEL MENU-->
-                <div
-                    class="menu-container bg-[#A9C8CF] rounded-lg shadow-lg flex-col md:flex-row items-center justify-center w-1/5  absolute top-20 right-1 hidden z-20">
+                <div id="menu" class="menu-container bg-[#A9C8CF] rounded-lg shadow-lg flex-col md:flex-row items-center justify-center w-1/5 absolute top-20 right-1 z-20 
+    transition-all duration-300 ease-in-out transform opacity-0 scale-95 hidden">
                     <div class="flex flex-col items-center justify-center">
                         <b class="font-bold mb-2">Configuraciones</b>
                         <hr class="mb-2">
-                        <a class="hover:text-gray-700 mb-1" asp-controller="Store" asp-action="CreateStore">Crear tienda</a>
-                        <a class="hover:text-gray-700 mb-1" href="@Url.Action("EditProfile", "Account")">Actualizar datos</a>
+                        <a class="hover:text-gray-700 mb-1" asp-controller="Store" asp-action="CreateStore">Crear
+                            tienda</a>
+                        <a class="hover:text-gray-700 mb-1" href="@Url.Action("EditProfile", "User")">Actualizar
+                            datos</a>
                         <a class="hover:text-gray-700 mb-1" href="@Url.Action("#", "Account")">Mis pedidos</a>
                         <a class="hover:text-gray-700 mb-1" href="@Url.Action("Reviews", "General")">Mis reseñas</a>
                         <a class="hover:text-gray-700 mb-1" href="@Url.Action("Help", "General")">Necesito ayuda</a>
@@ -75,6 +80,7 @@
                         </i>
                     </div>
                 </div>
+
             </section>
         </header>
 
@@ -93,6 +99,7 @@
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/menu.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

@@ -13,6 +13,12 @@ namespace EMIM.Controllers
             _productService = productService;
         }
 
+        public async Task<IActionResult> ProductosBloqueados()
+        {
+            var products = await _productService.GetAllProductsAsync();
+            return View(products);
+        }
+
         public async Task<IActionResult> ProductDisplay()
         {
             var products = await _productService.GetAllProductsAsync();
@@ -64,6 +70,11 @@ namespace EMIM.Controllers
             }
 
             return RedirectToAction("ProductDisplay");
+        }
+
+        public IActionResult EditProduct()
+        {
+            return View();
         }
 
     }

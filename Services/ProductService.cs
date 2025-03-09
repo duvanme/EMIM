@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EMIM.Services
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
         private readonly EmimContext _context;
 
@@ -19,9 +19,26 @@ namespace EMIM.Services
             return await _context.Products.Include(p => p.Category).Include(p => p.Store).ToListAsync();
         }
 
-        public async Task<Product?> GetProductByIdAsync(int id)
+        public async Task<ProductViewModel> GetProductByIdAsync(int id)
         {
-            return await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            var product = await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Store)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (product == null) return null;
+
+            return new ProductViewModel
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                Quantity = product.Quantity,
+                CategoryId = product.CategoryId,
+                StoreId = product.StoreId,
+                ImageUrl = product.ImageUrl
+            };
         }
 
         public async Task<bool> CreateProductAsync(ProductViewModel productVM)
@@ -34,10 +51,19 @@ namespace EMIM.Services
                 Quantity = productVM.Quantity,
                 CategoryId = productVM.CategoryId,
                 StoreId = productVM.StoreId,
-                ImageUrl = productVM.ImageUrl // Ahora se guarda correctamente
+                ImageUrl = productVM.ImageUrl
             };
 
             _context.Products.Add(product);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> DeleteProductAsync(int id)
+        {
+            var product = await _context.Products.FindAsync(id);
+            if (product == null) return false;
+
+            _context.Products.Remove(product);
             return await _context.SaveChangesAsync() > 0;
         }
 
@@ -52,21 +78,21 @@ namespace EMIM.Services
             product.Quantity = productVM.Quantity;
             product.CategoryId = productVM.CategoryId;
             product.StoreId = productVM.StoreId;
-            product.ImageUrl = productVM.ImageUrl;
 
+            if (!string.IsNullOrEmpty(productVM.ImageUrl))
+            {
+                product.ImageUrl = productVM.ImageUrl;
+            }
+
+            _context.Products.Update(product);
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> DeleteProductAsync(int id)
+        public async Task<bool> StoreExistsAsync(int storeId)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null) return false;
-
-            _context.Products.Remove(product);
-            return await _context.SaveChangesAsync() > 0;
+            return await _context.Stores.AnyAsync(s => s.Id == storeId);
         }
 
-        // 🔹 NUEVOS MÉTODOS AGREGADOS para evitar NullReferenceException en la vista
         public List<Category> GetCategories()
         {
             return _context.Categories.ToList();
@@ -75,6 +101,11 @@ namespace EMIM.Services
         public List<Store> GetStores()
         {
             return _context.Stores.ToList();
+        }
+
+        public async Task<List<Store>> GetStoresAsync()
+        {
+            return await _context.Stores.ToListAsync();
         }
     }
 }

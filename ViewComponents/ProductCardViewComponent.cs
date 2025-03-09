@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 public class ProductCardViewComponent : ViewComponent
 {
-    private readonly ProductService _productService;
+    private readonly IProductService _productService;
 
-    public ProductCardViewComponent(ProductService productService)
+    public ProductCardViewComponent(IProductService productService)
     {
         _productService = productService;
     }

@@ -3,14 +3,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     productCards.forEach(card => {
         card.addEventListener("click", function (event) {
-            // Evita la redirección si se hace clic en el botón del corazón o en el botón de editar
+            // Evita la redirección si se hace clic en los botones
             if (event.target.closest("button") || event.target.closest(".edit-button")) {
                 event.stopPropagation();
                 return;
             }
 
-            // Redirige a la vista DisplayProduct sin datos
-            window.location.href = this.getAttribute("data-url");
+            // Obtiene la URL desde el atributo data-url y redirige
+            const url = this.getAttribute("data-url");
+            if (url) {
+                window.location.href = url;
+            }
         });
     });
 });

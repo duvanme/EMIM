@@ -102,4 +102,7 @@ public class AdminController : Controller
 
         return View(model);
     }
+
+        public IActionResult AdminCreationShop() => View();
+
 }

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EMIM.Controllers
 {
-    public class userController : Controller
+    public class UserController : Controller
     {
         private readonly IAccountService accountService;
 

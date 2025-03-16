@@ -18,6 +18,10 @@ public class EmimContext : IdentityDbContext<User>
     public DbSet<Category> Categories { get; set; }
     public DbSet<Store> Stores { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<SaleOrder> SaleOrders { get; set; }
+    public DbSet<SaleOrderLine> SaleOrderLines { get; set; }
+    public DbSet<SaleOrderStatus> SaleOrderStatuses { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
@@ -71,6 +75,22 @@ public class EmimContext : IdentityDbContext<User>
             }
         );
 
+        modelBuilder.Entity<SaleOrderLine>()
+        .HasOne(d => d.SaleOrder)
+        .WithMany(o => o.SaleOrderLine)
+        .HasForeignKey(d => d.Id)
+        .OnDelete(DeleteBehavior.Restrict); // Si se borra una orden, se eliminan sus detalles.
 
+        modelBuilder.Entity<SaleOrderLine>()
+            .HasOne(d => d.Product)
+            .WithMany(p => p.SaleOrderLine)
+            .HasForeignKey(d => d.Id)
+        .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<SaleOrderStatus>()
+            .HasOne(o => o.SaleOrder)
+            .WithMany(s => s.SaleOrderStatus)
+            .HasForeignKey(o => o.Id)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

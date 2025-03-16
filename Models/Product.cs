@@ -37,6 +37,7 @@ namespace EMIM.Models
         // 🔹 Propiedad temporal para recibir la imagen
         [NotMapped]
         public IFormFile? ImageFile { get; set; }
+        public ICollection<SaleOrderLine> SaleOrderLine { get; set; } = new List<SaleOrderLine>();
     }
 
 }

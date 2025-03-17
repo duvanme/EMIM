@@ -46,7 +46,7 @@ public class EmimContext : IdentityDbContext<User>
 
             new Category { Id = 1, Name = "Ropa" },
             new Category { Id = 2, Name = "Comida" },
-            new Category { Id = 3, Name = "Tecnología" }
+            new Category { Id = 3, Name = "Tecnología" },
             new Category { Id = 4, Name = "Juguetes" },
             new Category { Id = 5, Name = "Deporte" },
             new Category { Id = 6, Name = "Maquillaje" },

@@ -1,3 +1,6 @@
+
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 ﻿using EMIM.Models;
 using EMIM.ViewModels;
 using EMIM.Services;
@@ -5,10 +8,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
+
 namespace EMIM.Controllers
 {
     public class UserController : Controller
     {
+
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IAccountService _accountService;
@@ -45,7 +50,10 @@ namespace EMIM.Controllers
             return View(userViewModel);
         }
 
+        public IActionResult UserProfile() => View();
+        [Authorize]
         public IActionResult EditProfile() => View();
         public IActionResult UsuariosBloqueados() => View();
+
     }
 }

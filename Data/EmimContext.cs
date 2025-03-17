@@ -19,6 +19,10 @@ public class EmimContext : IdentityDbContext<User>
     public DbSet<Store> Stores { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Question> Questions { get; set; } // Agregar esta línea
+    public DbSet<SaleOrder> SaleOrders { get; set; }
+    public DbSet<SaleOrderLine> SaleOrderLines { get; set; }
+    public DbSet<SaleOrderStatus> SaleOrderStatuses { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,11 +43,18 @@ public class EmimContext : IdentityDbContext<User>
 
 
         modelBuilder.Entity<Category>().HasData(
+
             new Category { Id = 1, Name = "Ropa" },
             new Category { Id = 2, Name = "Comida" },
             new Category { Id = 3, Name = "Tecnología" }
-   );
-
+            new Category { Id = 4, Name = "Juguetes" },
+            new Category { Id = 5, Name = "Deporte" },
+            new Category { Id = 6, Name = "Maquillaje" },
+            new Category { Id = 7, Name = "Hogar" },
+            new Category { Id = 8, Name = "Libros" },
+            new Category { Id = 9, Name = "Herramientas" }
+            );
+        
         var adminUser = new User
         {
             Id = Guid.NewGuid().ToString(),
@@ -73,6 +84,22 @@ public class EmimContext : IdentityDbContext<User>
             }
         );
 
+        modelBuilder.Entity<SaleOrderLine>()
+        .HasOne(d => d.SaleOrder)
+        .WithMany(o => o.SaleOrderLine)
+        .HasForeignKey(d => d.Id)
+        .OnDelete(DeleteBehavior.Restrict); // Si se borra una orden, se eliminan sus detalles.
 
+        modelBuilder.Entity<SaleOrderLine>()
+            .HasOne(d => d.Product)
+            .WithMany(p => p.SaleOrderLine)
+            .HasForeignKey(d => d.Id)
+        .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<SaleOrderStatus>()
+            .HasOne(o => o.SaleOrder)
+            .WithMany(s => s.SaleOrderStatus)
+            .HasForeignKey(o => o.Id)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

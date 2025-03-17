@@ -32,6 +32,8 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IStoreService, StoreService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 
 // Servicio para acceder al contexto HTTP
 builder.Services.AddHttpContextAccessor();

@@ -28,7 +28,6 @@
                         Añadir al carrito
                     </a>
 
-
                     <!-- Botón de favoritos -->
                     <button
                         class="w-full flex items-center justify-center bg-[#13678A] text-white py-3 rounded-lg shadow hover:bg-[#0D4F65]">
@@ -49,12 +48,12 @@
             </div>
         </div>
 
-        <!-- Sección de calificación -->
-        <div class="rating-section mt-6">
-            <h3 class="text-lg font-semibold mb-4">Califica esta publicación</h3>
+        <!-- Sección de calificación mejorada -->
+        <div class="rating-section mt-10 p-6 bg-white w-full md:w-2/3 mx-auto text-center">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Califica esta publicación</h3>
 
             <!-- Calificación con estrellas -->
-            <div class="stars flex gap-1 mb-4">
+            <div class="stars flex justify-center gap-2 mb-4">
                 <span class="star text-gray-400 cursor-pointer text-3xl" data-value="1">★</span>
                 <span class="star text-gray-400 cursor-pointer text-3xl" data-value="2">★</span>
                 <span class="star text-gray-400 cursor-pointer text-3xl" data-value="3">★</span>
@@ -62,39 +61,43 @@
                 <span class="star text-gray-400 cursor-pointer text-3xl" data-value="5">★</span>
             </div>
 
-            <!-- Input para el comentario -->
-            <textarea id="comment" rows="2" cols="2" class="w-[50%] border rounded-lg p-3 mb-4 "
-                placeholder="Deja tu comentario aquí...">
-                </textarea>
+            <!-- Sección de preguntas y respuestas -->
+            <div class="qa-section mt-10 bg-white  w-full md:w-2/3 mx-auto">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Preguntas y respuestas</h3>
 
-            <!-- Botón para enviar -->
-            <button onclick="submitRating()"
-                class="bg-[#13678A] text-white py-2 px-4 rounded-lg hover:bg-[#0D4F65]">Enviar</button>
+                <!-- Botones de filtro -->
+                <div class="flex gap-2 mb-4">
+                    <button class="bg-gray-200 px-3 py-1 rounded-lg text-gray-700">Costo y tiempo de envío</button>
+                    <button class="bg-gray-200 px-3 py-1 rounded-lg text-gray-700">Devoluciones gratis</button>
+                    <button class="bg-gray-200 px-3 py-1 rounded-lg text-gray-700">Medios de pago</button>
+                    <button class="bg-gray-200 px-3 py-1 rounded-lg text-gray-700">Garantía</button>
+                </div>
 
-            <!-- Mensaje de confirmación -->
-            <div id="rating-message" class="mt-4 text-green-600 font-semibold hidden">
-                <p>¡Gracias por tu calificación!</p>
-            </div>
-        </div>
+                <!-- Input para preguntar -->
+                <div class="flex items-center gap-2 mb-4">
+                    <input type="text" id="questionInput" class="w-full border rounded-lg p-3"
+                        placeholder="Pregúntale al vendedor">
+                    <button class="bg-[#13678A] text-white px-4 py-2 rounded-lg hover:bg-[#0D4F65]">Preguntar</button>
+                </div>
 
-        <!-- Chat de asistencia -->
-        <div class="fixed bottom-4 right-4">
-            <button id="toggle-chat" class="bg-blue-500 text-white p-2 rounded-full">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M8 10h8M8 14h8m-4 4l4 4-4-4-4 4 4-4zM4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z" />
-                </svg>
-            </button>
-            <div id="chat-container" class="bg-white shadow-md rounded-lg w-72 p-4 hidden">
-                <div id="messages" class="h-64 overflow-y-scroll border border-gray-300 p-2 mb-4 rounded"></div>
-                <div class="flex">
-                    <input type="text" id="message-input" class="flex-1 border border-gray-300 p-2 rounded"
-                        placeholder="Escribe un mensaje...">
-                    <button id="send-button" class="bg-[#56b6cc] hover:bg-[#13678A] transition text-white p-2 rounded ml-2">Enviar</button>
+                <!-- Preguntas recientes -->
+                <div class="questions-list">
+                    <div class="border-b py-2">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Preguntas más recientes</></h3>
+                        <p class="text-sm text-gray-600"><strong>¿Dónde se encuentra?</strong></p>
+                        <p class="text-sm text-gray-800">Estamos ubicados en Bogotá en el sector del lago <span
+                                class="text-gray-500 text-xs">15/03/2025</span></p>
+                    </div>
+                    <div class="border-b py-2">
+                        <p class="text-sm text-gray-600"><strong>¿Cuánto cuesta el monitor LG de 32”?</strong></p>
+                        <p class="text-sm text-gray-800">Sería con monitor curvo LG de 32", wifi, teclado y mouse
+                            inalámbrico por 650 mil adicionales <span class="text-gray-500 text-xs">15/03/2025</span>
+                        </p>
+                    </div>
+                    <a href="#" class="text-blue-600 text-sm">Ver todas las preguntas</a>
                 </div>
             </div>
-        </div>
+
     </section>
 </main>
 

@@ -35,13 +35,19 @@ public class EmimContext : IdentityDbContext<User>
 
         modelBuilder.Entity<IdentityRole>().HasData(admin, customer, vendor);
 
-        
-        modelBuilder.Entity<Category>().HasData(
-            new Category { Id = 1, Name = "Ropa" },
-            new Category { Id = 2, Name = "Comida" },
-            new Category { Id = 3, Name = "Tecnología" }
-        );
 
+        modelBuilder.Entity<Category>().HasData(
+         new Category { Id = 1, Name = "Ropa" },
+         new Category { Id = 2, Name = "Tecnología" },
+         new Category { Id = 3, Name = "Juguetes" },
+         new Category { Id = 4, Name = "Deporte" },
+         new Category { Id = 5, Name = "Maquillaje" },
+         new Category { Id = 6, Name = "Hogar" },
+         new Category { Id = 7, Name = "Libros" },
+         new Category { Id = 8, Name = "Herramientas" }
+
+);
+        
         var adminUser = new User
         {
             Id = Guid.NewGuid().ToString(), 

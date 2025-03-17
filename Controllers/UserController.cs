@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EMIM.Controllers
 {
@@ -6,6 +7,7 @@ namespace EMIM.Controllers
     {
        
             public IActionResult UserProfile() => View();
+            [Authorize]
             public IActionResult EditProfile() => View();
             public IActionResult UsuariosBloqueados() => View();
         

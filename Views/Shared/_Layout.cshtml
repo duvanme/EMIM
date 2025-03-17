@@ -6,13 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - EMIM</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Carousel.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
 </head>
 
-<body>
-    <div>
-
-        <header class="bg-[#56B6CC] p-4 flex items-center justify-between">
+<body class="bg-[#fefeff] flex flex-col items-center">
+    
+        <header class="w-full bg-[#56B6CC] p-4 flex items-center justify-between">
             <section class="w-full">
                 <nav style="background-color: #56b6cc;" class="flex flex-wrap items-center justify-between px-4 py-2">
                     <!-- Logo -->
@@ -85,11 +88,11 @@
         </header>
 
 
-        <main role="main">
+        <main role="main" class="w-full">
             @RenderBody()
 
         </main>
-    </div>
+    
 
     <footer class="border-top footer text-muted">
         <div class="container">
@@ -99,8 +102,12 @@
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/menu.js" asp-append-version="true"></script>
-
+    <script src="~/js/CarouselSlides.js" asp-append-version="true"></script>
+    <script src="~/js/swiperClick.js" asp-append-version="true"></script>
+   
     @await RenderSectionAsync("Scripts", required: false)
+
+
 </body>
 
 </html>

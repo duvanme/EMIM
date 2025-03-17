@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -13,19 +16,20 @@
     
 </head>
 
+
 <body class="bg-[#fefeff] flex flex-col items-center">
     
         <header class="w-full bg-[#56B6CC] p-4 flex items-center justify-between">
+
+
             <section class="w-full">
-                <nav style="background-color: #56b6cc;" class="flex flex-wrap items-center justify-between px-4 py-2">
-                    <!-- Logo -->
+                <nav class="flex flex-wrap items-center justify-between px-4 py-2" style="background-color: #56b6cc;">
                     <div class="flex items-center">
                         <a href="@Url.Action("Index", "Home")">
                             <img src="~/images/logo_sin_fondo.png" alt="logo" class="h-16 w-auto p-2 cursor-pointer">
                         </a>
                     </div>
 
-                    <!-- Barra de búsqueda -->
                     <form class="relative w-full max-w-md my-2" action="/buscar" method="GET">
                         <input name="query" type="search" placeholder="Buscar productos..."
                             class="shadow-lg border-gray-300 px-5 py-3 rounded-xl w-56 transition-all focus:w-64 focus:outline-none focus:ring-2 focus:ring-[#13678A]"
@@ -39,58 +43,105 @@
                         </button>
                     </form>
 
-                    <!-- Enlaces y botones -->
                     <div class="flex items-center gap-2">
-                        <a class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center transition-transform duration-200 hover:scale-110"
-                            asp-controller="Account" asp-action="Login">
-                            Iniciar
-                        </a>
 
-                        <a class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center transition-transform duration-200 hover:scale-110"
-                            asp-controller="Account" asp-action="Register">
-                            Registrarse
-                        </a>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div class="relative">
+                                    <a asp-controller="Admin" asp-action="AdminCreationShop"
+                                        class="bg-[#A9C8CF] p-2 rounded-full border border-black shadow-md flex items-center space-x-4 transition-transform duration-200 hover:scale-110">
+                                        <i class="fas fa-user"></i>
+                                        <span>SOLICITUDES</span>
+                                        <span class="bg-red-500 text-white rounded-full px-2">1</span>
+                                    </a>
+                                </div>
 
-                        <!-- Icono de menú -->
-                        <button id="toggle-menu"
-                            class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center transition-transform duration-200 hover:scale-110">
-                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 6h16M4 12h16M4 18h16" />
-                            </svg>
-                        </button>
+                            }
 
+                            <!-- Icono de menú -->
+                            <button id="toggle-menu"
+                                class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center transition-transform duration-200 hover:scale-110">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                            </button>
+
+                            <!-- Menú dinámico según el rol -->
+                            <div id="menu"
+                                class="menu-container bg-[#A9C8CF] rounded-lg shadow-lg flex-col items-center w-1/5 absolute top-20 right-1 z-20 hidden">
+                                <div class="flex flex-col items-center justify-center p-4">
+                                    <b class="font-bold mb-2">Configuraciones</b>
+                                    <hr class="mb-2 w-full">
+
+                                    @if (User.IsInRole("Vendor"))
+                                    {
+                                        <a class="hover:text-gray-700 mb-1" asp-controller="Store"
+                                            asp-action="StoreProfile">Perfil de Tienda</a>
+                                        <a class="hover:text-gray-700 mb-1" asp-controller="Product"
+                                            asp-action="NewProduct">Publicar Productos</a>
+                                    }
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a class="hover:text-gray-700 mb-1" asp-controller="Admin"
+                                            asp-action="AdminProfile">Perfil de Admin</a>
+                                        <a class="hover:text-gray-700 mb-1" asp-controller="Admin"
+                                            asp-action="AdminCreationShop">Peticiones</a>
+                                        <a class="hover:text-gray-700 mb-1" asp-controller="Product"
+                                            asp-action="ProductosBloqueados">Productos Bloqueados</a>
+                                        <a class="hover:text-gray-700 mb-1" asp-controller="User"
+                                            asp-action="UsuariosBloqueados">Usuarios Bloqueados</a>
+                                        <a class="hover:text-gray-700 mb-1" asp-controller="Store"
+                                            asp-action="TiendasBloqueadas">Tiendas Bloqueadas</a>
+                                        <a class="hover:text-gray-700 mb-1" asp-controller="Admin"
+                                            asp-action="RegisterUser">Registrar Usuarios</a>
+                                    }
+                                    @if (User.IsInRole("Customer"))
+                                    {
+                                        <a class="hover:text-gray-700 mb-1" asp-controller="User"
+                                            asp-action="UserProfile">Perfil</a>
+                                        <a class="hover:text-gray-700 mb-1" asp-controller="Product" asp-action="MyProducts">Mis
+                                            pedidos</a>
+                                        <a class="hover:text-gray-700 mb-1" asp-controller="Store"
+                                            asp-action="CreateStore">Crear tienda</a>
+                                        <a class="hover:text-gray-700 mb-1" asp-controller="General" asp-action="Reviews">Mis
+                                            reseñas</a>
+                                        <a class="hover:text-gray-700 mb-1" asp-controller="User"
+                                            asp-action="EditProfile">Actualizar datos</a>
+                                        <a class="hover:text-gray-700 mb-1" asp-controller="General" asp-action="Help">Necesito
+                                            ayuda</a>
+                                    }
+                                    <hr class="my-2 w-full">
+                                    <i class="text-gray-700">
+                                        <a class="hover:text-gray-700" asp-controller="Account" asp-action="Logout">Cerrar
+                                            sesión</a>
+                                    </i>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <a class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center transition-transform duration-200 hover:scale-110"
+                                asp-controller="Account" asp-action="Login">
+                                Iniciar
+                            </a>
+
+                            <a class="bg-[#13678A] text-white font-medium py-2 px-4 rounded-full focus:outline-none flex items-center transition-transform duration-200 hover:scale-110"
+                                asp-controller="Account" asp-action="Register">
+                                Registrarse
+                            </a>
+                        }
                     </div>
                 </nav>
-            </section>
-            <section>
-                <!--CONTENIDO DEL MENU-->
-                <div id="menu" class="menu-container bg-[#A9C8CF] rounded-lg shadow-lg flex-col md:flex-row items-center justify-center w-1/5 absolute top-20 right-1 z-20 
-    transition-all duration-300 ease-in-out transform opacity-0 scale-95 hidden">
-                    <div class="flex flex-col items-center justify-center">
-                        <b class="font-bold mb-2">Configuraciones</b>
-                        <hr class="mb-2">
-                        <a class="hover:text-gray-700 mb-1" asp-controller="Store" asp-action="CreateStore">Crear
-                            tienda</a>
-                        <a class="hover:text-gray-700 mb-1" href="@Url.Action("EditProfile", "User")">Actualizar
-                            datos</a>
-                        <a class="hover:text-gray-700 mb-1" href="@Url.Action("#", "Account")">Mis pedidos</a>
-                        <a class="hover:text-gray-700 mb-1" href="@Url.Action("Reviews", "General")">Mis reseñas</a>
-                        <a class="hover:text-gray-700 mb-1" href="@Url.Action("Help", "General")">Necesito ayuda</a>
-                        <hr class="my-2">
-                        <i class="text-gray-700">
-                            <a class="hover:text-gray-700" href="@Url.Action("Login", "Account")">Cerrar sesión</a>
-                        </i>
-                    </div>
-                </div>
-
             </section>
         </header>
 
 
         <main role="main" class="w-full">
-            @RenderBody()
 
+            @RenderBody()
         </main>
     
 

@@ -138,5 +138,8 @@ namespace EMIM.Controllers
             return RedirectToAction("StoreProfile", "Store", new { id = productVM.StoreId });
         }
 
+        public IActionResult MyProducts() => View();
+
+
     }
 }

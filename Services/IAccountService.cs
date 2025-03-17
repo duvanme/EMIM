@@ -11,5 +11,6 @@ namespace EMIM.Services
         Task LogoutAsync();
         Task<IdentityResult> ChangePasswordAsync(ChangePasswordViewModel model);
         Task<User> FindUserByEmailAsync(string email);
+        Task<User> FindUserByIdAsync(string id);
     }
 }

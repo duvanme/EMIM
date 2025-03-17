@@ -11,10 +11,12 @@
 <main>
         <section>
             <div class="flex justify-between items-center mx-2 p-5 px-20 m-4">
-                <img src="../images/logo.jpeg" alt="logo" class="h-20 w-15 p-auto mx-4">
+                <a href="@Url.Action("Index", "Home")">
+                            <img src="~/images/logo_sin_fondo.png" alt="logo" class="h-20 w-15 p-auto mx-4b">
+                        </a>
                 <div class="text-right flex px-20 m-4">
-                    <p class="text-sm text-gray-600 p-2">¿Ya tienes una cuenta? <a href="Login.cshtml"
-                            class="text-black decoration-1">Inicia sesión</a></p>
+                    <p class="text-sm text-gray-600 p-2">¿Ya tienes una cuenta? <a
+                            class="text-black decoration-1" href="/Account/Login">Inicia sesión</a></p>
                 </div>
             </div>
         </section>
@@ -86,7 +88,7 @@
                         <a href="#" class="text-blue-500">Aviso de privacidad</a>.
                     </p>
                     <div class="flex justify-center">
-                        <button class="w-50  font-bold py-2 px-4 mt-4  bg-[#13678A] text-white rounded-lg shadow hover:bg-[#56b6cc]"  type="submit">Registar
+                        <button class="w-50  font-bold py-2 px-4 mt-4  bg-[#56b6cc] text-white rounded-lg shadow hover:bg-[#13678A] transition"  type="submit">Registar
                         </button>
                     </div>
                 </form>

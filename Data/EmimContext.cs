@@ -18,21 +18,23 @@ public class EmimContext : IdentityDbContext<User>
     public DbSet<Category> Categories { get; set; }
     public DbSet<Store> Stores { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<Question> Questions { get; set; } // Agregar esta línea
     public DbSet<SaleOrder> SaleOrders { get; set; }
     public DbSet<SaleOrderLine> SaleOrderLines { get; set; }
     public DbSet<SaleOrderStatus> SaleOrderStatuses { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
 
         base.OnModelCreating(modelBuilder);
 
-      
+
         modelBuilder.Entity<User>()
             .Property(u => u.Status)
             .HasConversion<string>();
 
-      
+
         var admin = new IdentityRole("Admin") { NormalizedName = "ADMIN" };
         var customer = new IdentityRole("Customer") { NormalizedName = "CUSTOMER" };
         var vendor = new IdentityRole("Vendor") { NormalizedName = "VENDOR" };
@@ -41,31 +43,32 @@ public class EmimContext : IdentityDbContext<User>
 
 
         modelBuilder.Entity<Category>().HasData(
-         new Category { Id = 1, Name = "Ropa" },
-         new Category { Id = 2, Name = "Tecnología" },
-         new Category { Id = 3, Name = "Juguetes" },
-         new Category { Id = 4, Name = "Deporte" },
-         new Category { Id = 5, Name = "Maquillaje" },
-         new Category { Id = 6, Name = "Hogar" },
-         new Category { Id = 7, Name = "Libros" },
-         new Category { Id = 8, Name = "Herramientas" }
 
-);
+            new Category { Id = 1, Name = "Ropa" },
+            new Category { Id = 2, Name = "Comida" },
+            new Category { Id = 3, Name = "Tecnología" }
+            new Category { Id = 4, Name = "Juguetes" },
+            new Category { Id = 5, Name = "Deporte" },
+            new Category { Id = 6, Name = "Maquillaje" },
+            new Category { Id = 7, Name = "Hogar" },
+            new Category { Id = 8, Name = "Libros" },
+            new Category { Id = 9, Name = "Herramientas" }
+            );
         
         var adminUser = new User
         {
-            Id = Guid.NewGuid().ToString(), 
+            Id = Guid.NewGuid().ToString(),
             UserName = configuration["AdminUser:Email"],
             NormalizedUserName = configuration["AdminUser:Email"]?.ToUpper(),
             Email = configuration["AdminUser:Email"],
             NormalizedEmail = configuration["AdminUser:Email"]?.ToUpper(),
             EmailConfirmed = true,
-            SecurityStamp = Guid.NewGuid().ToString(), 
-            FirstName = "Admin", 
+            SecurityStamp = Guid.NewGuid().ToString(),
+            FirstName = "Admin",
             LastName = "User",
-            Status = Status.Active, 
-            CreatedAt = DateTime.UtcNow, 
-            ModifiedAt = DateTime.UtcNow 
+            Status = Status.Active,
+            CreatedAt = DateTime.UtcNow,
+            ModifiedAt = DateTime.UtcNow
         };
 
         var passwordHasher = new PasswordHasher<User>();

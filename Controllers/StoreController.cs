@@ -75,6 +75,8 @@ namespace EMIM.Controllers
 
 
         public IActionResult TiendasBloqueadas() => View();
+
+         public IActionResult QuestionsAnswers() => View();
     }
 
 }

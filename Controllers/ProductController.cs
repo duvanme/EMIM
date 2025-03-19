@@ -140,6 +140,17 @@ namespace EMIM.Controllers
 
         public IActionResult MyProducts() => View();
 
+        [HttpDelete]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            var success = await _productService.DeleteProductAsync(id);
+            if (!success)
+            {
+                return BadRequest("Error al eliminar el producto.");
+            }
+            return Ok();
+        }
+
 
     }
 }

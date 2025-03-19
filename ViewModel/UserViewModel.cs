@@ -1,4 +1,4 @@
-namespace EMIM.ViewModels
+namespace EMIM.ViewModel
 {
     public class UserViewModel
     {

@@ -33,6 +33,8 @@ builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IStoreService, StoreService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+builder.Services.AddScoped<CloudinaryService>();
 
 
 // Servicio para acceder al contexto HTTP

@@ -33,6 +33,7 @@ builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IStoreService, StoreService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 // Servicio para acceder al contexto HTTP

@@ -6,5 +6,6 @@ namespace EMIM.ViewModels
     {
         public List<ProductViewModel> Products { get; set; }
         public List<string> Roles { get; set; }
+        
     }
 }

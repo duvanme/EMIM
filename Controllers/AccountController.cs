@@ -10,12 +10,14 @@ namespace EMIM.Controllers
     public class AccountController : Controller
     {
         private readonly IAccountService accountService;
+        private readonly IEmailService emailService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, IEmailService emailService)
         {
             this.accountService = accountService;
+            this.emailService = emailService;
         }
-        
+
         public IActionResult Login() => View();
 
         [HttpPost]
@@ -61,8 +63,37 @@ namespace EMIM.Controllers
                 ModelState.AddModelError("", "Something is wrong!");
                 return View(model);
             }
+            // Generar código aleatorio
+            var code = new Random().Next(100000, 999999).ToString();
 
-            return RedirectToAction("ChangePassword", new { username = user.UserName });
+            // Enviar código por correo
+            await emailService.SendEmailAsync(model.Email, "Verification code.", $"Your code is: {code}");
+
+            // Guardar el código en la sesión o base de datos para verificar después
+            HttpContext.Session.SetString("VerificationCode", code);
+
+            return RedirectToAction("VerifyCode", new { email = model.Email });
+        }
+
+        public IActionResult VerifyCode(string email)
+        {
+            return View(new VerifyCodeViewModel { Email = email });
+        }
+
+        [HttpPost]
+        public IActionResult VerifyCode(VerifyCodeViewModel model)
+        {
+            if(!ModelState.IsValid){
+                return View(model);
+            }
+            var storedCode = HttpContext.Session.GetString("VerificationCode");
+            if (model.Code == storedCode)
+            {
+                return RedirectToAction("ChangePassword", new { username = model.Email });
+            }
+
+            ModelState.AddModelError("", "Wrong code.");
+            return View(model);
         }
 
         public IActionResult ChangePassword(string username)

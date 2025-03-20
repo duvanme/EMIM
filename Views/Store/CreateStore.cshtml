@@ -1,0 +1,67 @@
+@using EMIM.ViewModel
+@model CreateStoreViewModel
+
+@{
+    ViewData["Title"] = "Create Store";
+    Layout = "~/Views/Shared/_StoreLayout.cshtml";
+}
+
+<main>
+      @await Component.InvokeAsync("BackButton")
+
+
+    <section>
+        <div class="container flex flex-col items-center min-h-screen bg-white md:flex-row md:px-20 m-4">
+            <div id="image" class="hidden w-full h-full md:flex md:w-1/2">
+                <img id="emprendedor-image" src="../images/Register-emprendedor.jpeg" alt="Grupo de emprendedores"
+                    class="object-cover w-full h-full rounded-l-lg ">
+            </div>
+
+            <form asp-action="CreateNewStore" method="post" class="bg-white rounded  w-full md:w-1/2 mx-5" id="formulario-registrar-tienda" enctype="multipart/form-data">
+                <h2 class="border font-bold text-4xl text-center h-16 p-2 text-gray-800 mb-6 rounded-lg"
+                    style="background-color: #56b6cc;">Crear tu tienda</h2>
+
+                <!-- Botón tienda -->
+                <div class="flex justify-center items-center">
+                    <p class="bg-gray-600 w-full font-medium py-2 px-6 rounded-full text-center p-1 mb-6">
+                        Emprendedor
+                    </p>
+                </div>
+
+                <!-- formulario del emprendedor -->
+                <div id="emprendedor-form" class="">
+                    <div class="mb-4">
+                        <input asp-for="Name" type="text" class="w-full p-2 mb-4 border border-gray-300 rounded-full"
+                            placeholder="Nombre del emprendimiento" />
+                    </div>
+
+                    <div class="mb-4">
+                        <input asp-for="Description" class="w-full p-2 mb-4 border border-gray-300 rounded-full"
+                            placeholder="Descripción" />
+                    </div>
+
+                    <div class="mb-4">
+                        <input asp-for="StoreProfilePicture" type="file" class="w-full p-2 mb-4 border border-gray-300 rounded-full"
+                            placeholder="Añadir foto de perfil" />
+                        <!--<div class="flex justify-content-between mx-2">
+                            <img id="advertencia" src="../images/warning.png" class="h-4 w-4 mx-1">
+                            <p class="text-sm text-right text-gray-600">Debe contener al menos 6 caracteres</p>
+                        </div>
+                        -->
+                    </div>
+
+                </div>
+                <p class="text-sm text-gray-700 ">Al seleccionar Crear cuenta, aceptas nuestras
+                    <a href="#" class="text-blue-500">condiciones de uso</a> y reconoces haber leído nuestra
+                    <a href="#" class="text-blue-500">Politica de privacidad</a>.
+                </p>
+
+                <div class="flex justify-center">
+                    <input class="w-50 text-white font-bold py-2 px-4 mt-4 rounded bg-[#56b6cc] hover:bg-[#13678A] transition"
+                         placeholder="Crear Tienda" type="submit"/>
+                </div>
+
+            </form>
+        </div>
+    </section>
+</main>

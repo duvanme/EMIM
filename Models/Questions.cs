@@ -21,6 +21,12 @@ namespace EMIM.Models
         public virtual Product Producto { get; set; } // Relación con la entidad Producto
 
         [Required]
+        public string UserId { get; set; } 
+
+        [ForeignKey("UserId")]
+        public virtual User User { get; set; }
+
+        [Required]
         [StringLength(500)]
         public string QuestionText { get; set; }
 
@@ -28,5 +34,6 @@ namespace EMIM.Models
 
         [Required]
         public QuestionStatus Status { get; set; } = QuestionStatus.Pending;
+        
     }
 }

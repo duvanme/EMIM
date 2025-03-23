@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EMIM.Services
 {
-    public class StoreService:IStoreService
+    public class StoreService : IStoreService
     {
         private readonly EmimContext emimcontext;
         private readonly UserManager<User> userManager;
@@ -46,17 +46,26 @@ namespace EMIM.Services
             return store;
         }
 
+        public async Task<int> GetStoreIdForVendorAsync(string userId)
+        {
+            // Eliminar la referencia a VendorId que no existe
+            var store = await emimcontext.Stores
+                .FirstOrDefaultAsync(s => s.UserId == userId);
+
+            // Si se encuentra la tienda, devuelve su ID, si no, devuelve 0
+            return store?.Id ?? 0;
+        }
+
         public async Task<bool> AssignVendorRoleAsync(User user)
         {
             if (!await userManager.IsInRoleAsync(user, "Vendor"))
             {
-                await userManager.RemoveFromRoleAsync(user, "Customer"); 
+                await userManager.RemoveFromRoleAsync(user, "Customer");
                 await userManager.AddToRoleAsync(user, "Vendor");
                 return true;
             }
             return false;
         }
-
+    }
 
     }
-}

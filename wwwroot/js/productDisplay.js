@@ -1,72 +1,57 @@
-// Selección de estrellas
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM cargado, buscando estrellas...");
+    
+    const stars = document.querySelectorAll(".star");
+    console.log("Estrellas encontradas:", stars.length);
+    
+    if (stars.length === 0) return;
+    
+    let selectedRating = 0;
 
-let selectedRating = 0;
-
-const stars = document.querySelectorAll(".star");
-stars.forEach(star => {
-    star.addEventListener("click", function () {
-        selectedRating = this.getAttribute("data-value");
-
-        // Cambiar el color de las estrellas seleccionadas
-        stars.forEach(s => {
-            s.classList.remove("text-yellow-500");
-            s.classList.add("text-gray-400");
+    // Función para actualizar la visualización de las estrellas
+    function updateStars(rating, isHover = false) {
+        console.log(`Actualizando estrellas: ${rating} (hover: ${isHover})`);
+        
+        stars.forEach((star, index) => {
+            // Obtener el valor de la estrella
+            const starValue = parseInt(star.getAttribute("data-value"));
+            
+            // Si estamos en modo hover y el índice es menor que el rating
+            // O si no estamos en modo hover y ya tenemos una selección
+            if ((isHover && starValue <= rating) || (!isHover && starValue <= selectedRating)) {
+                star.classList.remove("text-gray-400");
+                star.classList.add("text-yellow-500");
+            } else {
+                star.classList.remove("text-yellow-500");
+                star.classList.add("text-gray-400");
+            }
         });
+    }
 
-        for (let i = 0; i < selectedRating; i++) {
-            stars[i].classList.remove("text-gray-400");
-            stars[i].classList.add("text-yellow-500");
-        }
+    // Configurar eventos para cada estrella
+    stars.forEach(star => {
+        // Hover: muestra preview
+        star.addEventListener("mouseenter", function() {
+            const value = parseInt(this.getAttribute("data-value"));
+            updateStars(value, true);
+        });
+        
+        // Mouse sale: volver al estado seleccionado
+        star.addEventListener("mouseleave", function() {
+            updateStars(selectedRating, false);
+        });
+        
+        // Click: seleccionar valoración
+        star.addEventListener("click", function() {
+            selectedRating = parseInt(this.getAttribute("data-value"));
+            console.log(`Seleccionada calificación: ${selectedRating}`);
+            updateStars(selectedRating, false);
+            
+            // Si tienes un campo oculto para el formulario
+            const ratingInput = document.getElementById("rating-input");
+            if (ratingInput) {
+                ratingInput.value = selectedRating;
+            }
+        });
     });
-});
-
-// Enviar la calificación
-function submitRating() {
-    const comment = document.getElementById("comment").value;
-
-    if (selectedRating > 0 && comment.trim() !== "") {
-        // Aquí puedes manejar el envío de datos al backend si es necesario
-        console.log(`Calificación: ${selectedRating} estrellas`);
-        console.log(`Comentario: ${comment}`);
-
-        // Mostrar mensaje de confirmación
-        document.getElementById("rating-message").classList.remove("hidden");
-    } else {
-        alert("Por favor selecciona una calificación y deja un comentario.");
-    }
-}
-//Imagenes 
-function swapImages(thumbnail) {
-    // Obtén la imagen principal
-    const mainImage = document.getElementById("main-image");
-
-    // Guarda temporalmente el src de la imagen principal
-    const tempSrc = mainImage.src;
-
-    // Intercambia el src de la imagen principal con el de la miniatura
-    mainImage.src = thumbnail.src;
-
-    // Actualiza el src de la miniatura con el src de la imagen principal
-    thumbnail.src = tempSrc;
-}
-
-//chat 
-document.getElementById('send-button').addEventListener('click', function () {
-    const messageInput = document.getElementById('message-input');
-    const messageText = messageInput.value;
-
-    if (messageText) {
-        const messagesContainer = document.getElementById('messages');
-        const newMessage = document.createElement('div');
-        newMessage.textContent = messageText;
-        newMessage.classList.add('bg-blue-100', 'p-2', 'rounded', 'mb-2');
-        messagesContainer.appendChild(newMessage);
-        messageInput.value = '';
-        messagesContainer.scrollTop = messagesContainer.scrollHeight; // Desplazar hacia abajo
-    }
-});
-
-document.getElementById('toggle-chat').addEventListener('click', function () {
-    const chatContainer = document.getElementById('chat-container');
-    chatContainer.classList.toggle('hidden'); // Alterna la clase 'hidden'
 });

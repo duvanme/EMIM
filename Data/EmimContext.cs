@@ -18,7 +18,7 @@ public class EmimContext : IdentityDbContext<User>
     public DbSet<Category> Categories { get; set; }
     public DbSet<Store> Stores { get; set; }
     public DbSet<Product> Products { get; set; }
-    public DbSet<Question> Questions { get; set; } // Agregar esta línea
+    public DbSet<Question> Questions { get; set; }
     public DbSet<SaleOrder> SaleOrders { get; set; }
     public DbSet<SaleOrderLine> SaleOrderLines { get; set; }
     public DbSet<SaleOrderStatus> SaleOrderStatuses { get; set; }
@@ -29,6 +29,19 @@ public class EmimContext : IdentityDbContext<User>
 
         base.OnModelCreating(modelBuilder);
 
+        // Evitar eliminación en cascada en la relación Question - User
+        modelBuilder.Entity<Question>()
+            .HasOne(q => q.User)
+            .WithMany()
+            .HasForeignKey(q => q.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Evitar eliminación en cascada en la relación Question - Product
+        modelBuilder.Entity<Question>()
+            .HasOne(q => q.Producto)
+            .WithMany()
+            .HasForeignKey(q => q.IdProducto)
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<User>()
             .Property(u => u.Status)
@@ -54,7 +67,7 @@ public class EmimContext : IdentityDbContext<User>
             new Category { Id = 8, Name = "Libros" },
             new Category { Id = 9, Name = "Herramientas" }
             );
-        
+
         var adminUser = new User
         {
             Id = Guid.NewGuid().ToString(),

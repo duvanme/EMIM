@@ -37,7 +37,9 @@ namespace EMIM.Services
                 Quantity = product.Quantity,
                 CategoryId = product.CategoryId,
                 StoreId = product.StoreId,
-                ImageUrl = product.ImageUrl
+                ImageUrl = product.ImageUrl,
+                StoreName = product.Store?.Name ?? "Tienda Desconocida" // 🔹 Agregado
+
             };
         }
 
@@ -106,6 +108,12 @@ namespace EMIM.Services
         public async Task<List<Store>> GetStoresAsync()
         {
             return await _context.Stores.ToListAsync();
+        }
+
+        public async Task<bool> IsProductOwnedByStoreAsync(int productId, int storeId)
+        {
+            var product = await _context.Products.FindAsync(productId);
+            return product != null && product.StoreId == storeId;
         }
     }
 }

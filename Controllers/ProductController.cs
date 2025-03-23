@@ -8,10 +8,14 @@ namespace EMIM.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
+        private readonly IQuestionService _questionService; // Añade esto
 
-        public ProductController(IProductService productService)
+        public ProductController(
+            IProductService productService,
+            IQuestionService questionService) // Añade este parámetro
         {
             _productService = productService;
+            _questionService = questionService; // Añade esta línea
         }
 
         public async Task<IActionResult> ProductosBloqueados()
@@ -26,6 +30,9 @@ namespace EMIM.Controllers
             if (id <= 0) return BadRequest("ID inválido");
             var product = await _productService.GetProductByIdAsync(id);
             if (product == null) return NotFound($"No se encontró el producto con ID {id}");
+
+            var answeredQuestions = await _questionService.GetAnsweredQuestionsByProductIdAsync(id);
+            ViewBag.AnsweredQuestions = answeredQuestions;
 
             return View(product);
         }
@@ -139,7 +146,6 @@ namespace EMIM.Controllers
         }
 
         public IActionResult MyProducts() => View();
-
 
     }
 }

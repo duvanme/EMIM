@@ -8,5 +8,7 @@ namespace EMIM.Services
     {
         Task<Store?> CreateStoreAsync(string userId, CreateStoreViewModel model, string? filePath);
         Task<bool> AssignVendorRoleAsync(User user);
+        // Nuevo método para obtener el StoreId de un vendedor
+        Task<int> GetStoreIdForVendorAsync(string userId);
     }
 }

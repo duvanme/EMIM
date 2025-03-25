@@ -19,7 +19,7 @@ namespace EMIM.ViewModels
         public string? ImageUrl { get; set; }
         public IFormFile? ImageFile { get; set; }
 
-        public string? StoreName { get; set; } // 🔹 Agregado
+        public string? StoreName { get; set; } 
 
     }
 

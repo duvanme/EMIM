@@ -150,12 +150,31 @@ namespace EMIM.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            var success = await _productService.DeleteProductAsync(id);
-            if (!success)
+            try
             {
-                return BadRequest("Error al eliminar el producto.");
+                var result = await _productService.DeleteProductAsync(id);
+
+                if (result)
+                {
+                    return Ok(new { message = "Producto eliminado exitosamente" });
+                }
+
+                return BadRequest(new
+                {
+                    message = "No se pudo eliminar el producto",
+                    details = "Verificar si el producto existe"
+                });
             }
-            return Ok();
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en DeleteProduct: {ex.Message}");
+
+                return StatusCode(500, new
+                {
+                    message = "Error interno al eliminar el producto",
+                    details = ex.Message
+                });
+            }
         }
     }
 }

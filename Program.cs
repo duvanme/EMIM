@@ -34,7 +34,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IStoreService, StoreService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
-
+builder.Services.AddScoped<IQuestionService, QuestionService>();
 
 //Agrega soporte para sesiones
 builder.Services.AddDistributedMemoryCache();

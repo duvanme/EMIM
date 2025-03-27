@@ -9,13 +9,18 @@ namespace EMIM.Controllers
 {
     public class AccountController : Controller
     {
+    
         private readonly IAccountService accountService;
-        private readonly IEmailService emailService;
+        private readonly UserManager<User> userManager;
+        private readonly IEmailService _emailService;
+        
 
-        public AccountController(IAccountService accountService, IEmailService emailService)
+        public AccountController(IAccountService accountService, UserManager<User> userManager, IEmailService _emailService)
         {
             this.accountService = accountService;
-            this.emailService = emailService;
+            this.userManager = userManager;
+            this._emailService = _emailService;
+
         }
 
         public IActionResult Login() => View();
@@ -49,6 +54,24 @@ namespace EMIM.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            {
+                return BadRequest("Invalid email confirmation request.");
+            }
+
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }            
+
+            return BadRequest("Email confirmation failed.");
+        }
+
 
         public IActionResult VerifyEmail() => View();
 
@@ -95,6 +118,8 @@ namespace EMIM.Controllers
             ModelState.AddModelError("", "Wrong code.");
             return View(model);
         }
+
+
 
         public IActionResult ChangePassword(string username)
         {

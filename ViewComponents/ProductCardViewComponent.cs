@@ -18,26 +18,42 @@ public class ProductCardViewComponent : ViewComponent
         _userManager = userManager;
     }
 
-    public async Task<IViewComponentResult> InvokeAsync()
+    public async Task<IViewComponentResult> InvokeAsync(
+    List<ProductViewModel> products = null, 
+    int? storeId = null, 
+    string currentUserId = null)
+{
+    if (products == null)
     {
-        var products = await _productService.GetAllProductsAsync();
-        var user = await _userManager.GetUserAsync(HttpContext.User);
-        var roles = user != null ? await _userManager.GetRolesAsync(user) : new List<string>();
-
-        var productVMs = products.Select(p => new ProductViewModel
+        if (storeId.HasValue)
         {
-            Id = p.Id,
-            Name = p.Name,
-            Price = p.Price,
-            ImageUrl = p.ImageUrl
-        }).ToList();
-
-        var model = new ProductCardViewModel
+            products = await _productService.GetProductsByStoreIdAsync(storeId.Value);
+        }
+        else
         {
-            Products = productVMs,
-            Roles = roles.ToList()
-        };
-
-        return View(model);
+            var allProducts = await _productService.GetAllProductsAsync();
+            products = allProducts.Select(p => new ProductViewModel
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                ImageUrl = p.ImageUrl,
+                StoreId = p.StoreId
+            }).ToList();
+        }
     }
+
+    var user = await _userManager.GetUserAsync(HttpContext.User);
+    var roles = user != null ? await _userManager.GetRolesAsync(user) : new List<string>();
+
+    var model = new ProductCardViewModel
+    {
+        Products = products,
+        Roles = roles.ToList(),
+        CurrentUserId = user?.Id,
+        CurrentStoreId = storeId
+    };
+
+    return View(model);
+}
 }

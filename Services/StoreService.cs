@@ -66,6 +66,14 @@ namespace EMIM.Services
             }
             return false;
         }
-    }
+
+        public async Task<Store> GetStoreDetailsAsync(int storeId)
+        {
+            return await emimcontext.Stores
+                .Include(s => s.User)
+                .FirstOrDefaultAsync(s => s.Id == storeId);
+        }
 
     }
+
+}

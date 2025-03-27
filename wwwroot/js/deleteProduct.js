@@ -14,17 +14,39 @@ function closeModal() {
 async function deleteConfirmed() {
     if (deleteProductId) {
         try {
-            const response = await fetch(`/Product/DeleteProduct/${deleteProductId}`, { method: "DELETE" });
+            const response = await fetch(`/Product/DeleteProduct/${deleteProductId}`, { 
+                method: "DELETE",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await response.json();
 
             if (response.ok) {
-                location.reload(); // Recarga la página al eliminar
+                // Eliminar el producto de la vista sin recargar
+                const productCard = document.querySelector(`.product-card[data-product-id="${deleteProductId}"]`);
+                if (productCard) {
+                    productCard.remove();
+                }
+                closeModal();
             } else {
-                alert("Error al eliminar el producto.");
+                // Mostrar mensaje de error más detallado
+                alert(`Error: ${data.message}\nDetalles: ${data.details || 'Sin detalles adicionales'}`);
             }
         } catch (error) {
             console.error("Error:", error);
             alert("Hubo un problema al eliminar el producto.");
         }
     }
-    closeModal();
+}
+
+// Función opcional para actualizar el contador de productos
+function updateProductCount() {
+    const productCountElement = document.getElementById('product-count');
+    if (productCountElement) {
+        let currentCount = parseInt(productCountElement.textContent);
+        productCountElement.textContent = currentCount - 1;
+    }
 }

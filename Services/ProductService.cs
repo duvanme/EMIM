@@ -38,7 +38,7 @@ namespace EMIM.Services
                 CategoryId = product.CategoryId,
                 StoreId = product.StoreId,
                 ImageUrl = product.ImageUrl,
-                StoreName = product.Store?.Name ?? "Tienda Desconocida" // 🔹 Agregado
+                StoreName = product.Store?.Name ?? "Tienda Desconocida"
 
             };
         }
@@ -60,14 +60,62 @@ namespace EMIM.Services
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> DeleteProductAsync(int id)
+        public async Task<bool> DeleteProductAsync(int productId)
+{
+    using (var transaction = await _context.Database.BeginTransactionAsync())
+    {
+        try 
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null) return false;
+            // Primero, buscar el producto
+            var product = await _context.Products
+                .FirstOrDefaultAsync(p => p.Id == productId);
+            
+            if (product == null)
+            {
+                Console.WriteLine($"Producto con ID {productId} no encontrado");
+                return false;
+            }
 
+            // Eliminar primero las preguntas asociadas al producto
+            var relatedQuestions = await _context.Questions
+                .Where(q => q.IdProducto == productId)
+                .ToListAsync();
+            
+            if (relatedQuestions.Any())
+            {
+                _context.Questions.RemoveRange(relatedQuestions);
+                await _context.SaveChangesAsync();
+            }
+
+            // Ahora eliminar el producto
             _context.Products.Remove(product);
-            return await _context.SaveChangesAsync() > 0;
+            await _context.SaveChangesAsync();
+            
+            // Confirmar la transacción
+            await transaction.CommitAsync();
+            
+            return true;
         }
+        catch (Exception ex)
+        {
+            // Revertir la transacción en caso de error
+            await transaction.RollbackAsync();
+
+            // Log detallado del error
+            Console.WriteLine($"Error al eliminar producto: {ex.Message}");
+            Console.WriteLine($"Traza de la pila: {ex.StackTrace}");
+
+            // Si es un error de base de datos, imprimir detalles del error interno
+            if (ex.InnerException != null)
+            {
+                Console.WriteLine($"Error interno: {ex.InnerException.Message}");
+            }
+
+            return false;
+        }
+    }
+}
+    
 
         public async Task<bool> UpdateProductAsync(ProductViewModel productVM)
         {
@@ -114,6 +162,24 @@ namespace EMIM.Services
         {
             var product = await _context.Products.FindAsync(productId);
             return product != null && product.StoreId == storeId;
+        }
+
+        public async Task<List<ProductViewModel>> GetProductsByStoreIdAsync(int storeId)
+        {
+            return await _context.Products
+                .Where(p => p.StoreId == storeId)
+                .Select(p => new ProductViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    Quantity = p.Quantity,
+                    ImageUrl = p.ImageUrl,
+                    StoreId = p.StoreId,
+                    StoreName = p.Store.Name
+                })
+                .ToListAsync();
         }
     }
 }

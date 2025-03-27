@@ -36,6 +36,14 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 
+//Agrega soporte para sesiones
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(10); // Duración de la sesión
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 // Servicio para acceder al contexto HTTP
 builder.Services.AddHttpContextAccessor();
@@ -71,6 +79,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+app.UseSession(); //Activa las sesiones antes de usar HttpContext.Session
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();

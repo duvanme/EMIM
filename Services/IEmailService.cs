@@ -1,5 +1,7 @@
-namespace EMIM.Services{
-    public interface IEmailService{
-        Task<bool> SendEmailAsync(string toEmail, string subject, string message);
+namespace EMIM.Services
+{
+    public interface IEmailService
+    {
+      Task SendEmailAsync(string email, string subject, string message);
     }
 }

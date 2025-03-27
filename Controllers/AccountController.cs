@@ -12,14 +12,14 @@ namespace EMIM.Controllers
     
         private readonly IAccountService accountService;
         private readonly UserManager<User> userManager;
-        private readonly IEmailService _emailService;
+        private readonly IEmailService emailService;
         
 
         public AccountController(IAccountService accountService, UserManager<User> userManager, IEmailService _emailService)
         {
             this.accountService = accountService;
             this.userManager = userManager;
-            this._emailService = _emailService;
+            this.emailService = _emailService;
 
         }
 

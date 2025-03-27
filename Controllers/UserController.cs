@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using EMIM.Models;
-using EMIM.ViewModels;
+using EMIM.ViewModel;
 using EMIM.Services;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
@@ -51,6 +51,7 @@ namespace EMIM.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
                 Roles = roles.ToList(),
                 CreatedAt = user.CreatedAt
             };

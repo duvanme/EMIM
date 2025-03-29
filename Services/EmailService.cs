@@ -15,8 +15,7 @@ namespace EMIM.Services
             _configuration = configuration;
         }
 
-
-         
+       
         public async Task<bool> SendEmailAsync(string toEmail, string subject, string message)
         {
             try

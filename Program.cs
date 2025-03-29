@@ -35,6 +35,9 @@ builder.Services.AddScoped<IStoreService, StoreService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 
+
+builder.Services.AddHttpContextAccessor();
+
 // Servicio para acceder al contexto HTTP
 builder.Services.AddHttpContextAccessor();
 

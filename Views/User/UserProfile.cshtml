@@ -1,4 +1,5 @@
-@model User
+@using EMIM.ViewModel
+@model UserViewModel
 <main>
       @await Component.InvokeAsync("BackButton")
 
@@ -7,7 +8,7 @@
         <div class="bg-white rounded-lg shadow-lg flex flex-col md:flex-row items-center justify-center w-4/5 p-6">
             <div class="flex flex-row md:flex-col justify-center items-center mb-8 w-full md:w-1/2">
                 <div class="relative">
-                    <img id="profile-image" src="img/user.jpeg" alt="User"
+                    <img id="profile-image" src="~/@Model.UserProfilePicture" alt="User"
                         class="w-[80%] h-[70%] rounded-full object-cover mb-4">
                     <input type="file" id="file-input" class="hidden" accept="image/*">
                 </div>
@@ -30,7 +31,7 @@
                     <h5>Número de contacto</h5>
                     <p class="mb-2 text-gray-500 phone">@Model.PhoneNumber</p>
                     <h5>Dirección</h5>
-                    <p class="mb-2 text-gray-500 address">NULL</p>
+                    <p class="mb-2 text-gray-500 address">@Model.Address</p>
                 </div>
             </div>
         </div>

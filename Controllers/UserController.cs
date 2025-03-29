@@ -7,6 +7,7 @@ using EMIM.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using EMIM.ViewModel;
 
 
 namespace EMIM.Controllers
@@ -17,12 +18,24 @@ namespace EMIM.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IAccountService _accountService;
+        private readonly IUserService _userService;
+        private readonly IFileService _fileService;
+        private readonly IWebHostEnvironment _environment;
 
-        public UserController(UserManager<User> userManager, SignInManager<User> signInManager, IAccountService accountService)
+        public UserController(
+            UserManager<User> userManager, 
+            SignInManager<User> signInManager, 
+            IAccountService accountService, 
+            IUserService userService, 
+            IFileService fileService,
+            IWebHostEnvironment environment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _accountService = accountService;
+            _userService = userService;
+            _fileService = fileService;
+            _environment = environment;
         }
 
         [HttpGet]
@@ -43,8 +56,12 @@ namespace EMIM.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
+                Address = user.Address,
+                PhoneNumber = user.PhoneNumber,
                 Roles = roles.ToList(),
-                CreatedAt = user.CreatedAt
+                CreatedAt = user.CreatedAt,
+                UserProfilePicture = user.UserProfilePicture
+
             };
 
             return View(userViewModel);
@@ -52,7 +69,87 @@ namespace EMIM.Controllers
 
         public IActionResult UserProfile() => View();
         [Authorize]
-        public IActionResult EditProfile() => View();
+        public async Task<IActionResult> EditProfile() {
+
+            var userId = _userManager.GetUserId(User); // Get the logged-in user ID
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+
+            var model = new EditUserProfileViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Address = user.Address,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                DateOfBirth = user.DateOfBirth
+            };
+
+            return View(model);
+
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> EditUserProfile(EditUserProfileViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("EditProfile", model); // Ensure it returns the correct view on validation errors
+            }
+
+            var userId = _userManager.GetUserId(User);
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (model.UserProfilePicture != null && model.UserProfilePicture.Length > 0)
+            {
+                // Delete old picture if exists
+                if (!string.IsNullOrEmpty(user.UserProfilePicture))
+                {
+                    _fileService.DeleteFile(user.UserProfilePicture);
+                }
+
+                // Save new picture
+                var folderPath = "uploads/";
+                var filePath = await _fileService.SaveFileAsync(model.UserProfilePicture, folderPath);
+
+                if (filePath != null)
+                {
+                    user.UserProfilePicture = filePath;
+                }
+            }
+
+            // Update user properties
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Address = model.Address;
+            user.Email = model.Email;
+            user.PhoneNumber = model.PhoneNumber;
+            user.DateOfBirth = (DateTime)model.DateOfBirth;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("UserProfile", new { id = user.Id });
+                // Redirect to UserProfile after successful update
+            }
+
+            ModelState.AddModelError("", "Failed to update profile.");
+            return View("EditProfile", model); // Explicitly reference the correct view on failure
+        }
+
+
         public IActionResult UsuariosBloqueados() => View();
 
     }

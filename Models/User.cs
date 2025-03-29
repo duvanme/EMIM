@@ -20,5 +20,6 @@ public class User : IdentityUser
 
     public string? UserProfilePicture { get; set; }
     public ICollection<Store> Stores { get; set; } = new List<Store>();
+    public override bool EmailConfirmed { get; set; } = false;
 
 }

@@ -90,7 +90,7 @@ namespace EMIM.Controllers
             var code = new Random().Next(100000, 999999).ToString();
 
             // Enviar código por correo
-            await emailService.SendEmailAsync(model.Email, "Verification code.", $"Your code is: {code}");
+            await _emailService.SendEmailAsync(model.Email, "Verification code.", $"Your code is: {code}");
 
             // Guardar el código en la sesión o base de datos para verificar después
             HttpContext.Session.SetString("VerificationCode", code);

@@ -156,10 +156,6 @@ namespace EMIM.Controllers
             return View("EditProfile", model); // Explicitly reference the correct view on failure
         }
 
-
-
-        public IActionResult EditProfile() => View();
-
         [Authorize]
         public IActionResult UsuariosBloqueados() => View();
     }

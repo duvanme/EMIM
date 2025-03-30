@@ -7,6 +7,7 @@ namespace EMIM.Controllers
 {
     public class GeneralController : Controller
     {
+
         public IActionResult Carge()
         {
             return RedirectToAction("Login", "Account");
@@ -23,6 +24,7 @@ namespace EMIM.Controllers
             }
             return View();
         }
+
         public IActionResult Reviews() => View();
         public IActionResult Help() => View();
     }

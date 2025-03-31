@@ -1,7 +1,8 @@
 ﻿using EMIM.Services;
-using EMIM.ViewModels;
+using EMIM.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace EMIM.ViewComponents
 {
@@ -16,8 +17,8 @@ namespace EMIM.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var products = await _productService.GetAllProductsAsync();
-            var productVMs = products.Select(p => new ProductViewModel
+            var products = await _productService.GetHighlightedProductsAsync();
+            var productVMs = products.Select(p => new HighlightedProductViewModel
             {
                 Id = p.Id,
                 Name = p.Name,
@@ -25,7 +26,7 @@ namespace EMIM.ViewComponents
                 ImageUrl = p.ImageUrl
             }).ToList();
 
-            ViewData["TotalSlides"] = products.Count;
+            ViewData["TotalSlides"] = productVMs.Count;
 
             return View(productVMs);
         }

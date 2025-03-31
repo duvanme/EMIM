@@ -1,6 +1,6 @@
 using EMIM.Data;
 using EMIM.Models;
-using EMIM.ViewModels;
+using EMIM.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace EMIM.Services
@@ -37,8 +37,26 @@ namespace EMIM.Services
                 Quantity = product.Quantity,
                 CategoryId = product.CategoryId,
                 StoreId = product.StoreId,
-                ImageUrl = product.ImageUrl
+                ImageUrl = product.ImageUrl,
+                StoreName = product.Store?.Name ?? "Tienda Desconocida"
+
             };
+        }
+
+        public async Task<List<ProductViewModel>> GetProductsByCategoryAsync(int categoryId)
+        {
+            return await _context.Products
+                .Where(p => p.CategoryId == categoryId)
+                .Select(p => new ProductViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    ImageUrl = p.ImageUrl,
+                    StoreId = p.StoreId,
+                    CategoryId = p.CategoryId
+                })
+                .ToListAsync();
         }
 
         public async Task<bool> CreateProductAsync(ProductViewModel productVM)
@@ -58,14 +76,62 @@ namespace EMIM.Services
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> DeleteProductAsync(int id)
+        public async Task<bool> DeleteProductAsync(int productId)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null) return false;
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    // Primero, buscar el producto
+                    var product = await _context.Products
+                        .FirstOrDefaultAsync(p => p.Id == productId);
 
-            _context.Products.Remove(product);
-            return await _context.SaveChangesAsync() > 0;
+                    if (product == null)
+                    {
+                        Console.WriteLine($"Producto con ID {productId} no encontrado");
+                        return false;
+                    }
+
+                    // Eliminar primero las preguntas asociadas al producto
+                    var relatedQuestions = await _context.Questions
+                        .Where(q => q.IdProducto == productId)
+                        .ToListAsync();
+
+                    if (relatedQuestions.Any())
+                    {
+                        _context.Questions.RemoveRange(relatedQuestions);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    // Ahora eliminar el producto
+                    _context.Products.Remove(product);
+                    await _context.SaveChangesAsync();
+
+                    // Confirmar la transacción
+                    await transaction.CommitAsync();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    // Revertir la transacción en caso de error
+                    await transaction.RollbackAsync();
+
+                    // Log detallado del error
+                    Console.WriteLine($"Error al eliminar producto: {ex.Message}");
+                    Console.WriteLine($"Traza de la pila: {ex.StackTrace}");
+
+                    // Si es un error de base de datos, imprimir detalles del error interno
+                    if (ex.InnerException != null)
+                    {
+                        Console.WriteLine($"Error interno: {ex.InnerException.Message}");
+                    }
+
+                    return false;
+                }
+            }
         }
+
 
         public async Task<bool> UpdateProductAsync(ProductViewModel productVM)
         {
@@ -88,6 +154,29 @@ namespace EMIM.Services
             return await _context.SaveChangesAsync() > 0;
         }
 
+
+        public async Task<IEnumerable<HighlightedProductViewModel>> GetHighlightedProductsAsync()
+        {
+
+            return await _context.Products
+           .Where(p => p.IsHighlighted)
+           .Take(10)
+           .Select(p => new HighlightedProductViewModel
+           {
+               Id = p.Id,
+               Name = p.Name,
+               Description = p.Description,
+               Price = p.Price,
+               Quantity = p.Quantity,
+               CategoryId = p.CategoryId,
+               StoreId = p.StoreId,
+               ImageUrl = p.ImageUrl,
+               StoreName = p.Store != null ? p.Store.Name : string.Empty
+           })
+           .ToListAsync();
+        }
+
+
         public async Task<bool> StoreExistsAsync(int storeId)
         {
             return await _context.Stores.AnyAsync(s => s.Id == storeId);
@@ -106,6 +195,30 @@ namespace EMIM.Services
         public async Task<List<Store>> GetStoresAsync()
         {
             return await _context.Stores.ToListAsync();
+        }
+
+        public async Task<bool> IsProductOwnedByStoreAsync(int productId, int storeId)
+        {
+            var product = await _context.Products.FindAsync(productId);
+            return product != null && product.StoreId == storeId;
+        }
+
+        public async Task<List<ProductViewModel>> GetProductsByStoreIdAsync(int storeId)
+        {
+            return await _context.Products
+                .Where(p => p.StoreId == storeId)
+                .Select(p => new ProductViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    Quantity = p.Quantity,
+                    ImageUrl = p.ImageUrl,
+                    StoreId = p.StoreId,
+                    StoreName = p.Store.Name
+                })
+                .ToListAsync();
         }
     }
 }

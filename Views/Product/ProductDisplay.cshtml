@@ -1,5 +1,7 @@
 @using EMIM.ViewModel
 @using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
 @model ProductViewModel
 
 <main>
@@ -111,4 +113,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </main>
 
-<script src="~/js/productDisplay.js" defer></script>
+@if (User.Identity.IsAuthenticated)
+{
+    <script src="~/js/productDisplay.js" defer></script>
+}

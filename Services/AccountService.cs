@@ -83,7 +83,7 @@ namespace EMIM.Services
         public async Task LogoutAsync()
         {
             // Obtener el contexto HTTP actual
-            var httpContext = _httpContextAccessor.HttpContext;
+            var httpContext = httpContextAccessor.HttpContext;
 
             if (httpContext != null)
             {

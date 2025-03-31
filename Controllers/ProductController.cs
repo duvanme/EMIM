@@ -155,6 +155,14 @@ namespace EMIM.Controllers
 
         public IActionResult MyProducts() => View();
 
+
+        public async Task<IActionResult> FilterByCategory(int categoryId)
+        {
+            var products = await _productService.GetProductsByCategoryAsync(categoryId);
+            return ViewComponent("ProductCard", new { categoryId = categoryId, products = products });
+        }
+
+
         [HttpDelete]
         public async Task<IActionResult> DeleteProduct(int id)
         {

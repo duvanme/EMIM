@@ -19,13 +19,16 @@ public class ProductCardViewComponent : ViewComponent
     }
 
     public async Task<IViewComponentResult> InvokeAsync(
-    List<ProductViewModel> products = null, 
-    int? storeId = null, 
-    string currentUserId = null)
-{
-    if (products == null)
+        int? categoryId = null,
+        int? storeId = null)
     {
-        if (storeId.HasValue)
+        List<ProductViewModel> products;
+
+        if (categoryId.HasValue)
+        {
+            products = await _productService.GetProductsByCategoryAsync(categoryId.Value);
+        }
+        else if (storeId.HasValue)
         {
             products = await _productService.GetProductsByStoreIdAsync(storeId.Value);
         }
@@ -36,24 +39,28 @@ public class ProductCardViewComponent : ViewComponent
             {
                 Id = p.Id,
                 Name = p.Name,
+                Description = p.Description,
                 Price = p.Price,
-                ImageUrl = p.ImageUrl,
-                StoreId = p.StoreId
+                Quantity = p.Quantity,
+                CategoryId = p.CategoryId,
+                StoreId = p.StoreId,
+                ImageUrl = p.ImageUrl
+                //StoreName = p.StoreId
             }).ToList();
         }
+
+        var user = await _userManager.GetUserAsync(HttpContext.User);
+        var roles = user != null ? await _userManager.GetRolesAsync(user) : new List<string>();
+
+        var model = new ProductCardViewModel
+        {
+            Products = products,
+            Roles = roles.ToList(),
+            CurrentUserId = user?.Id,
+            CurrentStoreId = storeId
+        };
+
+        return View(model);
     }
-
-    var user = await _userManager.GetUserAsync(HttpContext.User);
-    var roles = user != null ? await _userManager.GetRolesAsync(user) : new List<string>();
-
-    var model = new ProductCardViewModel
-    {
-        Products = products,
-        Roles = roles.ToList(),
-        CurrentUserId = user?.Id,
-        CurrentStoreId = storeId
-    };
-
-    return View(model);
 }
-}
+

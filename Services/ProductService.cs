@@ -43,6 +43,22 @@ namespace EMIM.Services
             };
         }
 
+        public async Task<List<ProductViewModel>> GetProductsByCategoryAsync(int categoryId)
+        {
+            return await _context.Products
+                .Where(p => p.CategoryId == categoryId)
+                .Select(p => new ProductViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    ImageUrl = p.ImageUrl,
+                    StoreId = p.StoreId,
+                    CategoryId = p.CategoryId
+                })
+                .ToListAsync();
+        }
+
         public async Task<bool> CreateProductAsync(ProductViewModel productVM)
         {
             var product = new Product

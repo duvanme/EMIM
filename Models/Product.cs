@@ -34,6 +34,10 @@ namespace EMIM.Models
         // 🔹 URL de la imagen guardada en el servidor
         public string? ImageUrl { get; set; }
 
+        // productos destacados del carousel
+
+        public bool IsHighlighted { get; set; } = false;
+
         // 🔹 Propiedad temporal para recibir la imagen
         [NotMapped]
         public IFormFile? ImageFile { get; set; }

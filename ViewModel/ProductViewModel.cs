@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace EMIM.ViewModels
+namespace EMIM.ViewModel
 {
     public class ProductViewModel
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace EMIM.ViewModels
+namespace EMIM.ViewModel
 {
     public class ProductCardViewModel
     {
@@ -8,5 +8,6 @@ namespace EMIM.ViewModels
         public List<string> Roles { get; set; }
         public string CurrentUserId { get; set; }
         public int? CurrentStoreId { get; set; }
+
     }
 }

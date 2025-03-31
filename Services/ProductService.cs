@@ -1,6 +1,6 @@
 using EMIM.Data;
 using EMIM.Models;
-using EMIM.ViewModels;
+using EMIM.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace EMIM.Services
@@ -61,61 +61,61 @@ namespace EMIM.Services
         }
 
         public async Task<bool> DeleteProductAsync(int productId)
-{
-    using (var transaction = await _context.Database.BeginTransactionAsync())
-    {
-        try 
         {
-            // Primero, buscar el producto
-            var product = await _context.Products
-                .FirstOrDefaultAsync(p => p.Id == productId);
-            
-            if (product == null)
+            using (var transaction = await _context.Database.BeginTransactionAsync())
             {
-                Console.WriteLine($"Producto con ID {productId} no encontrado");
-                return false;
-            }
+                try
+                {
+                    // Primero, buscar el producto
+                    var product = await _context.Products
+                        .FirstOrDefaultAsync(p => p.Id == productId);
 
-            // Eliminar primero las preguntas asociadas al producto
-            var relatedQuestions = await _context.Questions
-                .Where(q => q.IdProducto == productId)
-                .ToListAsync();
-            
-            if (relatedQuestions.Any())
-            {
-                _context.Questions.RemoveRange(relatedQuestions);
-                await _context.SaveChangesAsync();
-            }
+                    if (product == null)
+                    {
+                        Console.WriteLine($"Producto con ID {productId} no encontrado");
+                        return false;
+                    }
 
-            // Ahora eliminar el producto
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
-            
-            // Confirmar la transacción
-            await transaction.CommitAsync();
-            
-            return true;
+                    // Eliminar primero las preguntas asociadas al producto
+                    var relatedQuestions = await _context.Questions
+                        .Where(q => q.IdProducto == productId)
+                        .ToListAsync();
+
+                    if (relatedQuestions.Any())
+                    {
+                        _context.Questions.RemoveRange(relatedQuestions);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    // Ahora eliminar el producto
+                    _context.Products.Remove(product);
+                    await _context.SaveChangesAsync();
+
+                    // Confirmar la transacción
+                    await transaction.CommitAsync();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    // Revertir la transacción en caso de error
+                    await transaction.RollbackAsync();
+
+                    // Log detallado del error
+                    Console.WriteLine($"Error al eliminar producto: {ex.Message}");
+                    Console.WriteLine($"Traza de la pila: {ex.StackTrace}");
+
+                    // Si es un error de base de datos, imprimir detalles del error interno
+                    if (ex.InnerException != null)
+                    {
+                        Console.WriteLine($"Error interno: {ex.InnerException.Message}");
+                    }
+
+                    return false;
+                }
+            }
         }
-        catch (Exception ex)
-        {
-            // Revertir la transacción en caso de error
-            await transaction.RollbackAsync();
 
-            // Log detallado del error
-            Console.WriteLine($"Error al eliminar producto: {ex.Message}");
-            Console.WriteLine($"Traza de la pila: {ex.StackTrace}");
-
-            // Si es un error de base de datos, imprimir detalles del error interno
-            if (ex.InnerException != null)
-            {
-                Console.WriteLine($"Error interno: {ex.InnerException.Message}");
-            }
-
-            return false;
-        }
-    }
-}
-    
 
         public async Task<bool> UpdateProductAsync(ProductViewModel productVM)
         {
@@ -137,6 +137,29 @@ namespace EMIM.Services
             _context.Products.Update(product);
             return await _context.SaveChangesAsync() > 0;
         }
+
+
+        public async Task<IEnumerable<HighlightedProductViewModel>> GetHighlightedProductsAsync()
+        {
+
+            return await _context.Products
+           .Where(p => p.IsHighlighted)
+           .Take(10)
+           .Select(p => new HighlightedProductViewModel
+           {
+               Id = p.Id,
+               Name = p.Name,
+               Description = p.Description,
+               Price = p.Price,
+               Quantity = p.Quantity,
+               CategoryId = p.CategoryId,
+               StoreId = p.StoreId,
+               ImageUrl = p.ImageUrl,
+               StoreName = p.Store != null ? p.Store.Name : string.Empty
+           })
+           .ToListAsync();
+        }
+
 
         public async Task<bool> StoreExistsAsync(int storeId)
         {

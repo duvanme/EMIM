@@ -1,6 +1,6 @@
 using EMIM.Models;
 using EMIM.Services;
-using EMIM.ViewModels;
+using EMIM.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

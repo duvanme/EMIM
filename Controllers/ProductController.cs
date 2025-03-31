@@ -1,5 +1,5 @@
 ﻿using EMIM.Services;
-using EMIM.ViewModels;
+using EMIM.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -35,6 +35,14 @@ namespace EMIM.Controllers
             ViewBag.AnsweredQuestions = answeredQuestions;
 
             return View(product);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> HighlightedProductDisplay()
+        {
+            var highlightedProducts = await _productService.GetHighlightedProductsAsync();
+            return ViewComponent("HighlightedProducts", highlightedProducts);
+
         }
 
 

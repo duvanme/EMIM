@@ -1,5 +1,5 @@
 using EMIM.Models;
-using EMIM.ViewModels;
+using EMIM.ViewModel;
 
 namespace EMIM.Services
 {
@@ -16,5 +16,6 @@ namespace EMIM.Services
         Task<List<Store>> GetStoresAsync();
         Task<bool> IsProductOwnedByStoreAsync(int productId, int storeId);
         Task<List<ProductViewModel>> GetProductsByStoreIdAsync(int storeId);
+        Task<IEnumerable<HighlightedProductViewModel>> GetHighlightedProductsAsync();
     }
 }

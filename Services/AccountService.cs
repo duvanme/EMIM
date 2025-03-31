@@ -10,13 +10,21 @@ namespace EMIM.Services
         private readonly UserManager<User> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IEmailService emailService;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public AccountService(SignInManager<User> signInManager, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IEmailService emailService)
+        public AccountService(
+        SignInManager<User> signInManager, 
+        UserManager<User> userManager, 
+        RoleManager<IdentityRole> roleManager, 
+        IEmailService emailService, 
+        IHttpContextAccessor httpContextAccessor)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.httpContextAccessor = httpContextAccessor;
             this.emailService = emailService;
+
         }
 
         public async Task<SignInResult> LoginAsync(LoginViewModel model)
@@ -74,6 +82,20 @@ namespace EMIM.Services
 
         public async Task LogoutAsync()
         {
+            // Obtener el contexto HTTP actual
+            var httpContext = _httpContextAccessor.HttpContext;
+
+            if (httpContext != null)
+            {
+                // Añadir una cookie para indicar la limpieza del carrito
+                httpContext.Response.Cookies.Append("ClearCart", "true", new CookieOptions
+                {
+                    HttpOnly = false, // Debe ser false para que JavaScript pueda leerlo
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddMinutes(1) // Expira en 1 minuto
+                });
+            }
+
             await signInManager.SignOutAsync();
         }
 

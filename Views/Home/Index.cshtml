@@ -10,7 +10,12 @@
         <div class="w-[95%] h-2/3 bg-[#d0e2e4] rounded-md flex flex-col items-center">
             <h1 class="text-2xl font-bold" style="margin:10px 0">Categorías</h1>
             <ul class="space-y-2" style="width:90%;">
-                @await Component.InvokeAsync("CategoryOption")
+                <li class="bg-[#A9C8CF] rounded-md w-[80%] my-[5px]">
+                    <button class="category-filter" data-category-id="0" data-category-name="todos">
+                        Todos
+                    </button>
+                </li>
+                    @await Component.InvokeAsync("CategoryOption")
             </ul>
         </div>
     </aside>
@@ -50,9 +55,13 @@
         </div>
 
 
-        <h1 class="text-2xl font-bold" style="margin-left: 15px">Todos los productos <hr /></h1>
+        <h1 id="category-title" class="text-2xl font-bold" style="margin-left: 15px">
+            Todos los productos
+        </h1>
 
-        <div class="products-container">
+
+
+        <div class="products-container" id="products-container">
             @await Component.InvokeAsync("ProductCard")
         </div>
 
@@ -66,4 +75,5 @@
         </style>
     </div>
 </div>
+
 

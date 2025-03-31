@@ -17,5 +17,6 @@ namespace EMIM.Services
         Task<bool> IsProductOwnedByStoreAsync(int productId, int storeId);
         Task<List<ProductViewModel>> GetProductsByStoreIdAsync(int storeId);
         Task<IEnumerable<HighlightedProductViewModel>> GetHighlightedProductsAsync();
+        Task<List<ProductViewModel>> GetProductsByCategoryAsync(int categoryId);
     }
 }

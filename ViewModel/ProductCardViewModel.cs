@@ -9,5 +9,7 @@ namespace EMIM.ViewModel
         public string CurrentUserId { get; set; }
         public int? CurrentStoreId { get; set; }
 
+        public int? CurrentCategoryId { get; set; }
+
     }
 }

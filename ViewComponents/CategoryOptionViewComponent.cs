@@ -20,6 +20,7 @@ namespace EMIM.ViewComponents
             var categoriesVMs = categories.Select(p => new CategoryViewModel
             {
                 Name = p.Name,
+                Id = p.Id
             }).ToList();
 
             return View(categoriesVMs);

@@ -26,13 +26,11 @@ namespace EMIM.Services
             if (user == null) return null;
 
 
-            //
-
-
             var store = new Store
             {
                 Name = model.Name,
                 Description = model.Description,
+                StoreStatus = "pending",
                 UserId = userId,
                 StoreProfilePicture = filePath
             };
@@ -40,10 +38,29 @@ namespace EMIM.Services
             emimcontext.Stores.Add(store);
             await emimcontext.SaveChangesAsync();
 
-            // Assign the vendor role
-            await AssignVendorRoleAsync(user);
-
             return store;
+        }
+
+        public async Task<Store?> AcceptCreateStore(Store model)
+        {
+            if (model != null)
+            {
+                model.StoreStatus = "enabled";//Cambia estado de la tienda a habilitada.
+
+                emimcontext.SaveChanges();
+            }
+            return model;
+        }
+
+        public async Task<Store?> DenyCreateStore(Store model)
+        {
+            if (model != null)
+            {
+                model.StoreStatus = "denied";//Cambia estado de la tienda a habilitada.
+
+                emimcontext.SaveChanges();
+            }
+            return model;
         }
 
         public async Task<bool> AssignVendorRoleAsync(User user)

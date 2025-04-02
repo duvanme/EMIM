@@ -1,5 +1,7 @@
-﻿using EMIM.Services;
+﻿using EMIM.Models;
+using EMIM.Services;
 using EMIM.ViewModel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -9,13 +11,16 @@ namespace EMIM.Controllers
     {
         private readonly IProductService _productService;
         private readonly IQuestionService _questionService; // Añade esto
+        private readonly IStoreService _storeService;
+        private readonly UserManager<User> _userManager;
 
         public ProductController(
-            IProductService productService,
-            IQuestionService questionService) // Añade este parámetro
+            IProductService productService, IQuestionService questionService, IStoreService storeService, UserManager<User> userManager) // Añade este parámetro
         {
             _productService = productService;
             _questionService = questionService; // Añade esta línea
+            _storeService = storeService;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> ProductosBloqueados()
@@ -46,12 +51,27 @@ namespace EMIM.Controllers
         }
 
 
-        public IActionResult NewProduct()
+        public async Task<IActionResult> NewProduct()
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var storeId = await _storeService.GetStoreIdForVendorAsync(user.Id);
+
             ViewBag.Categories = _productService.GetCategories();
             ViewBag.Stores = _productService.GetStores();
-            return View(new ProductViewModel());
+
+            var model = new ProductViewModel
+            {
+                StoreId = storeId // Asignar el ID de la tienda automáticamente
+            };
+
+            return View(model);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> CreateProduct(ProductViewModel productVM)

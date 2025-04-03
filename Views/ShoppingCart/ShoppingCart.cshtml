@@ -1,3 +1,6 @@
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
 <main class="w-full min-h-screen flex flex-col items-center p-4 bg-gray-100">
     @await Component.InvokeAsync("BackButton")
 
@@ -48,9 +51,12 @@
                     <button id="empty-cart-btn" class="bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:opacity-80 transition">
                         Vaciar carrito
                     </button>
-                    <button id="checkout-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:opacity-80 transition">
-                        Finalizar compra
-                    </button>
+                    <form id="checkout-form" method="POST" action="/Checkout/CreateCheckoutSession">
+                        <input type="hidden" name="cartData" id="cart-data">
+                        <button id="checkout-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:opacity-80 transition">
+                            Finalizar compra
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -71,4 +77,12 @@
     const emptyCartButton = document.getElementById('empty-cart-btn');
     const checkoutButton = document.getElementById('checkout-btn');
 </script>
-<script src="~/js/shoppingCar.js" defer></script>
+
+<script src="~/js/windowEmerge.js" asp-append-version="true"></script>
+
+<!--<script src="~/js/shoppingCar.js" defer></script>-->
+
+<script src="https://js.stripe.com/v3/"></script> <!--Conexión con stripe-->
+<script src="~/js/StripeCheckout.js" asp-append-version="true"></script>
+
+

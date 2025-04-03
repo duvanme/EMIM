@@ -166,10 +166,7 @@
     <script src="~/js/CarouselSlides.js" asp-append-version="true"></script>
     <script src="~/js/swiperClick.js" asp-append-version="true"></script>
     <script src="~/js/SwitchCategory.js" asp-append-version="true"></script>
-    @if (!User.Identity.IsAuthenticated)
-    {
-        <script src="~/js/windowEmerge.js" asp-append-version="true"></script>
-    }
+  
 
     @await RenderSectionAsync("Scripts", required: false)
 

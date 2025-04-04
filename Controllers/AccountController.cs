@@ -9,11 +9,18 @@ namespace EMIM.Controllers
 {
     public class AccountController : Controller
     {
+    
         private readonly IAccountService accountService;
+        private readonly UserManager<User> userManager;
+        private readonly IEmailService _emailService;
+        
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, UserManager<User> userManager, IEmailService _emailService)
         {
             this.accountService = accountService;
+            this.userManager = userManager;
+            this._emailService = _emailService;
+
         }
 
         public IActionResult Login() => View();
@@ -48,6 +55,24 @@ namespace EMIM.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            {
+                return BadRequest("Invalid email confirmation request.");
+            }
+
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }            
+
+            return BadRequest("Email confirmation failed.");
+        }
+
+
         public IActionResult VerifyEmail() => View();
 
         [HttpPost]
@@ -61,9 +86,40 @@ namespace EMIM.Controllers
                 ModelState.AddModelError("", "Something is wrong!");
                 return View(model);
             }
+            // Generar código aleatorio
+            var code = new Random().Next(100000, 999999).ToString();
 
-            return RedirectToAction("ChangePassword", new { username = user.UserName });
+            // Enviar código por correo
+            await _emailService.SendEmailAsync(model.Email, "Verification code.", $"Your code is: {code}");
+
+            // Guardar el código en la sesión o base de datos para verificar después
+            HttpContext.Session.SetString("VerificationCode", code);
+
+            return RedirectToAction("VerifyCode", new { email = model.Email });
         }
+
+        public IActionResult VerifyCode(string email)
+        {
+            return View(new VerifyCodeViewModel { Email = email });
+        }
+
+        [HttpPost]
+        public IActionResult VerifyCode(VerifyCodeViewModel model)
+        {
+            if(!ModelState.IsValid){
+                return View(model);
+            }
+            var storedCode = HttpContext.Session.GetString("VerificationCode");
+            if (model.Code == storedCode)
+            {
+                return RedirectToAction("ChangePassword", new { username = model.Email });
+            }
+
+            ModelState.AddModelError("", "Wrong code.");
+            return View(model);
+        }
+
+
 
         public IActionResult ChangePassword(string username)
         {

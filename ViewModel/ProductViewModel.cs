@@ -1,4 +1,6 @@
-namespace EMIM.ViewModels
+using System.ComponentModel.DataAnnotations;
+
+namespace EMIM.ViewModel
 {
     public class ProductViewModel
     {
@@ -7,11 +9,18 @@ namespace EMIM.ViewModels
         public string Description { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }
-        public int CategoryId { get; set; }
-        public int StoreId { get; set; }
-        public string? ImageUrl { get; set; }
 
-        // Para manejar la carga de imágenes en la Vista
+        [Required(ErrorMessage = "La categoría es obligatoria.")]
+        public int CategoryId { get; set; }
+
+        [Required(ErrorMessage = "La tienda es obligatoria.")]
+        public int StoreId { get; set; }
+
+        public string? ImageUrl { get; set; }
         public IFormFile? ImageFile { get; set; }
+
+        public string? StoreName { get; set; } 
+
     }
+
 }

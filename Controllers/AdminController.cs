@@ -14,11 +14,8 @@ namespace EMIM.Controllers
     private readonly IAdminService _adminService;
     private readonly IStoreService _storeService;
 
-    //Mostrar la vista del perfil administrador 
-    public IActionResult AdminProfile() => View();
-
-
     //Constructor que inyecta el servicio de usuario
+
     public AdminController(IAdminService adminService, IStoreService storeService, EmimContext context)
     {
         _adminService = adminService;
@@ -30,7 +27,6 @@ namespace EMIM.Controllers
     public IActionResult RegisterUser() => View();
 
     //Registrar un nuevo usuario
-    [HttpPost]
     [HttpPost]
     public async Task<IActionResult> RegisterUser(AdminViewModel model)
     {
@@ -166,3 +162,10 @@ namespace EMIM.Controllers
         }
     }
 }
+
+    
+        //Mostrar la vista del perfil administrador 
+        public IActionResult AdminProfile() => View();
+
+}
+

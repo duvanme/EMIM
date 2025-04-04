@@ -1,0 +1,12 @@
+﻿
+.swiper {
+    width: 90%;
+    height: 300px;
+}
+
+.swiper-slide {
+    width: 500px !important;
+    /* Override Swiper's auto width */
+    height: 300px !important;
+}
+

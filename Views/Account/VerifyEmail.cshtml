@@ -7,27 +7,31 @@
 
 }
 
-<main class="w-full h-full flex justify-center items-center">
+@await Component.InvokeAsync("BackButton")
 
+<main class="w-full h-screen flex justify-center items-center ">
+    <div class="max-w-lg w-full bg-white shadow-lg rounded-2xl mb-[100px] p-11">
+        <h1 class="text-2xl font-bold text-center text-gray-700">Verificar Email</h1>
+        <p class="text-center text-gray-500 mb-[50px]">Ingresa tu correo electrónico para cambiar tu contraseña</p>
 
-                    <form class="space-y-4" asp-action="VerifyEmail" method="post">
+        <form class="space-y-4 mt-4" asp-action="VerifyEmail" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-red-500"></div>
 
-                        <div asp-validation-summary="ModelOnly" class="w-auto h-auto"> </div>
+            <div class="flex flex-col">
+                <label class="text-gray-600">Correo Electrónico</label>
+                <input asp-for="Email"
+                    class="w-full h-12 px-4 border rounded-full shadow focus:outline-none focus:ring-2 focus:ring-[#13678A] mt-1"
+                    placeholder="Correo Electrónico" type="email" />
+                <span asp-validation-for="Email" class="text-red-500 text-sm"></span>
+            </div>
 
-                        <div class="flex">
-                            <input asp-for="Email" class="w-[320px] h-[45px] px-4 py-2 border rounded-full shadow focus:outline-none flex focus:ring-2 focus:ring-[#13678A] mt-[5px]" placeholder="Correo Electrónico" type="email" />
-                            <span asp-validation-for="Email"></span>
-                        </div>
-
-                        
-
-                        <div class="flex justify-center">
-                            <input class="w-[150px] h-[40px] bg-[#13678A] text-white py-2 rounded-lg shadow-2xl hover:bg-[#56b6cc]" type="submit" value="VerifyEmail"/>
-                                
-                        </div>
-
-
-                    </form>
+            <div class="flex justify-center">
+                <input
+                    class="w-[150px] h-12 bg-[#56b6cc] text-white text-lg font-semibold rounded-lg shadow-lg hover:bg-[#13678A] transition"
+                    type="submit" value="Verificar" />
+            </div>
+        </form>
+    </div>
 </main>
 
 @section Scripts {

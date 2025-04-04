@@ -1,128 +1,79 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+
 }
-<div class="w-auto h-auto flex">
-<aside class="w-1/4 bg-[#D1E2E5] p-4 rounded-md shadow-md">
-    <h2 class="text-lg font-bold mb-2">Categorías</h2>
-    <ul class="space-y-2">
-        <li class="bg-[#A9C8CF] rounded-md">
-            <button class="w-full text-left flex justify-between items-center">
-                Ropa
-                <i class="fas fa-chevron-down"></i>
-            </button>
-        </li>
-        <li class="bg-[#A9C8CF] rounded-md">
-            <button class="w-full text-left flex justify-between items-center">
-                Tecnologia
-                <i class="fas fa-chevron-down"></i>
-            </button>
-        </li>
-        <li class="bg-[#A9C8CF] rounded-md">
-            <button class="w-full text-left flex justify-between items-center">
-                Juguetes
-                <i class="fas fa-chevron-down"></i>
-            </button>
-        </li>
-        <li class="bg-[#A9C8CF] rounded-md">
-            <button class="w-full text-left flex justify-between items-center">
-                Deportes
-                <i class="fas fa-chevron-down"></i>
-            </button>
-        </li>
-        <li class="bg-[#A9C8CF] rounded-md">
-            <button class="w-full text-left flex justify-between items-center">
-                Maquillaje
-                <i class="fas fa-chevron-down"></i>
-            </button>
-        </li>
-        <li class="bg-[#A9C8CF] rounded-md">
-            <button class="w-full text-left flex justify-between items-center">
-                Hogar
-                <i class="fas fa-chevron-down"></i>
-            </button>
-        </li>
-        <li class="bg-[#A9C8CF] rounded-md">
-            <button class="w-full text-left flex justify-between items-center">
-                Libros
-                <i class="fas fa-chevron-down"></i>
-            </button>
-        </li>
-        <li class="bg-[#A9C8CF] rounded-md">
-            <button class="w-full text-left flex justify-between items-center">
-                Herramientas
-                <i class="fas fa-chevron-down"></i>
-            </button>
-        </li>
-    </ul>
-</aside>
-    
-<div style="display: flex; width: 100%; height:100%; flex-direction: column; gap: 20px;">
-    <div style="margin-bottom: 50px; margin-left: 15px; width: 100%; height:250px; position:relative">
-        <h1 class="text-2xl w-100 font-bold">Destacados <hr /></h1>
 
-        <div style="width: 150px; height:150px; position:absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)">
-            <p class="align-content-center">Galeria</p>
+
+<div class="w-[99%] h-[1200px] bg-[#eef1f3] mt-12 flex">
+    <!--SIDEBAR-->
+    <aside class="hidden w-[15%] h-full md:flex justify-center items-center">
+        <div class="w-[95%] h-2/3 bg-[#d0e2e4] rounded-md flex flex-col items-center">
+            <h1 class="text-2xl font-bold" style="margin:10px 0">Categorías</h1>
+            <ul class="space-y-2" style="width:90%;">
+                <li class="bg-[#A9C8CF] rounded-md w-[80%] my-[5px]">
+                    <button class="category-filter" data-category-id="0" data-category-name="todos">
+                        Todos
+                    </button>
+                </li>
+                    @await Component.InvokeAsync("CategoryOption")
+            </ul>
+        </div>
+    </aside>
+
+    <div class="w-full md:w-[85%] h-full p-4">
+       
+        
+        <h1 class="text-2xl font-bold">Destacados</h1>
+
+        <!-- Carousel Section -->
+        <div class="w-full h-[20%] md:h-[30%] mb-4 flex justify-center items-center">
+
+            <div class="swiper">
+                <!-- Additional required wrapper -->
+                <div class="swiper-wrapper">
+                    <!-- Slides -->
+                    @await Component.InvokeAsync("CarouselCard")
+
+                </div>
+
+                <!-- If we need navigation buttons -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+
+            </div>
+
+
 
         </div>
-    </div>
-    <h1 class="text-2xl font-bold" style="margin-left: 15px">Todos los productos <hr /></h1>
-    <div style="margin-left: 15px; display: flex; flex-wrap: wrap; gap: 10px">
 
-        <div class="bg-white p-4 rounded-md shadow-md w-64 mt-2">
-            <a href="">
-                <img class="w-full h-40 object-cover rounded-md" src="" alt="" />
-            </a>
-            <a href=""><h3 class="mt-2 font-bold">PRODUCTO</h3></a>
-            <p>$2.000.000</p>
-            <p class="text-teal-500 font-bold"></p>
-            <button class="text-xl">
-                <i class="far fa-heart"></i>
-            </button>
+
+        <!-- Filter Section -->
+        <div class="">
+            <p class="w-[100px] h-[40px] bg-[#d0e2e4] rounded-md flex items-center justify-center">
+                Mostrar por:
+            </p>
         </div>
-        <div class="bg-white p-4 rounded-md shadow-md w-64 mt-2">
-            <a href="">
-                <img class="w-full h-40 object-cover rounded-md" src="" alt="" />
-            </a>
-            <a href=""><h3 class="mt-2 font-bold">PRODUCTO</h3></a>
-            <p>$2.000.000</p>
-            <p class="text-teal-500 font-bold"></p>
-            <button class="text-xl">
-                <i class="far fa-heart"></i>
-            </button>
+
+
+        <h1 id="category-title" class="text-2xl font-bold" style="margin-left: 15px">
+            Todos los productos
+        </h1>
+
+
+
+        <div class="products-container" id="products-container">
+            @await Component.InvokeAsync("ProductCard")
         </div>
-        <div class="bg-white p-4 rounded-md shadow-md w-64 mt-2">
-            <a href="">
-                <img class="w-full h-40 object-cover rounded-md" src="" alt="" />
-            </a>
-            <a href=""><h3 class="mt-2 font-bold">PRODUCTO</h3></a>
-            <p>$2.000.000</p>
-            <p class="text-teal-500 font-bold"></p>
-            <button class="text-xl">
-                <i class="far fa-heart"></i>
-            </button>
-        </div>
-        <div class="bg-white p-4 rounded-md shadow-md w-64 mt-2">
-            <a href="">
-                <img class="w-full h-40 object-cover rounded-md" src="" alt="" />
-            </a>
-            <a href=""><h3 class="mt-2 font-bold">PRODUCTO</h3></a>
-            <p>$2.000.000</p>
-            <p class="text-teal-500 font-bold"></p>
-            <button class="text-xl">
-                <i class="far fa-heart"></i>
-            </button>
-        </div>
-        <div class="bg-white p-4 rounded-md shadow-md w-64 mt-2">
-            <a href="">
-                <img class="w-full h-40 object-cover rounded-md" src="" alt="" />
-            </a>
-            <a href=""><h3 class="mt-2 font-bold">PRODUCTO</h3></a>
-            <p>$2.000.000</p>
-            <p class="text-teal-500 font-bold"></p>
-            <button class="text-xl">
-                <i class="far fa-heart"></i>
-            </button>
-        </div>
+
+        <style>
+            .products-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Columnas dinámicas */
+                gap: 10px;
+                margin-left: 15px;
+            }
+        </style>
     </div>
 </div>
-</div>
+
+

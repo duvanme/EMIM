@@ -1,0 +1,15 @@
+﻿@using EMIM.ViewModel
+@model List<CategoryViewModel>
+
+
+@foreach (var category in Model)
+{
+
+
+
+    <li class="bg-[#A9C8CF] rounded-md w-[80%] my-[5px]">
+        <button class="w-full text-left flex justify-between items-center category-filter" data-category-id="@category.Id" data-category-name="@category.Name">
+            @category.Name
+        </button>
+    </li>
+}

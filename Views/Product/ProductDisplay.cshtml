@@ -1,78 +1,38 @@
+@using EMIM.ViewModel
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@model ProductViewModel
+
 <main>
-
-    <section>
-        <!--FLECHA HACIA ATRAS-->
-        <div class="container">
-            <div class="flex justify-start items-center p-4">
-                <a href="javascript:history.back();" class="hover:text-gray-700 flex items-center mb-4 self-start ml-4">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                </a>
-            </div>
-        </div>
-
-    </section>
+    @await Component.InvokeAsync("BackButton")
 
     <section class="container mx-auto p-6">
-        <!-- Contenido principal -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!--Imagenes del producto-->
-            <div class="flex flex-col md:row">
-                <!-- Imagen principal -->
-                <div class="mb-4">
-                    <img id="main-image" src="../images/img.jpg" alt="Producto principal"
-                        class="rounded-lg shadow-lg w-full">
-                </div>
-
-                <!-- Imágenes adicionales -->
-                <div class="flex gap-2">
-                    <img onclick="swapImages(this)" src="../images/img.jpg" alt=" 1"
-                        class="h-24 w-24 rounded-lg shadow cursor-pointer">
-                    <!-- Agrega más miniaturas si es necesario -->
-                    <img onclick="swapImages(this)" src="../images/img.jpg" alt=" 2"
-                        class="h-24 w-24 rounded-lg shadow cursor-pointer">
-                </div>
+            <!-- Imagen del producto -->
+            <div class="flex flex-col">
+                <!-- Solución 3: Añadir atributo data-image -->
+                <img src="@Model.ImageUrl" data-image="@Model.ImageUrl" alt="@Model.Name"
+                    class="rounded-lg shadow-lg w-full">
             </div>
 
             <!-- Información del producto -->
-            <div class="flex flex-col md:row">
-                <h1 class="text-2xl font-bold text-gray-800 mb-2">Conjunto deportivo para mujer</h1>
-                <p class="bg-[#BCF5BC] rounded-lg shadow-lg flex flex-row md:flex-col">Publicado por #perfil hace 3
-                    semanas</p>
+            <div class="flex flex-col">
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">@Model.Name</h1>
+                <h2 class="text-lg text-gray-600 mb-2">Vendido por: @Model.StoreName</h2>
+                <h2 class="text-3xl text-gray-800 font-bold mb-4">@Model.Price.ToString("C")</h2>
 
-                <h2 class="text-3xl text-gray-800 font-bold mb-4">$58.000</h2>
-                <!-- Opciones de compra -->
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <div>
-                        <label for="talla" class="block text-gray-600 mb-1">Talla</label>
-                        <select id="talla" class="w-full border-gray-300 rounded-lg">
-                            <option>Seleccionar</option>
-                            <option>XS</option>
-                            <option>S</option>
-                            <option>M</option>
-                            <option>L</option>
-                            <option>XL</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="color" class="block text-gray-600 mb-1">Color</label>
-                        <select id="color" class="w-full border-gray-300 rounded-lg">
-                            <option>Seleccionar</option>
-                            <option>Negro</option>
-                            <option>Gris</option>
-                            <option>Blanco</option>
-                        </select>
-                    </div>
-                </div>
                 <div class="between flex gap-x-4">
                     <!-- Botón de carrito -->
-                    <button
-                        class="w-full flex items-center justify-center bg-[#13678A] text-white py-3 rounded-lg shadow hover:bg-[#0D4F65]">
+
+                    <button id="add-to-cart-btn"
+
+                            class="w-full flex items-center justify-center bg-[#13678A] text-white py-3 rounded-lg shadow hover:bg-[#0D4F65]">
+
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            class="h-5 w-5 mr-2">
+                             class="h-5 w-5 mr-2">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 3h2l.4 2M7 13h10l3.4-6H6.6M7 13l-1.3 6.4A1 1 0 007.7 21h8.6a1 1 0 001-.9l1.3-6.1M10 21a2 2 0 11-4 0M20 21a2 2 0 11-4 0" />
+                                  d="M3 3h2l.4 2M7 13h10l3.4-6H6.6M7 13l-1.3 6.4A1 1 0 007.7 21h8.6a1 1 0 001-.9l1.3-6.1M10 21a2 2 0 11-4 0M20 21a2 2 0 11-4 0" />
                         </svg>
                         Añadir al carrito
                     </button>
@@ -92,22 +52,17 @@
                 <!-- Descripción -->
                 <div class="mt-6">
                     <h3 class="text-lg font-semibold text-gray-800 mb-2">Descripción</h3>
-                    <p class="text-sm text-gray-600">
-                        Patrón: Liso<br>
-                        Estilo: Deportivo<br>
-                        Material: 75% Poliéster, 30% Rayón<br>
-                        Región de origen: Colombia
-                    </p>
+                    <p class="text-sm text-gray-600">@Model.Description</p>
                 </div>
             </div>
         </div>
 
-        <!-- Sección de calificación -->
-        <div class="rating-section mt-6">
-            <h3 class="text-lg font-semibold mb-4">Califica esta publicación</h3>
+        <!-- Sección de calificación mejorada -->
+        <div class="rating-section mt-10 p-6 bg-white w-full md:w-2/3 mx-auto text-center">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Califica esta publicación</h3>
 
             <!-- Calificación con estrellas -->
-            <div class="stars flex gap-1 mb-4">
+            <div class="stars flex justify-center gap-2 mb-4">
                 <span class="star text-gray-400 cursor-pointer text-3xl" data-value="1">★</span>
                 <span class="star text-gray-400 cursor-pointer text-3xl" data-value="2">★</span>
                 <span class="star text-gray-400 cursor-pointer text-3xl" data-value="3">★</span>
@@ -115,39 +70,50 @@
                 <span class="star text-gray-400 cursor-pointer text-3xl" data-value="5">★</span>
             </div>
 
-            <!-- Input para el comentario -->
-            <textarea id="comment" rows="2" cols="2" class="w-[50%] border rounded-lg p-3 mb-4 "
-                placeholder="Deja tu comentario aquí...">
-                </textarea>
-
-            <!-- Botón para enviar -->
-            <button onclick="submitRating()"
-                class="bg-[#13678A] text-white py-2 px-4 rounded-lg hover:bg-[#0D4F65]">Enviar</button>
-
-            <!-- Mensaje de confirmación -->
-            <div id="rating-message" class="mt-4 text-green-600 font-semibold hidden">
-                <p>¡Gracias por tu calificación!</p>
-            </div>
-        </div>
-
-        <!-- Chat de asistencia -->
-        <div class="fixed bottom-4 right-4">
-            <button id="toggle-chat" class="bg-blue-500 text-white p-2 rounded-full">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M8 10h8M8 14h8m-4 4l4 4-4-4-4 4 4-4zM4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z" />
-                </svg>
-            </button>
-            <div id="chat-container" class="bg-white shadow-md rounded-lg w-72 p-4 hidden">
-                <div id="messages" class="h-64 overflow-y-scroll border border-gray-300 p-2 mb-4 rounded"></div>
-                <div class="flex">
-                    <input type="text" id="message-input" class="flex-1 border border-gray-300 p-2 rounded"
-                        placeholder="Escribe un mensaje...">
-                    <button id="send-button" class="bg-blue-500 text-white p-2 rounded ml-2">Enviar</button>
+            <form asp-controller="Question" asp-action="AskQuestion" method="post" class="mt-6">
+                <input type="hidden" name="ProductId" value="@Model.Id" />
+                <input type="hidden" name="UserId" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">¿Tienes una pregunta sobre este producto?</h3>
+                    <textarea name="QuestionText" class="w-full border rounded-lg p-3" rows="3"
+                        placeholder="Escribe tu pregunta aquí..." required></textarea>
                 </div>
+                <button type="submit" class="bg-[#13678A] text-white py-2 px-4 rounded-lg shadow hover:bg-[#0D4F65]">
+                    Enviar pregunta
+                </button>
+            </form>
+
+            <!-- Después del formulario de preguntas, agrega esta sección -->
+            <div class="mt-8">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Preguntas respondidas sobre este producto</h3>
+
+                @if (ViewBag.AnsweredQuestions != null && ViewBag.AnsweredQuestions.Count > 0)
+                {
+                    <div class="space-y-4">
+                        @foreach (var question in ViewBag.AnsweredQuestions)
+                        {
+                            <div class="bg-white p-4 rounded-lg shadow">
+                                <p class="font-semibold text-gray-700">Pregunta de @question.UserName:</p>
+                                <p class="text-gray-600 mb-3">@question.QuestionText</p>
+                                <div class="border-t pt-3">
+                                    <p class="font-semibold text-gray-700">Respuesta del vendedor:</p>
+                                    <p class="text-gray-600">@question.Answer</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-gray-600">No hay preguntas respondidas para este producto todavía.</p>
+                }
             </div>
-        </div>
+
     </section>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </main>
-<script src="~/js/productDisplay.js"></script>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <script src="~/js/productDisplay.js" defer></script>
+}q

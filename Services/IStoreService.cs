@@ -10,5 +10,8 @@ namespace EMIM.Services
         Task<Store?> AcceptCreateStore(Store model);
         Task<Store?> DenyCreateStore(Store model);
         Task<bool> AssignVendorRoleAsync(User user);
+        // Nuevo método para obtener el StoreId de un vendedor
+        Task<int> GetStoreIdForVendorAsync(string userId);
+        Task<Store> GetStoreDetailsAsync(int storeId);
     }
 }

@@ -1,18 +1,7 @@
-@model EMIM.ViewModels.ProductViewModel
+@model EMIM.ViewModel.ProductViewModel
 
 <main>
-    <section>
-        <!-- FLECHA HACIA ATRÁS -->
-        <div class="container">
-            <div class="flex justify-start items-center p-4">
-                <a href="javascript:history.back();" class="hover:text-gray-700 flex items-center mb-4 self-start ml-4">
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </section>
+      @await Component.InvokeAsync("BackButton")
 
     <section class="flex justify-center w-full py-6">
         <div class="bg-white rounded-lg shadow-lg w-4/5 p-6 mx-auto">
@@ -32,7 +21,7 @@
                 <div class="col-span-2 md:col-span-1 flex flex-col items-center">
                     <label class="block text-left">Imagen del Producto</label>
                     <!-- Campo para subir imagen -->
-                    <input type="file" id="ImageFile" name="ImageFile" accept="image/*"
+                    <input type="file" id="ImageFile" name="ImageFile" accept="image/*" style="display: block !important; visibility: visible !important;"
                         class="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
 
                 </div>
@@ -81,17 +70,15 @@
                 </div>
 
                 <!-- Tienda -->
-                <div class="col-span-2">
+                <div class="col-span-2 hidden">
                     <label for="StoreId" class="block text-left">Tienda</label>
-                    <input type="number" id="StoreId" name="StoreId"
-                        class="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required />
+                    <input type="number" id="StoreId" name="StoreId" class="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500" value="@Model.StoreId" readonly />
                 </div>
 
                 <!-- Botón de enviar -->
                 <div class="col-span-2 flex justify-end">
                     <button type="submit"
-                        class="bg-[#13678A] hover:bg-[#0D4F65] text-white font-bold py-2 px-8 rounded-lg">
+                        class="bg-[#56b6cc] hover:bg-[#13678A] transition text-white font-bold py-2 px-8 rounded-lg">
                         Guardar
                     </button>
                 </div>

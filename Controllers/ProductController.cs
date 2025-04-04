@@ -1,32 +1,77 @@
-﻿using EMIM.Services;
-using EMIM.ViewModels;
+﻿using EMIM.Models;
+using EMIM.Services;
+using EMIM.ViewModel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EMIM.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly ProductService _productService;
+        private readonly IProductService _productService;
+        private readonly IQuestionService _questionService; // Añade esto
+        private readonly IStoreService _storeService;
+        private readonly UserManager<User> _userManager;
 
-        public ProductController(ProductService productService)
+        public ProductController(
+            IProductService productService, IQuestionService questionService, IStoreService storeService, UserManager<User> userManager) // Añade este parámetro
         {
             _productService = productService;
+            _questionService = questionService; // Añade esta línea
+            _storeService = storeService;
+            _userManager = userManager;
         }
 
-        public async Task<IActionResult> ProductDisplay()
+        public async Task<IActionResult> ProductosBloqueados()
         {
             var products = await _productService.GetAllProductsAsync();
             return View(products);
         }
 
-        public IActionResult NewProduct()
+        [HttpGet]
+        public async Task<IActionResult> ProductDisplay(int id)
         {
-            // 🔹 Se cargan las categorías y tiendas en ViewBag antes de renderizar la vista
+            if (id <= 0) return BadRequest("ID inválido");
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null) return NotFound($"No se encontró el producto con ID {id}");
+
+            var answeredQuestions = await _questionService.GetAnsweredQuestionsByProductIdAsync(id);
+            ViewBag.AnsweredQuestions = answeredQuestions;
+
+            return View(product);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> HighlightedProductDisplay()
+        {
+            var highlightedProducts = await _productService.GetHighlightedProductsAsync();
+            return ViewComponent("HighlightedProducts", highlightedProducts);
+
+        }
+
+
+        public async Task<IActionResult> NewProduct()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var storeId = await _storeService.GetStoreIdForVendorAsync(user.Id);
+
             ViewBag.Categories = _productService.GetCategories();
             ViewBag.Stores = _productService.GetStores();
 
-            return View(new ProductViewModel()); // 🔹 Se pasa un ViewModel vacío a la vista
+            var model = new ProductViewModel
+            {
+                StoreId = storeId // Asignar el ID de la tienda automáticamente
+            };
+
+            return View(model);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> CreateProduct(ProductViewModel productVM)
@@ -38,11 +83,10 @@ namespace EMIM.Controllers
                 return View("NewProduct", productVM);
             }
 
-            // Procesar la imagen si se subió
             if (productVM.ImageFile != null)
             {
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-                Directory.CreateDirectory(uploadsFolder); // Asegurar que la carpeta existe
+                Directory.CreateDirectory(uploadsFolder);
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(productVM.ImageFile.FileName);
                 var filePath = Path.Combine(uploadsFolder, fileName);
 
@@ -63,8 +107,110 @@ namespace EMIM.Controllers
                 return View("NewProduct", productVM);
             }
 
-            return RedirectToAction("ProductDisplay");
+            return RedirectToAction("StoreProfile", "Store", new { id = productVM.StoreId });
         }
 
+
+        public async Task<IActionResult> EditProduct(int id)
+        {
+            var productVM = await _productService.GetProductByIdAsync(id);
+            if (productVM == null) return NotFound();
+
+            ViewBag.Categories = _productService.GetCategories();
+            ViewBag.Stores = _productService.GetStores();
+
+            return View(productVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProduct(ProductViewModel productVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Categories = _productService.GetCategories();
+                ViewBag.Stores = new SelectList(await _productService.GetStoresAsync(), "Id", "Name");
+                return View("EditProduct", productVM);
+            }
+
+            bool storeExists = await _productService.StoreExistsAsync(productVM.StoreId);
+            if (!storeExists)
+            {
+                ModelState.AddModelError("StoreId", "La tienda seleccionada no es válida.");
+                ViewBag.Categories = _productService.GetCategories();
+                ViewBag.Stores = new SelectList(await _productService.GetStoresAsync(), "Id", "Name");
+                return View("EditProduct", productVM);
+            }
+
+            if (productVM.ImageFile != null)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                Directory.CreateDirectory(uploadsFolder);
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(productVM.ImageFile.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await productVM.ImageFile.CopyToAsync(fileStream);
+                }
+
+                productVM.ImageUrl = "/images/" + fileName;
+            }
+            else
+            {
+                var existingProduct = await _productService.GetProductByIdAsync(productVM.Id);
+                productVM.ImageUrl = existingProduct?.ImageUrl;
+            }
+
+            var success = await _productService.UpdateProductAsync(productVM);
+            if (!success)
+            {
+                ModelState.AddModelError("", "⚠️ Error al actualizar el producto en la base de datos.");
+                ViewBag.Categories = _productService.GetCategories();
+                ViewBag.Stores = new SelectList(await _productService.GetStoresAsync(), "Id", "Name");
+                return View("EditProduct", productVM);
+            }
+
+            return RedirectToAction("StoreProfile", "Store", new { id = productVM.StoreId });
+        }
+
+        public IActionResult MyProducts() => View();
+
+
+        public async Task<IActionResult> FilterByCategory(int categoryId)
+        {
+            var products = await _productService.GetProductsByCategoryAsync(categoryId);
+            return ViewComponent("ProductCard", new { categoryId = categoryId, products = products });
+        }
+
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            try
+            {
+                var result = await _productService.DeleteProductAsync(id);
+
+                if (result)
+                {
+                    return Ok(new { message = "Producto eliminado exitosamente" });
+                }
+
+                return BadRequest(new
+                {
+                    message = "No se pudo eliminar el producto",
+                    details = "Verificar si el producto existe"
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en DeleteProduct: {ex.Message}");
+
+                return StatusCode(500, new
+                {
+                    message = "Error interno al eliminar el producto",
+                    details = ex.Message
+                });
+            }
+        }
     }
 }

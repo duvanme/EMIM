@@ -1,4 +1,4 @@
-﻿var stripe = Stripe("pk_test_51R8p3nEHOgKBiXCdPTllRynwMDzndAMg5HxkloiVnmBdgI6ImrqhMjrbzFO1yeFkCpGhwgEJd2fdbi6r406Vc62m00hznttsGc"); // publishable key de stripe
+﻿var stripe = Stripe("pk_test_51R9zjIPIgHxDR0ZxjjY31RvxE4J3RdDLrvizfjlDxzfYe5DShTy1y1vxzpNzJqh0ZGced3oMy6HAz76aK8hCd3EW009BgFmqn7"); // publishable key de stripe
 
 document.getElementById("checkout-form").addEventListener("submit", async function (event) {
     event.preventDefault(); // Previene que se envie el form

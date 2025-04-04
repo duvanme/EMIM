@@ -1,7 +1,9 @@
-﻿
+
 @{
     ViewData["Title"] = "adminProfileView";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+
 <main class="p-4">
     <div class="flex justify-center mt-4">
         <img alt="User profile icon" class="h-36 w-36" height="150" src="https://storage.googleapis.com/a1aa/image/h0ivMHhDmijm2TDrcWRiDFJFDkLyBah7D6GbfHGEu5Q.jpg" width="150" />
@@ -28,9 +30,6 @@
                     Perfiles de usuario.
                 </li>
                 <li>
-                    <a href="@Url.Action("RegisterUser", "Admin")">Registrar usuarios</a>
-                </li>
-                <li>
                     Tiendas.
                 </li>
                 <li>
@@ -50,7 +49,7 @@
                 </li>
             </ul>
             <div class="flex justify-center mt-4">
-                <img alt="Emim logo" class="h-24" height="150" src="/images/logo_sin_fondo.png"  />
+                <img alt="Emim logo" class="h-24" height="150" src="img/logo.png" width="100" />
             </div>
         </div>
     </section>

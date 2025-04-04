@@ -118,13 +118,16 @@ namespace EMIM.Controllers
                 TempData["Success"] = "Store created successfully!";
             }
 
-            return RedirectToAction("StoreProfile");
+            await storeService.AssignVendorRoleAsync(user);
+
+            return RedirectToAction("UserProfile", "User", new { id = user.Id });
         }
 
 
         public IActionResult TiendasBloqueadas() => View();
 
-        public IActionResult QuestionsAnswers() => View();
+         public IActionResult QuestionsAnswers() => View();
+
     }
 
 }

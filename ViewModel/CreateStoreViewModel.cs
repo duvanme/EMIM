@@ -4,6 +4,7 @@ namespace EMIM.ViewModel
 {
     public class CreateStoreViewModel
     {
+        public int? StoreId { get; set; }
         [Required]
         public string Name { get; set; }
 

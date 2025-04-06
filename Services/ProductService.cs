@@ -47,6 +47,7 @@ namespace EMIM.Services
         {
             return await _context.Products
                 .Where(p => p.CategoryId == categoryId)
+                .Include(p => p.Store) 
                 .Select(p => new ProductViewModel
                 {
                     Id = p.Id,
@@ -54,7 +55,8 @@ namespace EMIM.Services
                     Price = p.Price,
                     ImageUrl = p.ImageUrl,
                     StoreId = p.StoreId,
-                    CategoryId = p.CategoryId
+                    CategoryId = p.CategoryId,
+                    StoreName = p.Store != null ? p.Store.Name : "Tienda Desconocida" // Añade el nombre de la tienda
                 })
                 .ToListAsync();
         }
@@ -207,6 +209,7 @@ namespace EMIM.Services
         {
             return await _context.Products
                 .Where(p => p.StoreId == storeId)
+                .Include(p => p.Store) 
                 .Select(p => new ProductViewModel
                 {
                     Id = p.Id,
@@ -216,7 +219,7 @@ namespace EMIM.Services
                     Quantity = p.Quantity,
                     ImageUrl = p.ImageUrl,
                     StoreId = p.StoreId,
-                    StoreName = p.Store.Name
+                    StoreName = p.Store != null ? p.Store.Name : "Tienda Desconocida"
                 })
                 .ToListAsync();
         }

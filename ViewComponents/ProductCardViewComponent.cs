@@ -19,8 +19,8 @@ public class ProductCardViewComponent : ViewComponent
     }
 
     public async Task<IViewComponentResult> InvokeAsync(
-        int? categoryId = null,
-        int? storeId = null)
+    int? categoryId = null,
+    int? storeId = null)
     {
         List<ProductViewModel> products;
 
@@ -44,8 +44,8 @@ public class ProductCardViewComponent : ViewComponent
                 Quantity = p.Quantity,
                 CategoryId = p.CategoryId,
                 StoreId = p.StoreId,
-                ImageUrl = p.ImageUrl
-                //StoreName = p.StoreId
+                ImageUrl = p.ImageUrl,
+                StoreName = p.Store?.Name ?? "Tienda Desconocida" // Añade esta línea
             }).ToList();
         }
 

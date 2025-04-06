@@ -15,6 +15,7 @@ public class EmimContext : IdentityDbContext<User>
         this.configuration = configuration;
     }
 
+    public DbSet<Payment> Payments {get; set;}
     public DbSet<Category> Categories { get; set; }
     public DbSet<Store> Stores { get; set; }
     public DbSet<Product> Products { get; set; }

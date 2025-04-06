@@ -48,9 +48,28 @@ public class EmimContext : IdentityDbContext<User>
             .HasConversion<string>();
 
 
-        var admin = new IdentityRole("Admin") { NormalizedName = "ADMIN" };
-        var customer = new IdentityRole("Customer") { NormalizedName = "CUSTOMER" };
-        var vendor = new IdentityRole("Vendor") { NormalizedName = "VENDOR" };
+        string adminRoleId = "1";
+        string customerRoleId = "2";
+        string vendorRoleId = "3";
+
+        var admin = new IdentityRole
+        {
+            Id = adminRoleId,
+            Name = "Admin",
+            NormalizedName = "ADMIN"
+        };
+        var customer = new IdentityRole
+        {
+            Id = customerRoleId,
+            Name = "Customer",
+            NormalizedName = "CUSTOMER"
+        };
+        var vendor = new IdentityRole
+        {
+            Id = vendorRoleId,
+            Name = "Vendor",
+            NormalizedName = "VENDOR"
+        };
 
         modelBuilder.Entity<IdentityRole>().HasData(admin, customer, vendor);
 

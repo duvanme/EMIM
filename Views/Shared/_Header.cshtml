@@ -1,0 +1,66 @@
+﻿<header class="w-full h-auto bg-[#56b6cc] flex justify-center">
+    <div class="w-2/3 h-full nav-bounds grid grid-cols-[10%_60%_20%] gap-4">
+        <!-- First row -->
+        <div class="h-[50px] flex items-center justify-center">
+            <img src="~/images/logo_sin_fondo.png" class="h-[45px] w-[40px]" alt="logo">
+        </div>
+        <div class="h-[50px] flex items-center justify-center">
+            <form id="nav-search" class="w-full">
+                <div class="relative w-full">
+                    <input type="text"
+                           class="w-full pl-3 pr-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+                           placeholder="Buscar productos, marcas y más..." />
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="h-[50px] flex items-center justify-center">
+            <img src="~/images/image.png" class="hidden lg:flex" alt="">
+            <img src="~/images/hamburger-menu.svg" class="h-[50px] w-[50px] lg:hidden" alt="" id="burger-icon">
+        </div>
+
+        <!-- Second row -->
+        <div class="hidden lg:flex h-[50px] items-center justify-center">
+            <img src="~/images/location.png" class="h-[20x] w-[20px]" alt="ubicacion"><span class="text-sm text-[#FFFFFF] font-semibold">Tu ubicación</span>
+        </div>
+        <div class="hidden lg:flex h-[50px] flex items-center justify-center">
+            <ul class="w-full flex justify-around text-sm text-[#FFFFFF] font-semibold">
+                <li class="relative group">
+                    <span class="cursor-pointer flex items-center">
+                        Categorías
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </span>
+                    <!-- Dropdown menu with higher z-index -->
+                    <div class="absolute hidden group-hover:block bg-white min-w-[200px] rounded-md shadow-lg z-40 left-1/2 transform -translate-x-1/2 mt-0">
+                        <ul class="py-1 text-[#0A2E38]">
+                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Electrónicos</a></li>
+                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Moda</a></li>
+                            <!-- ... more items ... -->
+                        </ul>
+                    </div>
+                </li>
+                <li><a asp-controller="account" asp-action="login">Crear Tienda</a></li>
+                <li><a asp-controller="general" asp-action="help">Ayuda</a></li>
+                <li>Sobre Nosotros</li>
+                <li>Contacto</li>
+                <li>Preguntas Frecuentes</li>
+            </ul>
+        </div>
+        <div class="hidden lg:flex h-[50px] flex items-center justify-center">
+            <ul class="w-full flex justify-around text-sm text-[#FFFFFF] font-semibold">
+                <li><a asp-controller="account" asp-action="register">Crear cuenta</a></li>
+                <li><a asp-controller="account" asp-action="login">Ingresar</a></li>
+                <li><a asp-controller="account" asp-action="login"><img src="~/images/shopping-cart.svg" class="h-[25x] w-[25px]" alt=""></a></li>
+            </ul>
+        </div>
+    </div>
+</header>

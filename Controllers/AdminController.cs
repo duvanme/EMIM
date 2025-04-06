@@ -160,12 +160,13 @@ namespace EMIM.Controllers
 
             return RedirectToAction("AdminCreationShop");
         }
-    }
-}
 
-    
         //Mostrar la vista del perfil administrador 
         public IActionResult AdminProfile() => View();
 
+    }
+
 }
+   
+
 

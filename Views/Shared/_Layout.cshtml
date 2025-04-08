@@ -2,6 +2,7 @@
 @inject IAuthorizationService AuthorizationService
 @using System.Security.Claims
 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,20 +17,53 @@
 </head>
 
 <body>
-    <div class="w-full h-auto bg-neutral-100">
-        
-        @await Html.PartialAsync("_Header")
 
-        @await Html.PartialAsync("_IndexExpandMenu")
-
+    @if (User.Identity.IsAuthenticated)
+    {
+        @await Html.PartialAsync("_AuthenticatedHeader")
+        @await Html.PartialAsync("_IndexFilter")
+        @await Html.PartialAsync("_Categories")
+        <a class="hover:text-gray-700" asp-controller="Account" asp-action="Logout">
+            Cerrar
+            sesión
+        </a>
+        <a class="hover:text-gray-700" asp-controller="store" asp-action="createstore">
+            Crear tienda
+        </a>
         <main role="main" class="w-full">
+
             @RenderBody()
 
         </main>
+
         @await Html.PartialAsync("_Footer")
-    </div>
+    }
+    else
+    {
+        <div class="w-full h-auto bg-neutral-100">
+
+            @await Html.PartialAsync("_Header")
+
+            @await Html.PartialAsync("_IndexExpandMenu")
+
+            <main role="main" class="w-full">
+
+                @RenderBody()
+
+            </main>
+            @await Html.PartialAsync("_Footer")
+        </div>
+        
+        
+        
+    }
+
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <script src="~/js/HamburgerMenu.js"></script>
+    <script src="~/js/productDisplay.js"></script>
+    <script src="~/js/shoppingCar.js"></script>
+    <script src="~/js/shoppingCar.js"></script>
+    <script src="~/js/StripeCheckout.js"></script>
 </body>
 
 </html>

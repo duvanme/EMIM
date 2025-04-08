@@ -24,7 +24,7 @@ namespace EMIM.Controllers
                 return BadRequest("No cart data provided.");
             }
 
-            var domain = "https://localhost:5136/";
+            var domain = "https://localhost:7268/";
 
             var options = new SessionCreateOptions
             {

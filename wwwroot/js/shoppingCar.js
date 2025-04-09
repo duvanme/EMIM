@@ -69,20 +69,21 @@ function renderCart() {
         elementoCarrito.setAttribute('data-product-id', producto.id);
 
         elementoCarrito.innerHTML = `
-            <div class="flex items-center gap-3 items-center">
-                ${imgElement.outerHTML}
-                <span class="ml-3 product-name">${producto.name}</span>
-            </div>
-            <div class="flex justify-center items-center gap-2">
-                <button class="decrease-btn border ml-10 mr-[-15px] px-2 py-1">-</button>
-                <span class="quantity px-4 quantity">${producto.quantity}</span>
-                <button class="increase-btn border ml-[-15px] px-2 py-1">+</button>
-            </div>
-            <div class="flex justify-end items-center gap-3">
-                <span class="price">${producto.price}</span>
-                <button class="remove-btn text-red-600 font-bold">✖</button>
-            </div>
-        `;
+    <div class="flex items-center gap-3 items-center">
+        ${imgElement.outerHTML}
+        <span class="ml-3 product-name">${producto.name}</span>
+        <input type="hidden" class="product-id" value="${producto.id}">
+    </div>
+    <div class="flex justify-center items-center gap-2">
+        <button class="decrease-btn border ml-10 mr-[-15px] px-2 py-1">-</button>
+        <span class="quantity px-4 quantity">${producto.quantity}</span>
+        <button class="increase-btn border ml-[-15px] px-2 py-1">+</button>
+    </div>
+    <div class="flex justify-end items-center gap-3">
+        <span class="price">${producto.price}</span>
+        <button class="remove-btn text-red-600 font-bold">✖</button>
+    </div>
+`;
 
         cartContainer.appendChild(elementoCarrito);
     });

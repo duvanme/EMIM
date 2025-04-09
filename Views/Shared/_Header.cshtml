@@ -42,8 +42,7 @@
                     <!-- Dropdown menu with higher z-index -->
                     <div class="absolute hidden group-hover:block bg-white min-w-[200px] rounded-md shadow-lg z-40 left-1/2 transform -translate-x-1/2 mt-0">
                         <ul class="py-1 text-[#0A2E38]">
-                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Electrónicos</a></li>
-                            <li><a href="#" class="block px-4 py-2 hover:bg-gray-100">Moda</a></li>
+                            @await Component.InvokeAsync("CategoryOption")
                             <!-- ... more items ... -->
                         </ul>
                     </div>

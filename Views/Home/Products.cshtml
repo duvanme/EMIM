@@ -1,0 +1,21 @@
+﻿@using EMIM.ViewModel
+
+@{
+    int currentPage = Convert.ToInt32(Context.Request.Query["page"].FirstOrDefault() ?? "1");
+}
+
+@await Html.PartialAsync("_AuthenticatedHeader")
+@await Html.PartialAsync("_IndexFilter")
+@await Html.PartialAsync("_Categories")
+<div class="px-16 py-8">
+
+    <h1 class="pagination mb-4 text-xl font-bold" id="label_search">Top resultados para ""</h1>
+
+    <div class="products-container flex flex-col">
+        @await Component.InvokeAsync("ProductCard", new
+        {
+        page = currentPage
+        })
+    </div>
+
+</div>

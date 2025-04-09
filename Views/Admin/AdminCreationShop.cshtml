@@ -1,6 +1,11 @@
 @using EMIM.ViewModel
 @model List<UserStoresViewModel>
 
+@{
+    ViewData["Title"] = "adminProfileView";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
 <main>  
           @await Component.InvokeAsync("BackButton")
 

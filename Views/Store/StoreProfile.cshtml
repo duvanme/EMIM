@@ -1,6 +1,10 @@
 @using EMIM.ViewModel
 @model StoreProfileViewModel
 
+@{
+    Layout = "~/Views/Shared/_StoreLayout.cshtml";
+}
+
 
 <main class="w-full h-full flex flex-col justify-center items-center">
   @await Component.InvokeAsync("BackButton")
@@ -19,13 +23,9 @@
     <div class="text-gray-800 text-sm font-medium px-4 py-3 flex flex-col justify-center w-full md:w-2/3">
       <!-- Botones -->
       <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-        <a
-          class="bg-blue-200 text-black font-medium text-sm px-4 py-1 rounded-full shadow-md hover:bg-blue-300 mb-2 md:mb-0">
+        <a class="bg-blue-200 text-black font-medium text-sm px-4 py-1 rounded-full shadow-md hover:bg-blue-300 mb-2 md:mb-0">
           @Model.Products.Count productos publicados
-        </a>
-        <a class="bg-blue-200 text-black font-medium text-sm px-4 py-1 rounded-full shadow-md hover:bg-blue-300">
-          35 seguidores
-        </a>
+        </a>        
       </div>
 
       <h1 class="font-bold text-lg text-center md:text-left">@Model.Store.Name</h1>

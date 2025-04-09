@@ -15,11 +15,12 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        if (User.Identity.IsAuthenticated)
-        {
-            return View("IndexAuthenticated"); // vista para usuarios autenticados
-        }
-        return View("IndexUnauthenticated"); // vista para usuarios no autenticados
+             return View(); 
+    }
+
+    public IActionResult Products()
+    {
+        return View();
     }
 
     public IActionResult Privacy()

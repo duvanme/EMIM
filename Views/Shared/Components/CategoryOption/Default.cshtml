@@ -4,12 +4,5 @@
 
 @foreach (var category in Model)
 {
-
-
-
-    <li class="bg-[#A9C8CF] rounded-md w-[80%] my-[5px]">
-        <button class="w-full text-left flex justify-between items-center category-filter" data-category-id="@category.Id" data-category-name="@category.Name">
-            @category.Name
-        </button>
-    </li>
+    <li><a href="#" class="block px-4 py-2 hover:bg-gray-100" data-category-id="@category.Id" data-category-name="@category.Name">@category.Name</a></li>
 }

@@ -1,9 +1,11 @@
 @using EMIM.ViewModel
 @model ProductCardViewModel
 
+
+<div class="products-container flex justify-around flex-wrap">
 @foreach (var product in Model.Products)
 {
-    <div class="product-card relative group cursor-pointer overflow-hidden duration-500 w-64 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-xl transition p-3"
+    <div class="product-card relative group cursor-pointer overflow-hidden duration-500 w-64 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-xl transition p-3 mb-8"
         data-url="@Url.Action("ProductDisplay", "Product", new { id = product.Id })" data-product-id="@product.Id">
 
         <!-- Imagen del producto -->
@@ -56,7 +58,7 @@
         </div>
     </div>
 }
-
+</div>
 <!-- Modal de Confirmación de Eliminación -->
 <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
     <div class="bg-white p-6 rounded-lg">
@@ -69,6 +71,7 @@
     </div>
 </div>
 
+@await Html.PartialAsync("_Pagination", Model)
 
 <script src="~/js/deleteProduct.js"></script>
 <script src="~/js/heartToggle.js"></script>

@@ -32,7 +32,7 @@ namespace EMIM.Controllers
 
             var result = await accountService.LoginAsync(model);
             if (result.Succeeded)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Products", "Home");
 
             ModelState.AddModelError("", "Email or password is incorrect.");
             return View(model);

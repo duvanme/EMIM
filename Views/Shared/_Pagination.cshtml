@@ -1,0 +1,19 @@
+﻿@using EMIM.ViewModel
+@model ProductCardViewModel
+
+@if (Model != null && Model.TotalPages > 1)
+{
+    <nav class="pagination mt-4">
+        <ul class="flex space-x-2 justify-center">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="">
+                    <a href="?page=@i"
+                       class="px-4 py-2 border rounded @(i == Model.CurrentPage ? "bg-[#56b6cc] text-white" : "bg-white text-black")">
+                        @i
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

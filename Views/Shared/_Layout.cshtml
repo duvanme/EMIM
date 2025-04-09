@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
 @using System.Security.Claims
 
@@ -21,7 +21,7 @@
 
                 @RenderBody()
 
-     
+    @await RenderSectionAsync("Scripts", required: false)
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <script src="~/js/HamburgerMenu.js"></script>
     <script src="~/js/productDisplay.js"></script>

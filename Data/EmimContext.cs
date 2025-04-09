@@ -120,19 +120,19 @@ public class EmimContext : IdentityDbContext<User>
         modelBuilder.Entity<SaleOrderLine>()
         .HasOne(d => d.SaleOrder)
         .WithMany(o => o.SaleOrderLine)
-        .HasForeignKey(d => d.Id)
-        .OnDelete(DeleteBehavior.Restrict); // Si se borra una orden, se eliminan sus detalles.
+        .HasForeignKey(d => d.SaleOrderId) // Corregido: usa SaleOrderId
+        .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<SaleOrderLine>()
-            .HasOne(d => d.Product)
-            .WithMany(p => p.SaleOrderLine)
-            .HasForeignKey(d => d.Id)
+        .HasOne(d => d.Product)
+        .WithMany(p => p.SaleOrderLine)
+        .HasForeignKey(d => d.ProductId) // Corregido: usa ProductId
         .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<SaleOrderStatus>()
-            .HasOne(o => o.SaleOrder)
-            .WithMany(s => s.SaleOrderStatus)
-            .HasForeignKey(o => o.Id)
-            .OnDelete(DeleteBehavior.Restrict);
+        .HasOne(o => o.SaleOrder)
+        .WithMany(s => s.SaleOrderStatus)
+        .HasForeignKey(o => o.OrderId) // Corregido: usa OrderId
+        .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -3,6 +3,7 @@ using EMIM.Services;
 using EMIM.ViewModel;
 using EMIM.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EMIM.Controllers
 {
@@ -162,11 +163,9 @@ namespace EMIM.Controllers
         }
 
         //Mostrar la vista del perfil administrador 
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminProfile() => View();
 
     }
 
 }
-   
-
-

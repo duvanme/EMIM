@@ -1,0 +1,69 @@
+@using EMIM.ViewModel
+@model EMIM.ViewModel.EditStoreViewModel
+
+@{
+    Layout = "~/Views/Shared/_StoreLayout.cshtml";
+}
+
+<main>
+    @await Component.InvokeAsync("BackButton")
+    @if (Model != null)
+    {
+        <form asp-action="EditStore" id="store-edit-form" method="post" enctype="multipart/form-data">
+            <h1 class="text-2xl text-center font-bold mb-4">Editar Tienda</h1>
+            <div
+                class="max-w-xl mx-auto mt-10 bg-white rounded-xl shadow-lg flex flex-col md:flex-row items-center justify-center w-4/5 p-6">
+                <input type="hidden" asp-for="Id" />
+                <!--Imagen-->
+                <div class="flex flex-col justify-center items-center mb-8 w-full md:w-1/2">
+                    <div class="relative">
+                        <img id="store-image"
+                            src="@Url.Content("~/" + (Model.ExistingProfilePicturePath ?? "images/default-store.jpg"))"
+                            alt="Store Image" class="w-[80%] h-[70%] rounded-full object-cover mb-4">
+                        <input asp-for="StoreProfilePicture" type="file" id="file-input" />
+                        <input type="hidden" asp-for="StoreProfilePicturePath" />
+                        <input type="hidden" asp-for="ExistingProfilePicturePath" />
+                        <button type="button" id="change-image-button"
+                            class="absolute bottom-0 right-0 bg-gray-200 rounded-full">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-center items-center mb-8 w-full md:w-1/2">
+                    <div class="mb-4">
+                        <label asp-for="Name" class="block font-semibold">Nombre de la tienda</label>
+                        <input asp-for="Name" class="w-full border rounded px-3 py-2" disabled />
+                        <input type="hidden" asp-for="Name" />
+                    </div>
+                    <div class="mb-4">
+                        <label asp-for="Description" class="block font-semibold">Descripción</label>
+                        <textarea asp-for="Description" class="w-full border rounded px-3 py-2"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label asp-for="Location" class="block font-semibold">Ubicación</label>
+                        <input asp-for="Location" class="w-full border rounded px-3 py-2" />
+                    </div>
+                    <input type="submit" class="bg-[#56b6cc] hover:bg-[#13678A] text-white px-4 py-2 rounded"
+                        placeholder="Guardar cambios" />
+                </div>
+            </div>
+        </form>
+    }
+</main>
+
+<script>
+    document.getElementById("change-image-button").addEventListener("click", function () {
+        document.getElementById("file-input").click();
+    });
+
+    // Para previsualizar la imagen antes de enviar
+    document.getElementById("file-input").addEventListener("change", function () {
+        const [file] = this.files;
+        if (file) {
+            document.getElementById("store-image").src = URL.createObjectURL(file);
+        }
+    });
+</script>

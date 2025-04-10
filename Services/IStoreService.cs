@@ -13,5 +13,6 @@ namespace EMIM.Services
         // Nuevo método para obtener el StoreId de un vendedor
         Task<int> GetStoreIdForVendorAsync(string userId);
         Task<Store> GetStoreDetailsAsync(int storeId);
+        Task<bool> UpdateStoreAsync(EditStoreViewModel model, string? storePicturePath);
     }
 }

@@ -50,10 +50,10 @@
       </label>
     </div>
 
-    <!-- Botón de edición -->
-    <button class="flex justify-center items-center mt-4 md:mt-[-300px]">
-      <img src="../images/edit.png" alt="edit" class="w-6 h-6">
-    </button>
+    <!-- enlace de edición -->
+    <a class="flex justify-center items-center mt-4 md:mt-[-300px]" asp-controller="Store" asp-action="EditStore" asp-route-id="@Model.Store.Id">
+      <img src="~/images/edit.png" alt="edit" class="w-6 h-6">
+    </a>
   </section>
 
   <!-- Contenedor de productos -->

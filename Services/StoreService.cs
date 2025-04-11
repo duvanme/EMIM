@@ -3,6 +3,7 @@ using EMIM.Models;
 using EMIM.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace EMIM.Services
 {
@@ -92,6 +93,27 @@ namespace EMIM.Services
                 .Include(s => s.User)
                 .FirstOrDefaultAsync(s => s.Id == storeId);
         }
+
+        public async Task<bool> UpdateStoreAsync(EditStoreViewModel model, string? storePicturePath)
+        {
+            var store = await emimcontext.Stores.FirstOrDefaultAsync(s => s.Id == model.Id);
+            if (store == null)
+                return false;
+
+            store.Name = model.Name;
+            store.Description = model.Description;
+            store.Location = model.Location;
+            store.StoreProfilePicture = storePicturePath ?? model.StoreProfilePicturePath;
+            if (!string.IsNullOrEmpty(storePicturePath))
+            {
+                store.StoreProfilePicture = storePicturePath;
+            }
+
+            emimcontext.Stores.Update(store);
+            await emimcontext.SaveChangesAsync();
+            return true;
+        }
+
 
     }
 

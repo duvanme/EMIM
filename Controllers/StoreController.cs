@@ -1,9 +1,11 @@
-﻿using EMIM.Models;
+﻿using EMIM.Data;
+using EMIM.Models;
 using EMIM.Services;
 using EMIM.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EMIM.Controllers
 {
@@ -14,12 +16,14 @@ namespace EMIM.Controllers
         private readonly IStoreService storeService;
         private readonly IProductService _productService;
         private readonly UserManager<User> userManager;
+        private readonly EmimContext emimcontext;
 
-        public StoreController(IStoreService storeService, UserManager<User> userManager, IProductService productService)
+        public StoreController(IStoreService storeService, UserManager<User> userManager, IProductService productService, EmimContext emimcontext)
         {
             this.storeService = storeService;
             this.userManager = userManager;
             _productService = productService;
+            this.emimcontext = emimcontext;
         }
 
         public async Task<IActionResult> StoreProfile()
@@ -123,10 +127,82 @@ namespace EMIM.Controllers
             return RedirectToAction("UserProfile", "User", new { id = user.Id });
         }
 
+        public async Task<bool> UpdateStoreAsync(EditStoreViewModel model, string? storePicturePath)
+        {
+            var store = await emimcontext.Stores.FirstOrDefaultAsync(s => s.Id == model.Id);
+            if (store == null) return false;
+
+            store.Description = model.Description;
+            store.Location = model.Location;
+
+            if (!string.IsNullOrEmpty(storePicturePath))
+            {
+                store.StoreProfilePicture = storePicturePath;
+            }
+
+            emimcontext.Stores.Update(store);
+            await emimcontext.SaveChangesAsync();
+
+            return true;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditStore(int id)
+        {
+            var store = await emimcontext.Stores.FindAsync(id);
+            if (store == null)
+                return NotFound();
+
+            var model = new EditStoreViewModel
+            {
+                Id = store.Id,
+                Name = store.Name,
+                Location = store.Location ?? "",
+                Description = store.Description ?? "",
+                StoreProfilePicturePath = store.StoreProfilePicture, //Para mantener si no cambia 
+                ExistingProfilePicturePath = store.StoreProfilePicture // Para mostrar en vista
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditStore(EditStoreViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            string? storePicturePath = model.StoreProfilePicturePath;
+
+            if (model.StoreProfilePicture != null && model.StoreProfilePicture.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "uploads");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + model.StoreProfilePicture.FileName;
+                var fullPath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                {
+                    await model.StoreProfilePicture.CopyToAsync(fileStream);
+                }
+
+                storePicturePath = Path.Combine("images", "uploads", uniqueFileName);
+            }
+
+            var updated = await storeService.UpdateStoreAsync(model, storePicturePath);
+            if (!updated)
+                return NotFound();
+
+            return RedirectToAction("StoreProfile");
+        }
 
         public IActionResult TiendasBloqueadas() => View();
 
-         public IActionResult QuestionsAnswers() => View();
+        public IActionResult QuestionsAnswers() => View();
 
     }
 

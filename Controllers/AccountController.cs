@@ -1,8 +1,10 @@
 using EMIM.Models;
 using EMIM.Services;
 using EMIM.ViewModel;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace EMIM.Controllers
@@ -35,6 +37,18 @@ namespace EMIM.Controllers
             {
                 var user = await userManager.FindByEmailAsync(model.Email); // O usa model.Username si es con username
 
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim("Address", user.Address ?? "")
+                };
+
+                var identity = new ClaimsIdentity(claims, IdentityConstants.ApplicationScheme);
+                var principal = new ClaimsPrincipal(identity);
+
+                await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+                await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal);
+
                 if (await userManager.IsInRoleAsync(user, "Admin"))
                 {
                     return RedirectToAction("AdminProfile", "Admin"); // Vista del admin
@@ -45,7 +59,7 @@ namespace EMIM.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Products", "Home"); // Vista por defecto o de cliente
+                    return RedirectToAction("Index", "Home"); // Vista por defecto o de cliente
                 }
             }
             ModelState.AddModelError("", "Email or password is incorrect.");

@@ -2,7 +2,7 @@
     <div class="w-[95%] h-full nav-bounds grid grid-cols-[15%_50%_35%] lg:grid-cols-[10%_80%_10%] gap-4 pt-[2px]">
         <!-- First row -->
         <div class="h-[50px] flex items-center justify-center">
-            <img src="~/images/logo_sin_fondo.png" class="h-[45px] w-[40px] mr-[10px]" alt="logo">
+            <a asp-controller="home" asp-action="index"><img src="~/images/logo_sin_fondo.png" class="h-[45px] w-[40px] mr-[10px]" alt="logo"></a>
             <div class="hidden md:flex px-4">
                 <img src="~/images/location.png" class="h-[35px] w-[35px]" alt="">
                 <span class="flex items-center text-white font-semibold text-xs">Tu Dirección</span>
@@ -35,7 +35,7 @@
                         <a asp-controller="user" asp-action="userprofile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mi Perfil</a>
                         <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mis Pedidos</a>
                         <a asp-controller="user" asp-action="editprofile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Editar Perfil</a>
-                        <a asp-controller="store" asp-action="createsore" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Crear Tienda</a>
+                        <a asp-controller="store" asp-action="createstore" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Crear Tienda</a>
                         <div class="border-t border-gray-200"></div>
                         <a asp-controller="account" asp-action="logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cerrar Sesión</a>
                     </div>

@@ -32,13 +32,13 @@
         <div class="hidden lg:flex h-[50px] flex items-center justify-center">
             <ul class="w-full flex justify-around text-sm text-[#FFFFFF] font-semibold">
                 <li class="relative group">
-                    <span class="cursor-pointer flex items-center">
+                    <a asp-controller="home" asp-action="products" class="cursor-pointer flex items-center">
                         Categorías
                         <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M19 9l-7 7-7-7" />
                         </svg>
-                    </span>
+                    </a>
                     <!-- Dropdown menu with higher z-index -->
                     <div class="absolute hidden group-hover:block bg-white min-w-[200px] rounded-md shadow-lg z-40 left-1/2 transform -translate-x-1/2 mt-0">
                         <ul class="py-1 text-[#0A2E38]">
@@ -49,7 +49,7 @@
                 </li>
                 <li><a asp-controller="account" asp-action="login">Crear Tienda</a></li>
                 <li><a asp-controller="general" asp-action="help">Ayuda</a></li>
-                <li>Sobre Nosotros</li>
+                <li><a asp-controller="general" asp-action="underconstruction">Nosotros</a></li>
                 <li>Contacto</li>
                 <li>Preguntas Frecuentes</li>
             </ul>

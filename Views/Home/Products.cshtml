@@ -2,6 +2,7 @@
 
 @{
     int currentPage = Convert.ToInt32(Context.Request.Query["page"].FirstOrDefault() ?? "1");
+    int? categoryId = ViewData["SelectedCategoryId"] as int?;
 }
 
 @await Html.PartialAsync("_AuthenticatedHeader")
@@ -11,11 +12,13 @@
 
     <h1 class="pagination mb-4 text-xl font-bold" id="label_search">Top resultados para ""</h1>
 
-    <div class="products-container flex flex-col">
+    <div class="flex flex-col">
         @await Component.InvokeAsync("ProductCard", new
         {
-        page = currentPage
-        })
+        page = currentPage,
+        categoryId = categoryId
+        })  
     </div>
 
 </div>
+

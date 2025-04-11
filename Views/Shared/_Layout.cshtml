@@ -28,6 +28,36 @@
     <script src="~/js/shoppingCar.js"></script>
     <script src="~/js/shoppingCar.js"></script>
     <script src="~/js/StripeCheckout.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {  // <- ? removed
+            document.querySelectorAll(".category-filter").forEach(a => {
+                a.addEventListener("click", function () {
+                    let categoryId = this.getAttribute("data-category-id");
+                    let categoryName = this.getAttribute("data-category-name");
+                    console.log(categoryId);
+                          fetch(`/Product/FilterByCategory?categoryId=${categoryId}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.text();
+        })
+        .then(html => {
+          document.getElementById("products-container").innerHTML = html;
+        })
+        .catch(error => {
+          console.error("Error fetching products:", error);
+          // Optional: Display error message to user
+          document.getElementById("products-container").innerHTML =
+            '<div class="error">Failed to load products. Please try again.</div>';
+        });
+
+
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>

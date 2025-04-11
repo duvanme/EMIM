@@ -18,8 +18,9 @@ public class HomeController : Controller
              return View(); 
     }
 
-    public IActionResult Products()
+    public IActionResult Products(int? categoryId)
     {
+        ViewData["SelectedCategoryId"] = categoryId;
         return View();
     }
 

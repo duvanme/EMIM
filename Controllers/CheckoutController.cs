@@ -169,7 +169,7 @@ namespace EMIM.Controllers
         }
 
 
-        private async Task<List<CartItem>> GetCartFromLocalStorage()
+        private async Task<List<CartItem>> GetCartFromLocalStorage()   
         {
             // Recuperar los datos del carrito de la sesión
             var cartJson = HttpContext.Session.GetString("CartData");

@@ -5,7 +5,12 @@
     int? categoryId = ViewData["SelectedCategoryId"] as int?;
 }
 
-@await Html.PartialAsync("_AuthenticatedHeader")
+@if(!User.Identity.IsAuthenticated){
+    @await Html.PartialAsync("_Header")
+}
+else{
+    @await Html.PartialAsync("_AuthenticatedHeader")
+}
 @await Html.PartialAsync("_IndexFilter")
 @await Html.PartialAsync("_Categories")
 <div class="px-16 py-8">

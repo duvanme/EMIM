@@ -204,6 +204,9 @@ namespace EMIM.Controllers
 
         public IActionResult QuestionsAnswers() => View();
 
+        public IActionResult PurchaseStatus() => View();
+        public IActionResult Purchase() => View();
+
     }
 
 }

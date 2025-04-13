@@ -21,6 +21,7 @@ public class ProductCardViewComponent : ViewComponent
     public async Task<IViewComponentResult> InvokeAsync(
     int? categoryId = null,
     int? storeId = null,
+    string query = null,
     int page = 1,
     int pageSize = 5)
     {
@@ -48,7 +49,15 @@ public class ProductCardViewComponent : ViewComponent
                 StoreId = p.StoreId,
                 ImageUrl = p.ImageUrl,
                 StoreName = p.Store?.Name ?? "Tienda Desconocida" // Añade esta línea
-            }).ToList();          
+            }).ToList();
+        }
+
+        if (!string.IsNullOrWhiteSpace(query))
+        {
+            var lowerQuery = query.ToLower();
+            allProducts = allProducts
+                .Where(p => p.Name.ToLower().Contains(lowerQuery) || p.StoreName.ToLower().Contains(lowerQuery))
+                .ToList();
         }
 
         var totalItems = allProducts.Count;

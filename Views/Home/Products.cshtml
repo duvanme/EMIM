@@ -3,6 +3,7 @@
 @{
     int currentPage = Convert.ToInt32(Context.Request.Query["page"].FirstOrDefault() ?? "1");
     int? categoryId = ViewData["SelectedCategoryId"] as int?;
+    string query = Context.Request.Query["query"].FirstOrDefault();
 }
 
 @await Html.PartialAsync("_AuthenticatedHeader")
@@ -10,14 +11,24 @@
 @await Html.PartialAsync("_Categories")
 <div class="px-16 py-8">
 
-    <h1 class="pagination mb-4 text-xl font-bold" id="label_search">Top resultados para ""</h1>
+    <h1 class="pagination mb-4 text-xl font-bold" id="label_search">
+        @if (!string.IsNullOrWhiteSpace(query))
+        {
+            <text>Top resultados para "@query"</text>
+        }
+        else
+        {
+            <text>Todos los productos</text>
+        }
+    </h1>
 
     <div class="flex flex-col">
         @await Component.InvokeAsync("ProductCard", new
-        {
-        page = currentPage,
-        categoryId = categoryId
-        })  
+            {
+                page = currentPage,
+                categoryId = categoryId,
+                query = query
+            })
     </div>
 
 </div>

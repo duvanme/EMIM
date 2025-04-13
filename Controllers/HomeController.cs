@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using EMIM.Models;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace EMIM.Controllers;
 
@@ -18,9 +19,10 @@ public class HomeController : Controller
              return View(); 
     }
 
-    public IActionResult Products(int? categoryId)
+    public IActionResult Products(int? categoryId, string query)
     {
         ViewData["SelectedCategoryId"] = categoryId;
+        ViewData["Query"] = query;
         return View();
     }
 

@@ -15,14 +15,15 @@ namespace EMIM.Controllers
         private readonly IAccountService accountService;
         private readonly UserManager<User> userManager;
         private readonly IEmailService _emailService;
+        private readonly SignInManager<User> _signInManager;
 
 
-        public AccountController(IAccountService accountService, UserManager<User> userManager, IEmailService _emailService)
+        public AccountController(IAccountService accountService, UserManager<User> userManager, IEmailService _emailService, SignInManager<User> signInManager)
         {
             this.accountService = accountService;
             this.userManager = userManager;
             this._emailService = _emailService;
-
+            _signInManager = signInManager;
         }
 
         public IActionResult Login() => View();
@@ -37,17 +38,20 @@ namespace EMIM.Controllers
             {
                 var user = await userManager.FindByEmailAsync(model.Email); // O usa model.Username si es con username
 
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim("Address", user.Address ?? "")
+                var claims = new List<Claim>{
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim("Address", user.Address ?? "")
                 };
+
+                var roles = await userManager.GetRolesAsync(user);
+                claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
                 var identity = new ClaimsIdentity(claims, IdentityConstants.ApplicationScheme);
                 var principal = new ClaimsPrincipal(identity);
 
-                await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
-                await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal);
+                await _signInManager.SignInAsync(user, isPersistent: false);
+
+
 
                 if (await userManager.IsInRoleAsync(user, "Admin"))
                 {

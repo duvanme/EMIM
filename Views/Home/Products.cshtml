@@ -4,6 +4,8 @@
     int currentPage = Convert.ToInt32(Context.Request.Query["page"].FirstOrDefault() ?? "1");
     int? categoryId = ViewData["SelectedCategoryId"] as int?;
     string query = Context.Request.Query["query"].FirstOrDefault();
+    string sort = Context.Request.Query["sort"].FirstOrDefault();
+}
 }
 
 @if(!User.Identity.IsAuthenticated){
@@ -12,7 +14,25 @@
 else{
     @await Html.PartialAsync("_AuthenticatedHeader")
 }
-@await Html.PartialAsync("_IndexFilter")
+
+<div class="w-full flex p-4 bg-white">
+    <p class="text-md font-bold mr-4">Ordenar por:</p>
+    <a asp-action="Products" asp-route-query="@query" asp-route-sort="price" asp-route-categoryId="@categoryId"
+       class="mx-2 flex justify-center items-center border rounded-md w-[80px] shadow-md bg-gray-200 hover:bg-cyan-400/40 hover:shadow-cyan-400/30 hover:border-cyan-400/30 transition-colors duration-100">
+        <img class="h-5 w-5" src="~/images/price-tag.svg" alt="">
+        <span class="text-sm ml-[2px]">Precio</span>
+    </a>
+    <a asp-action="Products" asp-route-query="@query" asp-route-sort="new" asp-route-categoryId="@categoryId"
+       class="mx-2 flex justify-center items-center border rounded-md w-[80px] shadow-md bg-gray-200 hover:bg-cyan-400/40 hover:shadow-cyan-400/30 hover:border-cyan-400/30 transition-colors duration-100">
+        <img class="h-5 w-5" src="~/images/lightning.svg" alt="">
+        <span class="text-sm ml-[2px]">Nuevo</span>
+    </a>
+    <a class="mx-2 flex justify-center items-center border rounded-md w-[80px] shadow-md bg-gray-200 hover:bg-cyan-400/40 hover:shadow-cyan-400/30 hover:border-cyan-400/30 transition-colors duration-100">
+        <img class="h-5 w-5" src="~/images/star.svg" alt="">
+        <span class="text-sm ml-[2px]">Review</span>
+    </a>
+</div>
+
 @await Html.PartialAsync("_Categories")
 <div class="px-16 py-8">
 
@@ -32,7 +52,8 @@ else{
             {
                 page = currentPage,
                 categoryId = categoryId,
-                query = query
+                query = query,
+                sort = sort
             })
     </div>
 

@@ -31,6 +31,9 @@ namespace EMIM.Models
         public virtual Category? Category { get; set; }
         public virtual Store? Store { get; set; }
 
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
+
         // 🔹 URL de la imagen guardada en el servidor
         public string? ImageUrl { get; set; }
 

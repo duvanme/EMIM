@@ -71,7 +71,8 @@ namespace EMIM.Services
                 Quantity = productVM.Quantity,
                 CategoryId = productVM.CategoryId,
                 StoreId = productVM.StoreId,
-                ImageUrl = productVM.ImageUrl
+                ImageUrl = productVM.ImageUrl,
+                CreatedAt = DateTime.UtcNow
             };
 
             _context.Products.Add(product);

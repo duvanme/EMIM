@@ -23,7 +23,8 @@ public class ProductCardViewComponent : ViewComponent
     int? storeId = null,
     string query = null,
     int page = 1,
-    int pageSize = 5)
+    int pageSize = 5,
+    string sort = null)
     {
         List<ProductViewModel> allProducts;
 
@@ -58,6 +59,24 @@ public class ProductCardViewComponent : ViewComponent
             allProducts = allProducts
                 .Where(p => p.Name.ToLower().Contains(lowerQuery) || p.StoreName.ToLower().Contains(lowerQuery))
                 .ToList();
+        }
+
+
+        if (!string.IsNullOrWhiteSpace(sort))
+        {
+            switch (sort.ToLower())
+            {
+                case "price":
+                    allProducts = allProducts.OrderBy(p => p.Price).ToList();
+                    break;
+                case "new":
+                    allProducts = allProducts.OrderByDescending(p => p.CreatedAt).ToList();
+                    break;
+                default:
+                    // El default es organizar por nombre
+                    allProducts = allProducts.OrderBy(p => p.Name).ToList();
+                    break;
+            }
         }
 
         var totalItems = allProducts.Count;

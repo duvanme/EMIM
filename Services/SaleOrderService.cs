@@ -36,5 +36,22 @@ namespace EMIM.Services
                 .Include(so => so.SaleOrderStatus)
                 .FirstOrDefaultAsync(so => so.Id == id);
         }
+
+        public async Task<List<SaleOrder>> GetOrdersByUserAsync(string userId)
+        {
+            return await _context.SaleOrders
+                .Include(o => o.SaleOrderLine)
+                .ThenInclude(line => line.Product)
+                .Include(o => o.SaleOrderStatus)
+                .Include(o => o.User)
+                .Where(o => o.UserId == userId)
+                .ToListAsync();
+        }
+
+
+        Task<string?> ISaleOrderService.GetOrdersByUserIdAsync(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

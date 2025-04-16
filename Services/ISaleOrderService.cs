@@ -4,8 +4,9 @@ using EMIM.Models;
 namespace EMIM.Services
 {
     public interface ISaleOrderService
-{
-    Task<SaleOrder> CreateSaleOrderAsync(string userId, decimal totalAmount);
-    Task<SaleOrder> GetSaleOrderByIdAsync(int id);
-}
+    {
+        Task<SaleOrder> CreateSaleOrderAsync(string userId, decimal totalAmount);
+        Task<string?> GetOrdersByUserIdAsync(string id);
+        Task<SaleOrder> GetSaleOrderByIdAsync(int id);
+    }
 }

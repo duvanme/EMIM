@@ -47,7 +47,7 @@ namespace EMIM.Services
         {
             return await _context.Products
                 .Where(p => p.CategoryId == categoryId)
-                .Include(p => p.Store) 
+                .Include(p => p.Store)
                 .Select(p => new ProductViewModel
                 {
                     Id = p.Id,
@@ -210,7 +210,7 @@ namespace EMIM.Services
         {
             return await _context.Products
                 .Where(p => p.StoreId == storeId)
-                .Include(p => p.Store) 
+                .Include(p => p.Store)
                 .Select(p => new ProductViewModel
                 {
                     Id = p.Id,
@@ -223,6 +223,16 @@ namespace EMIM.Services
                     StoreName = p.Store != null ? p.Store.Name : "Tienda Desconocida"
                 })
                 .ToListAsync();
+        }
+
+        public async Task<int> GetProductStoreIdAsync(int productId)
+        {
+            var product = await _context.Products
+                .Where(p => p.Id == productId)
+                .Select(p => new { p.StoreId })
+                .FirstOrDefaultAsync();
+
+            return product?.StoreId ?? 0;
         }
     }
 }

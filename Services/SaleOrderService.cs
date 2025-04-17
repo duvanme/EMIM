@@ -54,6 +54,7 @@ namespace EMIM.Services
         Task<string?> ISaleOrderService.GetOrdersByUserIdAsync(string id)
         {
             throw new NotImplementedException();
+        }
 
         public async Task<List<SaleOrder>> GetUserOrdersAsync(string userId)
         {

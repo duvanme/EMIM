@@ -1,9 +1,11 @@
-﻿using EMIM.Models;
+﻿using EMIM.Data;
+using EMIM.Models;
 using EMIM.Services;
 using EMIM.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace EMIM.Controllers
 {
@@ -13,14 +15,19 @@ namespace EMIM.Controllers
         private readonly IQuestionService _questionService; // Añade esto
         private readonly IStoreService _storeService;
         private readonly UserManager<User> _userManager;
+        private readonly ISaleOrderService _orderService;
+        private readonly EmimContext _context; // o el nombre que uses para tu DbContext
+
 
         public ProductController(
-            IProductService productService, IQuestionService questionService, IStoreService storeService, UserManager<User> userManager) // Añade este parámetro
+            IProductService productService, IQuestionService questionService, IStoreService storeService, UserManager<User> userManager, ISaleOrderService orderService, EmimContext context) // Añade este parámetro
         {
             _productService = productService;
             _questionService = questionService; // Añade esta línea
             _storeService = storeService;
             _userManager = userManager;
+            _orderService = orderService;
+            _context = context;
         }
 
         public async Task<IActionResult> ProductosBloqueados()
@@ -173,7 +180,37 @@ namespace EMIM.Controllers
             return RedirectToAction("StoreProfile", "Store", new { id = productVM.StoreId });
         }
 
-        public IActionResult MyProducts() => View();
+        public async Task<IActionResult> MyProducts()
+        {
+            var userId = _userManager.GetUserId(User); // método que se usa para obtener el usuario actual
+            var orders = await _context.SaleOrders
+                .Include(o => o.SaleOrderLine)
+                .ThenInclude(line => line.Product)
+                .Include(o => o.SaleOrderStatus)
+                .Include(o => o.User)
+                .Where(o => o.UserId == userId)
+                .ToListAsync();
+
+            return View(orders);
+        }
+
+        public async Task<IActionResult> OrderDetails(int id)
+        {
+            var order = await _context.SaleOrders
+                .Include(o => o.SaleOrderLine)
+                .ThenInclude(line => line.Product)
+                .Include(o => o.SaleOrderStatus)
+                .Include(o => o.User)
+                .FirstOrDefaultAsync(o => o.Id == id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return View(order);
+        }
+
 
 
         public async Task<IActionResult> FilterByCategory(int categoryId)

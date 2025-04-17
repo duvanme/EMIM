@@ -1,8 +1,11 @@
 @using EMIM.ViewModel
 @model UserViewModel
+
+<header>
+    @await Html.PartialAsync("_AuthenticatedHeader")
+</header>
 <main>
       @await Component.InvokeAsync("BackButton")
-
 
     <section class="flex flex-col md:flex-row justify-center items-center w-full h-full relative">
         <div class="bg-white rounded-lg shadow-lg flex flex-col md:flex-row items-center justify-center w-4/5 p-6">

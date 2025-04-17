@@ -11,4 +11,5 @@ namespace EMIM.Services
     Task<List<SaleOrder>> GetUserOrdersAsync(string userId);
     Task<OrderDetailViewModel> GetOrderDetailsAsync(int orderId);
     Task<List<SaleOrder>> GetStoreOrdersAsync(int storeId);
+    }
 }

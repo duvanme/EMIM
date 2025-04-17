@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
             color: "#fff"
         });
     }
-    
+
 
     // Código de calificación con estrellas
     const stars = document.querySelectorAll(".star");

@@ -18,14 +18,16 @@ namespace EMIM.Controllers
         private readonly IUserService _userService;
         private readonly IFileService _fileService;
         private readonly IWebHostEnvironment _environment;
+        private readonly IFavoriteService _favoriteService;
 
         public UserController(
-            UserManager<User> userManager, 
-            SignInManager<User> signInManager, 
-            IAccountService accountService, 
-            IUserService userService, 
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            IAccountService accountService,
+            IUserService userService,
             IFileService fileService,
-            IWebHostEnvironment environment)
+            IWebHostEnvironment environment,
+            IFavoriteService favoriteService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -33,6 +35,8 @@ namespace EMIM.Controllers
             _userService = userService;
             _fileService = fileService;
             _environment = environment;
+            _favoriteService = favoriteService;
+
         }
 
         [HttpGet]
@@ -57,7 +61,7 @@ namespace EMIM.Controllers
             }
 
             var roles = await _userManager.GetRolesAsync(user);
-            
+
             var userViewModel = new UserViewModel
             {
                 Id = user.Id,
@@ -68,15 +72,18 @@ namespace EMIM.Controllers
                 PhoneNumber = user.PhoneNumber,
                 Roles = roles.ToList(),
                 CreatedAt = user.CreatedAt,
-                UserProfilePicture = user.UserProfilePicture
+                UserProfilePicture = user.UserProfilePicture,
 
             };
+            userViewModel.FavoriteProducts = await _favoriteService.GetFavoriteProductsAsync(id);
+            userViewModel.FavoriteCount = await _favoriteService.GetFavoriteCountAsync(id);
 
             return View(userViewModel);
         }
 
         [Authorize]
-        public async Task<IActionResult> EditProfile() {
+        public async Task<IActionResult> EditProfile()
+        {
 
             var userId = _userManager.GetUserId(User); // Get the logged-in user ID
             var user = await _userManager.FindByIdAsync(userId);
@@ -158,5 +165,26 @@ namespace EMIM.Controllers
 
         [Authorize]
         public IActionResult UsuariosBloqueados() => View();
+
+        [Authorize]
+public async Task<IActionResult> Favorites()
+{
+    var userId = _userManager.GetUserId(User);
+    if (userId == null)
+    {
+        return RedirectToAction("Login", "Account");
+    }
+
+    var favoriteProducts = await _favoriteService.GetFavoriteProductsAsync(userId);
+    var favoriteCount = await _favoriteService.GetFavoriteCountAsync(userId);
+
+    var viewModel = new FavoritesViewModel
+    {
+        Products = favoriteProducts,
+        Count = favoriteCount
+    };
+
+    return View(viewModel);
+}
     }
 }

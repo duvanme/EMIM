@@ -1,7 +1,7 @@
 @using EMIM.ViewModel
 @model UserViewModel
 <main>
-      @await Component.InvokeAsync("BackButton")
+    @await Component.InvokeAsync("BackButton")
 
 
     <section class="flex flex-col md:flex-row justify-center items-center w-full h-full relative">
@@ -43,40 +43,54 @@
             <hr>
             <div class="flex flex-col md:flex-row justify-between items-right w-full h-full">
                 <h5 class="font-bold">Favoritos</h5>
-                <button class="bg-[#A9C8CF] rounded-lg shadow-lg flex flex-row">Productos en
-                    favoritos</button>
+                <button class="bg-[#A9C8CF] rounded-lg shadow-lg flex flex-row">
+                    @Model.FavoriteCount productos en favoritos
+                </button>
             </div>
 
             <div class="flex flex-col md:flex-row justify-center items-center w-full h-full space-x-4 mt-4">
-                <div
-                    class="bg-white rounded-lg shadow-lg flex flex-col items-center justify-center w-full md:w-1/3 p-4">
-                    <img class="w-full h-48 object-cover rounded-t-lg" src="img/deportivo-mujer.jpg"
-                        alt="Conjunto deportivo para mujer">
-                    <div class="p-4 ">
-                        <p>Conjunto deportivo para mujer</p>
-                        <h5 class="font-bold">$58,000</h5>
+                @if (Model.FavoriteProducts.Any())
+                {
+                    @foreach (var product in Model.FavoriteProducts.Take(3))
+                    {
+                        <div class="bg-white rounded-lg shadow-lg flex flex-col items-center justify-center w-full md:w-1/3 p-4 product-card"
+                            data-id="@product.Id" style="cursor: pointer;">
+                            <img class="w-full h-48 object-cover rounded-t-lg" src="@product.ImageUrl" alt="@product.Name">
+                            <div class="p-4 w-full">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <p>@product.Name</p>
+                                        <h5 class="font-bold">@product.Price.ToString("C")</h5>
+                                    </div>
+                                    <button class="remove-favorite-btn text-red-500 hover:text-red-700" data-id="@product.Id"
+                                        onclick="event.stopPropagation();">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"
+                                            stroke="currentColor" class="h-6 w-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 6a4 4 0 000 5.6L12 21l8-9.4a4 4 0 10-5.6-5.6L12 7l-2.4-2.4A4 4 0 004 6z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="w-full text-center py-8">
+                        <p class="text-gray-500">No tienes productos favoritos aún.</p>
                     </div>
-                </div>
-                <div
-                    class="bg-white rounded-lg shadow-lg flex flex-col items-center justify-center w-full md:w-1/3 p-4">
-                    <img class="w-full h-48 object-cover rounded-t-lg" src="img/deportivo-mujer.jpg"
-                        alt="Conjunto deportivo para mujer">
-                    <div class="p-4 ">
-                        <p>Conjunto deportivo para mujer</p>
-                        <h5 class="font-bold">$58,000</h5>
-                    </div>
-                </div>
-                <div
-                    class="bg-white rounded-lg shadow-lg flex flex-col items-center justify-center w-full md:w-1/3 p-4">
-                    <img class="w-full h-48 object-cover rounded-t-lg" src="img/deportivo-mujer.jpg"
-                        alt="Conjunto deportivo para mujer">
-                    <div class="p-4 ">
-                        <p>Conjunto deportivo para mujer</p>
-                        <h5 class="font-bold">$58,000</h5>
-                    </div>
-                </div>
+                }
             </div>
+
+            @if (Model.FavoriteProducts.Count > 3)
+            {
+                <div class="mt-4 text-center">
+                    <a href="/User/Favorites" class="text-blue-500 hover:underline">Ver todos mis favoritos</a>
+                </div>
+            }
         </div>
     </section>
 
+    <script src="~/js/favoriteProfile.js"></script>
 </main>

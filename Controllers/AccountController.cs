@@ -49,7 +49,7 @@ namespace EMIM.Controllers
                 var identity = new ClaimsIdentity(claims, IdentityConstants.ApplicationScheme);
                 var principal = new ClaimsPrincipal(identity);
 
-                await _signInManager.SignInAsync(user, isPersistent: false);
+                await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal);
 
 
 

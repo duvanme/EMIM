@@ -15,7 +15,7 @@ public class EmimContext : IdentityDbContext<User>
         this.configuration = configuration;
     }
 
-    public DbSet<Payment> Payments {get; set;}
+    public DbSet<Payment> Payments { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Store> Stores { get; set; }
     public DbSet<Product> Products { get; set; }
@@ -23,6 +23,8 @@ public class EmimContext : IdentityDbContext<User>
     public DbSet<SaleOrder> SaleOrders { get; set; }
     public DbSet<SaleOrderLine> SaleOrderLines { get; set; }
     public DbSet<SaleOrderStatus> SaleOrderStatuses { get; set; }
+    public DbSet<Favorite> Favorites { get; set; }
+
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -134,5 +136,22 @@ public class EmimContext : IdentityDbContext<User>
         .WithMany(s => s.SaleOrderStatus)
         .HasForeignKey(o => o.OrderId) // Corregido: usa OrderId
         .OnDelete(DeleteBehavior.Restrict);
+
+        // Configuración para la tabla de favoritos
+        modelBuilder.Entity<Favorite>()
+            .HasKey(f => f.Id);
+
+        modelBuilder.Entity<Favorite>()
+    .HasOne(f => f.User)
+    .WithMany()
+    .HasForeignKey(f => f.UserId)
+    .OnDelete(DeleteBehavior.Restrict); // Cambiado de Cascade a Restrict
+
+        modelBuilder.Entity<Favorite>()
+            .HasOne(f => f.Product)
+            .WithMany()
+            .HasForeignKey(f => f.ProductId)
+            .OnDelete(DeleteBehavior.Restrict); // Cambiado de Cascade a Restrict
+
     }
 }

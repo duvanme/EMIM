@@ -1,0 +1,53 @@
+@using EMIM.ViewModel
+@model FavoritesViewModel
+
+<main>
+    @await Component.InvokeAsync("BackButton")
+
+    <section class="container mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold">Mis Productos Favoritos</h1>
+            <span class="bg-[#A9C8CF] px-4 py-2 rounded-lg shadow-md">
+                @Model.Count productos en favoritos
+            </span>
+        </div>
+
+        @if (Model.Products.Any())
+        {
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                @foreach (var product in Model.Products)
+                {
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden product-card"
+                         onclick="window.location.href = '/Product/ProductDisplay/@product.Id'">
+                        <img class="w-full h-48 object-cover" src="@product.ImageUrl" alt="@product.Name">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg">@product.Name</h3>
+                            <p class="text-gray-600 mb-2">@product.StoreName</p>
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-lg">@product.Price.ToString("C")</span>
+                                <button class="remove-favorite-btn text-red-500 hover:text-red-700" 
+                                        data-id="@product.Id"
+                                        onclick="event.stopPropagation();">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a4 4 0 000 5.6L12 21l8-9.4a4 4 0 10-5.6-5.6L12 7l-2.4-2.4A4 4 0 004 6z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                <p class="text-gray-500 mb-4">No tienes productos favoritos aún.</p>
+                <a href="/" class="bg-[#13678A] text-white px-4 py-2 rounded-lg hover:bg-[#0D4F65]">
+                    Explorar productos
+                </a>
+            </div>
+        }
+    </section>
+
+    <script src="~/js/favoriteProfile.js"></script>
+</main>

@@ -13,5 +13,8 @@ namespace EMIM.ViewModel
         public string? PhoneNumber { get; set; }
         public List<string>? Roles { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public List<ProductViewModel> FavoriteProducts { get; set; } = new List<ProductViewModel>();
+        public int FavoriteCount { get; set; }
     }
 }

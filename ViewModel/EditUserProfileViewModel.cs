@@ -14,6 +14,8 @@ namespace EMIM.ViewModel
 
         public IFormFile? UserProfilePicture { get; set; }
 
+        public String? UserProfilePicturePath { get; set; }
+
         [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
     }

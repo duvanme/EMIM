@@ -101,7 +101,8 @@ namespace EMIM.Controllers
                 Address = user.Address,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                DateOfBirth = user.DateOfBirth
+                DateOfBirth = user.DateOfBirth,
+                UserProfilePicturePath = user.UserProfilePicture
             };
 
             return View(model);

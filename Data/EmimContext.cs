@@ -24,6 +24,7 @@ public class EmimContext : IdentityDbContext<User>
     public DbSet<SaleOrderLine> SaleOrderLines { get; set; }
     public DbSet<SaleOrderStatus> SaleOrderStatuses { get; set; }
     public DbSet<Favorite> Favorites { get; set; }
+    public DbSet<HelpQuestion> HelpQuestions { get; set;}
 
 
 

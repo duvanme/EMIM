@@ -2,12 +2,14 @@
 using EMIM.DTOs;
 using EMIM.Models;
 using EMIM.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
 using Stripe.Checkout;
 using System.Security.Claims;
 using System.Text.Json;
+using EMIM.Services;
 
 
 namespace EMIM.Controllers
@@ -18,13 +20,17 @@ namespace EMIM.Controllers
         private readonly EmimContext _context;
         private readonly ICheckoutService _checkoutService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IEmailService _emailService;
+        private readonly IUserService _userService;
 
-        public CheckoutController(EmimContext context, ICheckoutService checkoutService,
-            IHttpContextAccessor httpContextAccessor)
+
+        public CheckoutController(EmimContext context, ICheckoutService checkoutService, IHttpContextAccessor httpContextAccessor, IEmailService emailService, IUserService userService)
         {
             _context = context;
             _checkoutService = checkoutService;
             _httpContextAccessor = httpContextAccessor;
+            _emailService = emailService;
+            _userService = userService;
         }
 
 
@@ -128,6 +134,15 @@ namespace EMIM.Controllers
 
                         ViewBag.ClearCart = true;
                         ViewBag.Message = "Pago realizado con éxito.";
+
+                        var user = await _userService.FindUserByIdAsync(userId); // Suponiendo que tienes un servicio para obtener al usuario
+                        var Email = user.Email; // Obtienes el correo registrado
+                        var emailBody = EmailTemplateHelper.BuildOrderEmailBody(cartItems, totalAmount / 100);
+
+                        await _emailService.SendEmailAsync(
+                            Email,
+                            "Detalles de tu compra en EMIM",
+                            emailBody);
                     }
                     catch (Exception ex)
                     {
@@ -169,7 +184,7 @@ namespace EMIM.Controllers
         }
 
 
-        private async Task<List<CartItem>> GetCartFromLocalStorage()   
+        private async Task<List<CartItem>> GetCartFromLocalStorage()
         {
             // Recuperar los datos del carrito de la sesión
             var cartJson = HttpContext.Session.GetString("CartData");

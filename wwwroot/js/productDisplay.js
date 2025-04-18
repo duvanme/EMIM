@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Asignar el nuevo escuchador
         addToCartButton.addEventListener('click', handleAddToCart);
     }
-     
+
     // Código de calificación con estrellas
     const stars = document.querySelectorAll(".star");
 

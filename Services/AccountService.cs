@@ -40,6 +40,7 @@ namespace EMIM.Services
                 LastName = model.LastName,
                 Email = model.Email,
                 UserName = model.Email,
+                Address = model.Address,
                 CreatedAt = DateTime.UtcNow,
                 ModifiedAt = DateTime.UtcNow,
                 EmailConfirmed = false

@@ -4,6 +4,7 @@ using EMIM.ViewModel;
 using EMIM.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using EMIM.Models;
 
 namespace EMIM.Controllers
 {
@@ -14,14 +15,16 @@ namespace EMIM.Controllers
     //Servicio para la gestión de usuarios
     private readonly IAdminService _adminService;
     private readonly IStoreService _storeService;
+    private readonly IEmailService _emailService;
 
     //Constructor que inyecta el servicio de usuario
 
-    public AdminController(IAdminService adminService, IStoreService storeService, EmimContext context)
+    public AdminController(IAdminService adminService, IStoreService storeService, EmimContext context, IEmailService emailService)
     {
         _adminService = adminService;
         _storeService = storeService;
         _context = context;
+        _emailService = emailService;
     }
 
     //Mostrar la vista para crear un nuevo usuario
@@ -167,6 +170,48 @@ namespace EMIM.Controllers
         //Mostrar la vista del perfil administrador 
         [Authorize(Roles = "Admin")]
         public IActionResult AdminProfile() => View();
+
+        public IActionResult HelpQuestion()
+        {
+            var preguntas = _context.HelpQuestions.ToList();
+            return View(preguntas);
+        }
+
+        [HttpPost]
+        [Route("HelpQuestion/Submit")]
+        public async Task<IActionResult> Submit([FromBody] HelpQuestion model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _context.HelpQuestions.Add(model);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AnswerHelpQuestion(int Id, string Answer)
+        {
+            var question = await _context.HelpQuestions.FindAsync(Id);
+            if (question == null)
+                return NotFound();
+
+            question.Answer = Answer;
+            question.Status = "Respondido";
+
+            await _context.SaveChangesAsync();
+
+            // Enviar correo al usuario
+            await _emailService.SendEmailAsync(
+                question.Email,
+                $"Respuesta a tu solicitud: {question.Subject}",
+                $"Hola {question.UserName},\n\nGracias por contactarnos. Esta es la respuesta a tu mensaje:\n\n\"{question.Message}\"\n\nRespuesta del administrador:\n\"{Answer}\""
+            );
+
+            return RedirectToAction("HelpQuestion");
+        }
+
 
     }
 

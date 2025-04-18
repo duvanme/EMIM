@@ -1,0 +1,82 @@
+@model List<EMIM.Models.HelpQuestion>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main>
+    @await Component.InvokeAsync("BackButton")
+    <section class="flex justify-center w-full py-6">
+        <div class="bg-white rounded-lg shadow-lg w-4/5 p-6">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold">Solicitudes de Ayuda</h2>
+            </div>
+            <div class="grid grid-cols-4 font-semibold p-2 rounded-lg">
+                <span>Usuario</span>
+                <span>Pregunta</span>
+                <span>Estado</span>
+                <span class="flex justify-center items-center ml-2">Ver mas</span>
+            </div>
+
+            <div class="space-y-4">
+                @foreach (var item in Model)
+                {
+                    <div class="grid grid-cols-4 items-center bg-[#469bae] text-white rounded-lg shadow-md p-4">
+                        
+                        <p> @item.UserName</p>
+                        <p> @item.Subject</p>
+                        <p>@item.Status</p>
+
+                        <div class="flex justify-center">
+                            <button onclick="openModal(@item.Id)" type="button" class="hover:text-gray-300" title="Ver y responder">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div id="modal-@item.Id"
+                        class="modal hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                        <div class="bg-white text-black rounded-lg p-6 w-full max-w-2xl">
+                            <h3 class="text-lg font-semibold mb-2">Solicitud de: @item.UserName</h3>
+                            <p><strong>Asunto:</strong> @item.Subject</p>
+                            <p class="mt-2"><strong>Mensaje:</strong></p>
+                            <p class="mb-4">@item.Message</p>
+
+                            @if (item.Status != "Respondido")
+                            {
+                                <form method="post" asp-action="AnswerHelpQuestion">
+                                    <input type="hidden" name="Id" value="@item.Id" />
+                                    <div class="mb-4">
+                                        <label for="Answer" class="block text-sm font-medium">Respuesta:</label>
+                                        <textarea name="Answer" rows="5" class="w-full border rounded p-2" required></textarea>
+                                    </div>
+                                    <div class="flex justify-end space-x-2">
+                                        <button type="button" onclick="closeModal(@item.Id)"
+                                            class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">Cancelar</button>
+                                        <button type="submit" class="bg-[#2c6e7c] text-white px-4 py-2 rounded">Enviar
+                                            Respuesta</button>
+                                    </div>
+                                </form>
+                            }
+                            else
+                            {
+                                <p><strong>Respuesta enviada:</strong></p>
+                                <p>@item.Answer</p>
+                                <div class="flex justify-end mt-4">
+                                    <button onclick="closeModal(@item.Id)"
+                                        class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">Cerrar</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="~/js/helpQuestion.js"></script>

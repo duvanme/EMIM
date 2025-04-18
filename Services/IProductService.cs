@@ -18,5 +18,6 @@ namespace EMIM.Services
         Task<List<ProductViewModel>> GetProductsByStoreIdAsync(int storeId);
         Task<IEnumerable<HighlightedProductViewModel>> GetHighlightedProductsAsync();
         Task<List<ProductViewModel>> GetProductsByCategoryAsync(int categoryId);
+        Task<int> GetProductStoreIdAsync(int productId);
     }
 }

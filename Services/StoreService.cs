@@ -1,8 +1,9 @@
-﻿using EMIM.Data;
+using EMIM.Data;
 using EMIM.Models;
 using EMIM.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace EMIM.Services
 {
@@ -26,13 +27,11 @@ namespace EMIM.Services
             if (user == null) return null;
 
 
-            //
-
-
             var store = new Store
             {
                 Name = model.Name,
                 Description = model.Description,
+                StoreStatus = "pending",
                 UserId = userId,
                 StoreProfilePicture = filePath
             };
@@ -40,10 +39,30 @@ namespace EMIM.Services
             emimcontext.Stores.Add(store);
             await emimcontext.SaveChangesAsync();
 
-            // Assign the vendor role
-            await AssignVendorRoleAsync(user);
-
             return store;
+        }
+
+
+        public async Task<Store?> AcceptCreateStore(Store model)
+        {
+            if (model != null)
+            {
+                model.StoreStatus = "enabled";//Cambia estado de la tienda a habilitada.
+
+                emimcontext.SaveChanges();
+            }
+            return model;
+        }
+
+        public async Task<Store?> DenyCreateStore(Store model)
+        {
+            if (model != null)
+            {
+                model.StoreStatus = "denied";//Cambia estado de la tienda a habilitada.
+
+                emimcontext.SaveChanges();
+            }
+            return model;
         }
 
         public async Task<int> GetStoreIdForVendorAsync(string userId)
@@ -54,6 +73,7 @@ namespace EMIM.Services
 
             // Si se encuentra la tienda, devuelve su ID, si no, devuelve 0
             return store?.Id ?? 0;
+
         }
 
         public async Task<bool> AssignVendorRoleAsync(User user)
@@ -73,6 +93,27 @@ namespace EMIM.Services
                 .Include(s => s.User)
                 .FirstOrDefaultAsync(s => s.Id == storeId);
         }
+
+        public async Task<bool> UpdateStoreAsync(EditStoreViewModel model, string? storePicturePath)
+        {
+            var store = await emimcontext.Stores.FirstOrDefaultAsync(s => s.Id == model.Id);
+            if (store == null)
+                return false;
+
+            store.Name = model.Name;
+            store.Description = model.Description;
+            store.Location = model.Location;
+            store.StoreProfilePicture = storePicturePath ?? model.StoreProfilePicturePath;
+            if (!string.IsNullOrEmpty(storePicturePath))
+            {
+                store.StoreProfilePicture = storePicturePath;
+            }
+
+            emimcontext.Stores.Update(store);
+            await emimcontext.SaveChangesAsync();
+            return true;
+        }
+
 
     }
 

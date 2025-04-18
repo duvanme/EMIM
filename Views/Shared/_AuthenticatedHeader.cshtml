@@ -1,0 +1,52 @@
+﻿@{
+    var userName = User.Identity.Name;
+    var Address = User.FindFirst("Address")?.Value ?? "Address";
+}
+
+<header class="w-full h-[60px] bg-[#56b6cc] flex justify-center">
+    <div class="w-[95%] h-full nav-bounds grid grid-cols-[15%_50%_35%] lg:grid-cols-[10%_80%_10%] gap-4 pt-[2px]">
+        <!-- First row -->
+        <div class="h-[50px] flex items-center justify-center">
+            <a asp-controller="home" asp-action="index"><img src="~/images/logo_sin_fondo.png" class="h-[45px] w-[40px] mr-[10px]" alt="logo"></a>
+            <div class="hidden md:flex px-4">
+                <img src="~/images/location.png" class="h-[35px] w-[35px]" alt="">
+                <span class="text-sm text-[#FFFFFF] font-semibold">@Address</span>
+            </div>
+        </div>
+        <div class="h-[50px] flex items-center justify-center">
+            <form id="nav-search" class="w-full" method="get" asp-controller="Home" asp-action="Products">
+                <div class="relative w-full">
+                    <input type="text" name="query" class="w-full bg-white pl-3 pr-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400" placeholder="Buscar productos, marcas y más..." />
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="h-[50px] flex items-center justify-center relative group">
+            <!-- Profile Avatar with Dropdown -->
+            <div class="relative">
+                <span class="h-[40px] w-[40px] bg-gray-800 rounded-full text-white flex items-center justify-center cursor-pointer hover:bg-gray-700 transition-colors duration-200">D</span>
+
+                <!-- Dropdown Menu -->
+                <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top-right">
+                    <div class="py-1">
+                        <a asp-controller="user" asp-action="userprofile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mi Perfil</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mis Pedidos</a>
+                        <a asp-controller="user" asp-action="editprofile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Editar Perfil</a>
+                        <a asp-controller="store" asp-action="createstore" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Crear Tienda</a>
+                        <div class="border-t border-gray-200"></div>
+                        <a asp-controller="account" asp-action="logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cerrar Sesión</a>
+                    </div>
+                </div>
+            </div>
+            <a asp-action="ShoppingCart" asp-controller="ShoppingCart"><img src="~/images/shopping-cart.svg" class="h-[30px] w-[30px] ml-4 mr-[10px]" alt="" id="burger-icon"></a>
+        </div>
+    </div>
+</header>
+<div class="w-full bg-[#56b6cc] flex justify-center md:hidden border-x border-white/40">
+    <img src="~/images/location.png" class="h-[35px] w-[35px]" alt="">
+    <span class="flex items-center text-white font-semibold text-xs">Tu Dirección</span>
+</div>

@@ -27,5 +27,6 @@ namespace EMIM.Controllers
 
         public IActionResult Reviews() => View();
         public IActionResult Help() => View();
+        public IActionResult UnderConstruction() => View();     
     }
 }

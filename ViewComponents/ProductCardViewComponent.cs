@@ -19,23 +19,27 @@ public class ProductCardViewComponent : ViewComponent
     }
 
     public async Task<IViewComponentResult> InvokeAsync(
-        int? categoryId = null,
-        int? storeId = null)
+    int? categoryId = null,
+    int? storeId = null,
+    string query = null,
+    int page = 1,
+    int pageSize = 5,
+    string sort = null)
     {
-        List<ProductViewModel> products;
+        List<ProductViewModel> allProducts;
 
         if (categoryId.HasValue)
         {
-            products = await _productService.GetProductsByCategoryAsync(categoryId.Value);
+            allProducts = await _productService.GetProductsByCategoryAsync(categoryId.Value);
         }
         else if (storeId.HasValue)
         {
-            products = await _productService.GetProductsByStoreIdAsync(storeId.Value);
+            allProducts = await _productService.GetProductsByStoreIdAsync(storeId.Value);
         }
         else
         {
-            var allProducts = await _productService.GetAllProductsAsync();
-            products = allProducts.Select(p => new ProductViewModel
+            var Products = await _productService.GetAllProductsAsync();
+            allProducts = Products.Select(p => new ProductViewModel
             {
                 Id = p.Id,
                 Name = p.Name,
@@ -44,20 +48,59 @@ public class ProductCardViewComponent : ViewComponent
                 Quantity = p.Quantity,
                 CategoryId = p.CategoryId,
                 StoreId = p.StoreId,
-                ImageUrl = p.ImageUrl
-                //StoreName = p.StoreId
+                ImageUrl = p.ImageUrl,
+                StoreName = p.Store?.Name ?? "Tienda Desconocida" // Añade esta línea
             }).ToList();
         }
+
+        if (!string.IsNullOrWhiteSpace(query))
+        {
+            var lowerQuery = query.ToLower();
+            allProducts = allProducts
+                .Where(p => p.Name.ToLower().Contains(lowerQuery) || p.StoreName.ToLower().Contains(lowerQuery))
+                .ToList();
+        }
+
+
+        if (!string.IsNullOrWhiteSpace(sort))
+        {
+            switch (sort.ToLower())
+            {
+                case "price":
+                    allProducts = allProducts.OrderBy(p => p.Price).ToList();
+                    break;
+                case "new":
+                    allProducts = allProducts.OrderByDescending(p => p.CreatedAt).ToList();
+                    break;
+                default:
+                    // El default es organizar por nombre
+                    allProducts = allProducts.OrderBy(p => p.Name).ToList();
+                    break;
+            }
+        }
+
+        var totalItems = allProducts.Count;
+        var paginatedProducts = allProducts
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+
 
         var user = await _userManager.GetUserAsync(HttpContext.User);
         var roles = user != null ? await _userManager.GetRolesAsync(user) : new List<string>();
 
         var model = new ProductCardViewModel
         {
-            Products = products,
+            Products = paginatedProducts,
             Roles = roles.ToList(),
             CurrentUserId = user?.Id,
-            CurrentStoreId = storeId
+            CurrentStoreId = storeId,
+            CurrentCategoryId = categoryId,
+            CurrentPage = page,
+            PageSize = pageSize,
+            TotalItems = totalItems,
+            TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize)
         };
 
         return View(model);

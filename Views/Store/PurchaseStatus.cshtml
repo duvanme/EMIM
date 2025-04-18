@@ -1,0 +1,127 @@
+@model EMIM.ViewModel.OrderDetailViewModel
+
+@{
+    ViewData["Title"] = $"Orden #{Model.OrderId}";
+}
+
+<body class="bg-gray-100 vendor-user">
+    <main>
+        <!-- Botón de regreso -->
+        <div class="container mx-auto p-6">
+            @await Component.InvokeAsync("BackButton")
+        </div>
+
+        <section class="container mx-auto p-6">
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">Gestionar Orden</h1>
+                <div class="flex justify-between items-center">
+                    <p class="text-gray-600">Orden #@Model.OrderId</p>
+                    <p class="text-gray-600">Fecha de compra: @Model.CreatedAt.ToString("dd/MM/yyyy")</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <div class="mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-2">Tiempo de Entrega:</h2>
+                    <p class="text-lg text-gray-600">@Model.EstimatedDeliveryDate</p>
+                </div>
+
+                <!-- Barra de progreso de estado -->
+                <div class="relative">
+                    <!-- Línea conectora -->
+                    <div class="absolute top-12 left-0 right-0 h-1 bg-gray-200 z-0">
+                        <div class="h-full bg-green-500 transition-all duration-500" id="progress-bar"
+                            style="width: @(Model.CurrentStatusId * 25)%"></div>
+                    </div>
+
+                    <!-- Iconos de estado -->
+                    <div class="flex justify-between relative z-10">
+                        <!-- Estado 1: Pagado -->
+                        <div class="flex flex-col items-center cursor-pointer" data-status="Pagado" data-status-id="1">
+                            <div class="w-16 h-16 rounded-full @(Model.CurrentStatusId >= 1 ? "bg-green-500" : "bg-gray-200") flex items-center justify-center text-white mb-2 transition-all duration-300"
+                                id="status-icon-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                            </div>
+                            <p class="text-center font-medium @(Model.CurrentStatusId >= 1 ? "text-green-500" : "text-gray-500")" id="status-text-1">Pagado</p>
+                        </div>
+
+                        <!-- Estado 2: Empacando -->
+                        <div class="flex flex-col items-center cursor-pointer" data-status="Empacando" data-status-id="2">
+                            <div class="w-16 h-16 rounded-full @(Model.CurrentStatusId >= 2 ? "bg-green-500" : "bg-gray-200") flex items-center justify-center text-white mb-2 transition-all duration-300"
+                                id="status-icon-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                </svg>
+                            </div>
+                            <p class="text-center font-medium @(Model.CurrentStatusId >= 2 ? "text-green-500" : "text-gray-500")" id="status-text-2">Empacando</p>
+                        </div>
+
+                        <!-- Estado 3: En reparto -->
+                        <div class="flex flex-col items-center cursor-pointer" data-status="En reparto" data-status-id="3">
+                            <div class="w-16 h-16 rounded-full @(Model.CurrentStatusId >= 3 ? "bg-green-500" : "bg-gray-200") flex items-center justify-center text-white mb-2 transition-all duration-300"
+                                id="status-icon-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                                </svg>
+                            </div>
+                            <p class="text-center font-medium @(Model.CurrentStatusId >= 3 ? "text-green-500" : "text-gray-500")" id="status-text-3">En reparto</p>
+                        </div>
+
+                        <!-- Estado 4: Completado -->
+                        <div class="flex flex-col items-center cursor-pointer" data-status="Completado" data-status-id="4">
+                            <div class="w-16 h-16 rounded-full @(Model.CurrentStatusId >= 4 ? "bg-green-500" : "bg-gray-200") flex items-center justify-center text-white mb-2 transition-all duration-300"
+                                id="status-icon-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <p class="text-center font-medium @(Model.CurrentStatusId >= 4 ? "text-green-500" : "text-gray-500")" id="status-text-4">Completado</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detalles de la compra -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Detalles de la compra</h3>
+
+                @foreach (var item in Model.Items)
+                {
+                    <div class="border-b border-gray-200 py-4 flex items-center">
+                        <img src="@item.ImageUrl" alt="@item.ProductName"
+                            class="w-20 h-20 object-cover rounded-lg mr-4">
+                        <div class="flex-grow">
+                            <h4 class="font-medium text-gray-800">@item.ProductName</h4>
+                            <p class="text-gray-600">Cantidad: @item.Quantity</p>
+                            <p class="text-gray-600">Vendido por: @item.StoreName</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-gray-800">$@item.Subtotal.ToString("N2")</p>
+                        </div>
+                    </div>
+                }
+
+                <div class="mt-6 text-right">
+                    <p class="text-gray-600">Subtotal: $@Model.SubTotal.ToString("N2")</p>
+                    <p class="text-gray-600">Envío: $@Model.ShippingCost.ToString("N2")</p>
+                    <p class="text-xl font-bold text-gray-800 mt-2">Total: $@Model.TotalPrice.ToString("N2")</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <input type="hidden" id="orderId" value="@Model.OrderId" />
+    @Html.AntiForgeryToken()
+
+    <script src="~/js/purchaseStatus.js" asp-append-version="true"></script>
+</body>

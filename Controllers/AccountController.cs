@@ -1,26 +1,29 @@
 using EMIM.Models;
 using EMIM.Services;
 using EMIM.ViewModel;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace EMIM.Controllers
 {
     public class AccountController : Controller
     {
-    
+
         private readonly IAccountService accountService;
         private readonly UserManager<User> userManager;
         private readonly IEmailService _emailService;
-        
+        private readonly SignInManager<User> _signInManager;
 
-        public AccountController(IAccountService accountService, UserManager<User> userManager, IEmailService _emailService)
+
+        public AccountController(IAccountService accountService, UserManager<User> userManager, IEmailService _emailService, SignInManager<User> signInManager)
         {
             this.accountService = accountService;
             this.userManager = userManager;
             this._emailService = _emailService;
-
+            _signInManager = signInManager;
         }
 
         public IActionResult Login() => View();
@@ -32,8 +35,37 @@ namespace EMIM.Controllers
 
             var result = await accountService.LoginAsync(model);
             if (result.Succeeded)
-                return RedirectToAction("Index", "Home");
+            {
+                var user = await userManager.FindByEmailAsync(model.Email); // O usa model.Username si es con username
 
+                var claims = new List<Claim>{
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim("Address", user.Address ?? "")
+                };
+
+                var roles = await userManager.GetRolesAsync(user);
+                claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+
+                var identity = new ClaimsIdentity(claims, IdentityConstants.ApplicationScheme);
+                var principal = new ClaimsPrincipal(identity);
+
+                await _signInManager.SignInAsync(user, isPersistent: false);
+
+
+
+                if (await userManager.IsInRoleAsync(user, "Admin"))
+                {
+                    return RedirectToAction("AdminProfile", "Admin"); // Vista del admin
+                }
+                else if (await userManager.IsInRoleAsync(user, "Vendor"))
+                {
+                    return RedirectToAction("StoreProfile", "Store"); // Vista del vendedor
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home"); // Vista por defecto o de cliente
+                }
+            }
             ModelState.AddModelError("", "Email or password is incorrect.");
             return View(model);
         }
@@ -67,7 +99,7 @@ namespace EMIM.Controllers
             if (user == null)
             {
                 return NotFound("User not found.");
-            }            
+            }
 
             return BadRequest("Email confirmation failed.");
         }
@@ -106,7 +138,8 @@ namespace EMIM.Controllers
         [HttpPost]
         public IActionResult VerifyCode(VerifyCodeViewModel model)
         {
-            if(!ModelState.IsValid){
+            if (!ModelState.IsValid)
+            {
                 return View(model);
             }
             var storedCode = HttpContext.Session.GetString("VerificationCode");

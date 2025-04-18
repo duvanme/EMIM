@@ -22,9 +22,10 @@
                     @foreach (var store in user.Stores)
                     {
                     <div class="flex items-center bg-[#469bae] text-white rounded-lg shadow-md p-4 my-2 cursor-pointer tarjeta"
-                             data-id="@user.UserId"
+                             data-id="@store.Nit"
                              data-store-id="@store.StoreId"
                              data-store-name="@store.Name"
+                             data-store-location="@store.Location"
                              data-user-first-name="@user.FirstName"
                              data-user-last-name="@user.LastName"
                              data-user-email="@user.Email"
@@ -50,7 +51,7 @@
                 <div>
                     <input type="hidden" name="storeId" id="storeId" value=""/>
                     <p><strong>Nombre de la Tienda</strong></p>
-                    <p class="text-gray-500" id="storeName"></p>
+                    <p class="text-gray-500"><span id="storeName"></span></p>
 
                     <p><strong>Nombre del usuario</strong></p>
                     <p class="text-gray-500"><span id="userName"></span></p>
@@ -58,11 +59,11 @@
                     <p><strong>Correo Electrónico</strong></p>
                     <p class="text-gray-500"><span id="userEmail"></span></p>
 
-                    <p><strong>Documento del usuario</strong></p>
-                    <p class="text-gray-500" id="userId"></p>
+                    <p><strong>NIT del emprendimiento</strong></p>
+                    <p class="text-gray-500"><span id="storeNit"></span></p>
 
                     <p><strong>Ubicación de la tienda</strong></p>
-                    <p class="text-gray-500">NULL</p>
+                    <p class="text-gray-500"><span id="storeLocation"></span></p>
                 </div>
 
                 <div class="flex flex-col items-center">

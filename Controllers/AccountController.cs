@@ -38,20 +38,7 @@ namespace EMIM.Controllers
             {
                 var user = await userManager.FindByEmailAsync(model.Email); // O usa model.Username si es con username
 
-                var claims = new List<Claim>{
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim("Address", user.Address ?? "")
-                };
-
-                var roles = await userManager.GetRolesAsync(user);
-                claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
-
-                var identity = new ClaimsIdentity(claims, IdentityConstants.ApplicationScheme);
-                var principal = new ClaimsPrincipal(identity);
-
-                await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal);
-
-
+                await _signInManager.SignInAsync(user, isPersistent: false);
 
                 if (await userManager.IsInRoleAsync(user, "Admin"))
                 {

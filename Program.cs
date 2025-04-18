@@ -43,6 +43,8 @@ builder.Services.AddScoped<ISaleOrderLineService, SaleOrderLineService>();
 builder.Services.AddScoped<ISaleOrderStatusService, SaleOrderStatusService>();
 builder.Services.AddScoped<ICheckoutService, CheckoutService>();
 builder.Services.AddScoped<IFavoriteService, FavoriteService>();
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, ApplicationUserClaimsPrincipalFactory>();
+
 
 //Agrega soporte para sesiones
 builder.Services.AddDistributedMemoryCache();

@@ -127,6 +127,8 @@ namespace EMIM.Controllers
                     Name = t.Name,
                     StoreId = t.Id,
                     Description = t.Description,
+                    Nit = t.Nit,
+                    Location = t.Location,
                     //StoreProfilePicture = t.StoreProfilePicture
                 }).ToList()
             }).ToList();

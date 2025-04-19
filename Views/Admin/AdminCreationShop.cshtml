@@ -1,23 +1,41 @@
+@using EMIM.ViewModel
+@model List<UserStoresViewModel>
+
+@{
+    ViewData["Title"] = "adminProfileView";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
 <main>  
           @await Component.InvokeAsync("BackButton")
 
     <section class="flex justify-center w-full py-6">
         <div class="bg-white rounded-lg shadow-lg w-4/5 p-6">
             <h2 class="text-2xl font-bold text-center mb-6">Peticiones de Creación de Tiendas</h2>
-
             <div class="w-full">
                 <div class="grid grid-cols-2 font-semibold p-2 rounded-lg">
                     <span>Nombre de la Tienda</span>
                     <span>Nombre del Usuario</span>
                 </div>
-
-                @for (int i = 0; i < 5; i++) {
-                    <div class="flex items-center bg-[#469bae] text-white rounded-lg shadow-md p-4 my-2 cursor-pointer tarjeta">
-                        <span class="w-1/2">Mi tiendita</span>
-                        <span class="w-1/3">Alejandra Orozco</span>
+                @foreach (var user in Model)
+                {
+                    @foreach (var store in user.Stores)
+                    {
+                    <div class="flex items-center bg-[#469bae] text-white rounded-lg shadow-md p-4 my-2 cursor-pointer tarjeta"
+                             data-id="@store.Nit"
+                             data-store-id="@store.StoreId"
+                             data-store-name="@store.Name"
+                             data-store-location="@store.Location"
+                             data-user-first-name="@user.FirstName"
+                             data-user-last-name="@user.LastName"
+                             data-user-email="@user.Email"
+                             data-store-description="@store.Description">
+                        <span class="w-1/2">@store.Name</span>
+                        <span class="w-1/3">@store.Description</span>
                         <span class="w-1/6 text-right underline ver-mas">Ver más...</span>
                         <span class="w-4 h-4 bg-red-500 rounded-full ml-4"></span>
                     </div>
+                    }
                 }
             </div>
         </div>
@@ -28,40 +46,44 @@
 <div id="modal-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center p-4">
     <div id="modal" class="bg-white rounded-lg shadow-lg w-full max-w-[90%] md:max-w-[60%] lg:max-w-[50%] p-6 overflow-y-auto max-h-[90vh]">
         <h2 class="text-2xl font-bold text-center mb-4">Petición para crear tienda</h2>
+        <form asp-action="AdminCreationShop" method="post">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <input type="hidden" name="storeId" id="storeId" value=""/>
+                    <p><strong>Nombre de la Tienda</strong></p>
+                    <p class="text-gray-500"><span id="storeName"></span></p>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <p><strong>Nombre de la Tienda</strong></p>
-                <p class="text-gray-500">Mi tiendita</p>
+                    <p><strong>Nombre del usuario</strong></p>
+                    <p class="text-gray-500"><span id="userName"></span></p>
 
-                <p><strong>Nombre del usuario</strong></p>
-                <p class="text-gray-500">Alejandra Orozco</p>
+                    <p><strong>Correo Electrónico</strong></p>
+                    <p class="text-gray-500"><span id="userEmail"></span></p>
 
-                <p><strong>Correo Electrónico</strong></p>
-                <p class="text-gray-500">Aleja@gmail.com</p>
+                    <p><strong>NIT del emprendimiento</strong></p>
+                    <p class="text-gray-500"><span id="storeNit"></span></p>
 
-                <p><strong>Documento del usuario</strong></p>
-                <p class="text-gray-500">11111111111</p>
+                    <p><strong>Ubicación de la tienda</strong></p>
+                    <p class="text-gray-500"><span id="storeLocation"></span></p>
+                </div>
 
-                <p><strong>Ubicación de la tienda</strong></p>
-                <p class="text-gray-500">Medellín</p>
+                <div class="flex flex-col items-center">
+                    <p><strong>Logo de la Tienda</strong></p>
+                    <img src="https://via.placeholder.com/150" class="rounded-lg shadow-lg my-2 w-32 md:w-40">
+
+                    <p><strong>Descripción de la tienda</strong></p>
+                    <p class="text-gray-500 text-center"><span id="storeDescription"></span></p>
+                </div>
             </div>
-            
-            <div class="flex flex-col items-center">
-                <p><strong>Logo de la Tienda</strong></p>
-                <img src="https://via.placeholder.com/150" class="rounded-lg shadow-lg my-2 w-32 md:w-40">
 
-                <p><strong>Descripción de la tienda</strong></p>
-                <p class="text-gray-500 text-center">Tienda de ropa fashion creada por mí</p>
+            <div class="flex flex-wrap justify-around mt-6 gap-2">
+                <button class="bg-[#56b6cc] hover:bg-[#13678A] transition text-white px-4 py-2 rounded-lg shadow-md w-full md:w-auto" type="submit">Crear tienda</button>
+                <button class="bg-red-600 text-white px-4 py-2 rounded-lg shadow-md w-full md:w-auto" id="cerrar-modal" type="submit"
+                        formaction="@Url.Action("AdminNegationShop", "Admin")">
+                    Denegar Tienda
+                </button>
             </div>
-        </div>
-
-        <div class="flex flex-wrap justify-around mt-6 gap-2">
-            <button class="bg-[#56b6cc] hover:bg-[#13678A] transition text-white px-4 py-2 rounded-lg shadow-md w-full md:w-auto">Crear tienda</button>
-            <button class="bg-red-600 text-white px-4 py-2 rounded-lg shadow-md w-full md:w-auto" id="cerrar-modal">Denegar Tienda</button>
-        </div>
+        </form>     
     </div>
 </div>
 
-
-<script src="/js/modalAdmin.js"></script>
+<script src="~/js/modalAdmin.js"></script>

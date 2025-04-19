@@ -37,6 +37,15 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
+// Añade estas líneas en tu Program.cs donde configuras los servicios
+builder.Services.AddScoped<ISaleOrderService, SaleOrderService>();
+builder.Services.AddScoped<ISaleOrderLineService, SaleOrderLineService>();
+builder.Services.AddScoped<ISaleOrderStatusService, SaleOrderStatusService>();
+builder.Services.AddScoped<ICheckoutService, CheckoutService>();
+builder.Services.AddScoped<IFavoriteService, FavoriteService>();
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, ApplicationUserClaimsPrincipalFactory>();
+
+
 //Agrega soporte para sesiones
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>

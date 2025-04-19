@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Shared\Components\_Categories.cshtml" />
+    <Content Remove="Views\Shared\Components\_IndexFilter.cshtml" />
+    <Content Remove="Views\Shared\_HeaderAuthenticated.cshtml" />
+    <Content Remove="Views\_Footer.cshtml" />
+    <Content Remove="Views\_IndexFilter.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
   <UpToDateCheckBuilt Include="wwwroot/css/site.css" Set="Css" />
   <UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />
 </ItemGroup>
@@ -23,6 +31,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Stripe.net" Version="47.4.0" />
   </ItemGroup>
 
 <Target Name="Tailwind" BeforeTargets="Build">

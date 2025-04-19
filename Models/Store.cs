@@ -11,10 +11,14 @@ namespace EMIM.Models
         [Required]
         public string Name { get; set; } = null!;
 
+        public string Nit { get; set; }
+
         public string? Description { get; set; }
+        public string? Location { get; set; }
 
         public string? StoreProfilePicture { get; set; }
-        
+        public string StoreStatus { get; set; }
+
         [Required]
         public string UserId { get; set; }
 
@@ -22,5 +26,7 @@ namespace EMIM.Models
         public User User { get; set; } = null!;
 
         public ICollection<Product> Products { get; set; } = new List<Product>();
+
+
     }
 }

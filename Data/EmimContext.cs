@@ -15,6 +15,7 @@ public class EmimContext : IdentityDbContext<User>
         this.configuration = configuration;
     }
 
+    public DbSet<Payment> Payments { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Store> Stores { get; set; }
     public DbSet<Product> Products { get; set; }
@@ -22,6 +23,9 @@ public class EmimContext : IdentityDbContext<User>
     public DbSet<SaleOrder> SaleOrders { get; set; }
     public DbSet<SaleOrderLine> SaleOrderLines { get; set; }
     public DbSet<SaleOrderStatus> SaleOrderStatuses { get; set; }
+    public DbSet<Favorite> Favorites { get; set; }
+    public DbSet<HelpQuestion> HelpQuestions { get; set;}
+
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -48,9 +52,28 @@ public class EmimContext : IdentityDbContext<User>
             .HasConversion<string>();
 
 
-        var admin = new IdentityRole("Admin") { NormalizedName = "ADMIN" };
-        var customer = new IdentityRole("Customer") { NormalizedName = "CUSTOMER" };
-        var vendor = new IdentityRole("Vendor") { NormalizedName = "VENDOR" };
+        string adminRoleId = "1";
+        string customerRoleId = "2";
+        string vendorRoleId = "3";
+
+        var admin = new IdentityRole
+        {
+            Id = adminRoleId,
+            Name = "Admin",
+            NormalizedName = "ADMIN"
+        };
+        var customer = new IdentityRole
+        {
+            Id = customerRoleId,
+            Name = "Customer",
+            NormalizedName = "CUSTOMER"
+        };
+        var vendor = new IdentityRole
+        {
+            Id = vendorRoleId,
+            Name = "Vendor",
+            NormalizedName = "VENDOR"
+        };
 
         modelBuilder.Entity<IdentityRole>().HasData(admin, customer, vendor);
 
@@ -100,19 +123,36 @@ public class EmimContext : IdentityDbContext<User>
         modelBuilder.Entity<SaleOrderLine>()
         .HasOne(d => d.SaleOrder)
         .WithMany(o => o.SaleOrderLine)
-        .HasForeignKey(d => d.Id)
-        .OnDelete(DeleteBehavior.Restrict); // Si se borra una orden, se eliminan sus detalles.
+        .HasForeignKey(d => d.SaleOrderId) // Corregido: usa SaleOrderId
+        .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<SaleOrderLine>()
-            .HasOne(d => d.Product)
-            .WithMany(p => p.SaleOrderLine)
-            .HasForeignKey(d => d.Id)
+        .HasOne(d => d.Product)
+        .WithMany(p => p.SaleOrderLine)
+        .HasForeignKey(d => d.ProductId) // Corregido: usa ProductId
         .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<SaleOrderStatus>()
-            .HasOne(o => o.SaleOrder)
-            .WithMany(s => s.SaleOrderStatus)
-            .HasForeignKey(o => o.Id)
-            .OnDelete(DeleteBehavior.Restrict);
+        .HasOne(o => o.SaleOrder)
+        .WithMany(s => s.SaleOrderStatus)
+        .HasForeignKey(o => o.OrderId) // Corregido: usa OrderId
+        .OnDelete(DeleteBehavior.Restrict);
+
+        // Configuración para la tabla de favoritos
+        modelBuilder.Entity<Favorite>()
+            .HasKey(f => f.Id);
+
+        modelBuilder.Entity<Favorite>()
+    .HasOne(f => f.User)
+    .WithMany()
+    .HasForeignKey(f => f.UserId)
+    .OnDelete(DeleteBehavior.Restrict); // Cambiado de Cascade a Restrict
+
+        modelBuilder.Entity<Favorite>()
+            .HasOne(f => f.Product)
+            .WithMany()
+            .HasForeignKey(f => f.ProductId)
+            .OnDelete(DeleteBehavior.Restrict); // Cambiado de Cascade a Restrict
+
     }
 }

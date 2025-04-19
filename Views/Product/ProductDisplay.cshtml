@@ -1,5 +1,7 @@
 @using EMIM.ViewModel
 @using System.Security.Claims
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
 @model ProductViewModel
 
 <main>
@@ -19,31 +21,32 @@
                 <h1 class="text-2xl font-bold text-gray-800 mb-2">@Model.Name</h1>
                 <h2 class="text-lg text-gray-600 mb-2">Vendido por: @Model.StoreName</h2>
                 <h2 class="text-3xl text-gray-800 font-bold mb-4">@Model.Price.ToString("C")</h2>
+                <input type="hidden" name="ProductQuantity" value="@Model.Quantity" />
 
                 <div class="between flex gap-x-4">
                     <!-- Botón de carrito -->
 
                     <button id="add-to-cart-btn"
-
-                            class="w-full flex items-center justify-center bg-[#13678A] text-white py-3 rounded-lg shadow hover:bg-[#0D4F65]">
+                        class="w-full flex items-center justify-center bg-[#13678A] text-white py-3 rounded-lg shadow hover:bg-[#0D4F65]">
 
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                             class="h-5 w-5 mr-2">
+                            class="h-5 w-5 mr-2">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M3 3h2l.4 2M7 13h10l3.4-6H6.6M7 13l-1.3 6.4A1 1 0 007.7 21h8.6a1 1 0 001-.9l1.3-6.1M10 21a2 2 0 11-4 0M20 21a2 2 0 11-4 0" />
+                                d="M3 3h2l.4 2M7 13h10l3.4-6H6.6M7 13l-1.3 6.4A1 1 0 007.7 21h8.6a1 1 0 001-.9l1.3-6.1M10 21a2 2 0 11-4 0M20 21a2 2 0 11-4 0" />
                         </svg>
                         Añadir al carrito
                     </button>
 
                     <!-- Botón de favoritos -->
-                    <button
-                        class="w-full flex items-center justify-center bg-[#13678A] text-white py-3 rounded-lg shadow hover:bg-[#0D4F65]">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            class="h-5 w-5 mr-2">
+                    <button id="add-to-favorite-btn"
+                        class="w-full flex items-center justify-center @(Model.IsFavorite ? "bg-red-500" : "bg-[#13678A]") text-white py-3 rounded-lg shadow hover:bg-[#0D4F65]"
+                        data-id="@Model.Id">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill='@(Model.IsFavorite ? "currentColor" : "none")'
+                            viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5 mr-2">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6a4 4 0 000 5.6L12 21l8-9.4a4 4 0 10-5.6-5.6L12 7l-2.4-2.4A4 4 0 004 6z" />
                         </svg>
-                        Añadir a favoritos
+                        @(Model.IsFavorite ? "Quitar de favoritos" : "Añadir a favoritos")
                     </button>
                 </div>
 
@@ -109,6 +112,10 @@
 
     </section>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/FavoriteButton.js"></script>
 </main>
 
-<script src="~/js/productDisplay.js" defer></script>
+@if (User.Identity.IsAuthenticated)
+{
+    <script src="~/js/productDisplay.js" defer></script>
+}

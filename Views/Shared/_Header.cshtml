@@ -1,0 +1,106 @@
+﻿@{
+    var userName = User.Identity.Name;
+    var Address = User.FindFirst("Address")?.Value ?? "Address";
+}
+<header class="w-full h-auto bg-[#56b6cc] flex justify-center">
+    <div class="w-2/3 h-full nav-bounds grid grid-cols-[10%_60%_20%] gap-4">
+        <!-- First row -->
+        <div class="h-[50px] flex items-center justify-center">
+            <a asp-action="Index" asp-controller="Home"><img src="~/images/logo_sin_fondo.png" class="h-[45px] w-[40px]" alt="logo"></a>
+        </div>
+        <div class="h-[50px] flex items-center justify-center">
+            <form id="nav-search" class="w-full" method="get" asp-controller="Home" asp-action="Products">
+                <div class="relative w-full">
+                    <input type="text" name="query"
+                        class="w-full pl-3 pr-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+                        placeholder="Buscar productos, marcas y más..." />
+                    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="h-[50px] flex items-center justify-center">
+            <img src="~/images/image.png" class="hidden lg:flex" alt="">
+            <img src="~/images/hamburger-menu.svg" class="h-[50px] w-[50px] lg:hidden" alt="" id="burger-icon">
+        </div>
+
+        <!-- Second row -->
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="hidden lg:flex h-[50px] items-center justify-center">
+                <img src="~/images/location.png" class="h-[20px] w-[20px]" alt="ubicacion">
+                <span class="text-sm text-[#FFFFFF] font-semibold">@Address</span>
+            </div>
+        }
+        else
+        {
+            <div class="hidden lg:flex h-[50px] items-center justify-center">
+                <img src="~/images/location.png" class="h-[20x] w-[20px]" alt="ubicacion">
+                <span class="text-sm text-[#FFFFFF] font-semibold">Tu ubicación</span>
+            </div>
+        }
+        <div class="hidden lg:flex h-[50px] flex items-center justify-center">
+            <ul class="w-full flex justify-around text-sm text-[#FFFFFF] font-semibold">
+                <li class="relative group">
+                    <a asp-controller="home" asp-action="products" class="cursor-pointer flex items-center">
+                        Categorías
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </a>
+                    <!-- Dropdown menu with higher z-index -->
+                    <div
+                        class="absolute hidden group-hover:block bg-white min-w-[200px] rounded-md shadow-lg z-40 left-1/2 transform -translate-x-1/2 mt-0">
+                        <ul class="py-1 text-[#0A2E38]">
+                            @await Component.InvokeAsync("CategoryOption")
+                            <!-- ... more items ... -->
+                        </ul>
+                    </div>
+                </li>
+                <li><a asp-controller="account" asp-action="login">Crear Tienda</a></li>
+                <li><a asp-controller="general" asp-action="help">Ayuda</a></li>
+                <li><a asp-controller="general" asp-action="underconstruction">Nosotros</a></li>
+                <li>Contacto</li>
+                <li>Preguntas Frecuentes</li>
+            </ul>
+        </div>
+        <div class="hidden lg:flex h-[50px] flex items-center justify-center">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="h-[50px] flex items-center justify-center relative group">
+                    <!-- Profile Avatar with Dropdown -->
+                    <div class="relative">
+                        <span
+                            class="h-[40px] w-[40px] bg-gray-800 rounded-full text-white flex items-center justify-center cursor-pointer hover:bg-gray-700 transition-colors duration-200">D</span>
+
+                        <!-- Dropdown Menu -->
+                        <div
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top-right">
+                            <div class="py-1">
+                                <a asp-controller="user" asp-action="userprofile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mi Perfil</a>
+                                <a asp-controller="Product" asp-action="MyProducts" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mis Pedidos</a>
+                                <a asp-controller="user" asp-action="editprofile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Editar Perfil</a>
+                                <a asp-controller="store" asp-action="createstore" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Crear Tienda</a>
+                                <div class="border-t border-gray-200"></div>
+                                <a asp-controller="account" asp-action="logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cerrar Sesión</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a asp-action="ShoppingCart" asp-controller="ShoppingCart"><img src="~/images/shopping-cart.svg" class="h-[30px] w-[30px] ml-4 mr-[10px]" alt="" id="burger-icon"></a>
+                </div>
+            }
+            else
+            {
+                <ul class="w-full flex justify-around text-sm text-[#FFFFFF] font-semibold">
+                    <li><a asp-controller="account" asp-action="register">Crear cuenta</a></li>
+                    <li><a asp-controller="account" asp-action="login">Ingresar</a></li>
+                    <li><a asp-controller="account" asp-action="login"><img src="~/images/shopping-cart.svg" class="h-[25x] w-[25px]" alt=""></a></li>
+                </ul>
+            }
+        </div>
+    </div>
+</header>

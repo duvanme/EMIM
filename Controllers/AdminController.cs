@@ -1,28 +1,36 @@
 using Microsoft.AspNetCore.Mvc;
 using EMIM.Services;
 using EMIM.ViewModel;
+using EMIM.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using EMIM.Models;
 
-public class AdminController : Controller
+namespace EMIM.Controllers
+{
+    public class AdminController : Controller
 {
 
+    private readonly EmimContext _context;
     //Servicio para la gestión de usuarios
     private readonly IAdminService _adminService;
-
-    //Mostrar la vista del perfil administrador 
-    public IActionResult AdminProfile() => View();
-
+    private readonly IStoreService _storeService;
+    private readonly IEmailService _emailService;
 
     //Constructor que inyecta el servicio de usuario
-    public AdminController(IAdminService adminService)
+
+    public AdminController(IAdminService adminService, IStoreService storeService, EmimContext context, IEmailService emailService)
     {
         _adminService = adminService;
+        _storeService = storeService;
+        _context = context;
+        _emailService = emailService;
     }
 
     //Mostrar la vista para crear un nuevo usuario
     public IActionResult RegisterUser() => View();
 
     //Registrar un nuevo usuario
-    [HttpPost]
     [HttpPost]
     public async Task<IActionResult> RegisterUser(AdminViewModel model)
     {
@@ -103,6 +111,108 @@ public class AdminController : Controller
         return View(model);
     }
 
-        public IActionResult AdminCreationShop() => View();
+        public IActionResult AdminCreationShop()
+        {
+         var users = _context.Users
+        .Include(u => u.Stores) // Cargar las tiendas relacionadas
+        .ToList();
+
+            var viewModel = users.Select(u => new UserStoresViewModel
+            {
+                UserId = u.Id,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                Email = u.Email,
+                Stores = u.Stores
+                .Where(t => t.StoreStatus == "pending")
+                .Select(t => new CreateStoreViewModel
+                {
+                    Name = t.Name,
+                    StoreId = t.Id,
+                    Description = t.Description,
+                    Nit = t.Nit,
+                    Location = t.Location,
+                    //StoreProfilePicture = t.StoreProfilePicture
+                }).ToList()
+            }).ToList();
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AdminCreationShop(int storeId)
+        {
+            var store = _context.Stores.FirstOrDefault(s => s.Id == storeId);
+            if (store == null)
+            {
+                return NotFound();
+            }
+
+            await _storeService.AcceptCreateStore(store);
+
+            return RedirectToAction("AdminCreationShop");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AdminNegationShop(int storeId)
+        {
+            var store = _context.Stores.FirstOrDefault(s => s.Id == storeId);
+            if (store == null)
+            {
+                return NotFound();
+            }
+
+            await _storeService.DenyCreateStore(store);
+
+            return RedirectToAction("AdminCreationShop");
+        }
+
+        //Mostrar la vista del perfil administrador 
+        [Authorize(Roles = "Admin")]
+        public IActionResult AdminProfile() => View();
+
+        public IActionResult HelpQuestion()
+        {
+            var preguntas = _context.HelpQuestions.ToList();
+            return View(preguntas);
+        }
+
+        [HttpPost]
+        [Route("HelpQuestion/Submit")]
+        public async Task<IActionResult> Submit([FromBody] HelpQuestion model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _context.HelpQuestions.Add(model);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AnswerHelpQuestion(int Id, string Answer)
+        {
+            var question = await _context.HelpQuestions.FindAsync(Id);
+            if (question == null)
+                return NotFound();
+
+            question.Answer = Answer;
+            question.Status = "Respondido";
+
+            await _context.SaveChangesAsync();
+
+            // Enviar correo al usuario
+            await _emailService.SendEmailAsync(
+                question.Email,
+                $"Respuesta a tu solicitud: {question.Subject}",
+                $"Hola {question.UserName},\n\nGracias por contactarnos. Esta es la respuesta a tu mensaje:\n\n\"{question.Message}\"\n\nRespuesta del administrador:\n\"{Answer}\""
+            );
+
+            return RedirectToAction("HelpQuestion");
+        }
+
+
+    }
 
 }

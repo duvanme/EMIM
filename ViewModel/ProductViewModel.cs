@@ -15,11 +15,14 @@ namespace EMIM.ViewModel
 
         [Required(ErrorMessage = "La tienda es obligatoria.")]
         public int StoreId { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         public string? ImageUrl { get; set; }
         public IFormFile? ImageFile { get; set; }
 
         public string? StoreName { get; set; } 
+
+        public bool IsFavorite { get; set; }
 
     }
 

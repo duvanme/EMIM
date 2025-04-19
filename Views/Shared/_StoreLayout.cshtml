@@ -1,23 +1,70 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@using System.Security.Claims
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewBag.Title</title>
+    <title>@ViewData["Title"] - Tienda EMIM</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
 </head>
 
 <body>
 
-    <div>
-        @RenderBody()
-    </div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <nav class="bg-[#56b6cc] py-4 px-6 shadow-md">
+            <div class="container mx-auto flex items-center justify-between">
 
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/menu.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+                <!-- Logo y ubicación -->
+                <div class="flex items-center gap-3">
+                    <img src="~/images/logo_sin_fondo.png" alt="Logo EMIM" class="w-10 h-10" />
+                </div>
+
+                <!-- Enlaces -->
+                <div class="flex items-center gap-6 text-white font-medium">
+                    <a asp-controller="Store" asp-action="StoreProfile" class="hover:text-gray-700">
+                    Perfil
+                    </a>
+                    <a asp-controller="Product" asp-action="NewProduct" class="hover:text-gray-700">
+                        Publicar productos
+                    </a>
+                    <a asp-controller="Store" asp-action="Purchase" class="hover:text-gray-700">
+                    Ordenes
+                    </a>
+                    <a asp-controller="Question" asp-action="QuestionsAnswers" class="hover:text-gray-700">
+                        Preguntas
+                    </a>
+                    <a asp-controller="Account" asp-action="Logout" class="hover:text-red-400">
+                        Cerrar sesión
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+
+
+        <main role="main" class="w-full">
+            @RenderBody()
+        </main>
+
+        @await Html.PartialAsync("_Footer")
+    }
+    else
+    {
+        <div class="text-center py-20">
+            <h2 class="text-2xl text-red-600">Acceso denegado</h2>
+            <p class="text-gray-600">Debes iniciar sesión como tienda para ver esta página.</p>
+        </div>
+    }
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="~/js/HamburgerMenu.js"></script>
 </body>
 
 </html>

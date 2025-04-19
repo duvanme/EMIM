@@ -60,17 +60,7 @@
 
         <!-- Sección de calificación mejorada -->
         <div class="rating-section mt-10 p-6 bg-white w-full md:w-2/3 mx-auto text-center">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Califica esta publicación</h3>
-
-            <!-- Calificación con estrellas -->
-            <div class="stars flex justify-center gap-2 mb-4">
-                <span class="star text-gray-400 cursor-pointer text-3xl" data-value="1">★</span>
-                <span class="star text-gray-400 cursor-pointer text-3xl" data-value="2">★</span>
-                <span class="star text-gray-400 cursor-pointer text-3xl" data-value="3">★</span>
-                <span class="star text-gray-400 cursor-pointer text-3xl" data-value="4">★</span>
-                <span class="star text-gray-400 cursor-pointer text-3xl" data-value="5">★</span>
-            </div>
-
+        
             <form asp-controller="Question" asp-action="AskQuestion" method="post" class="mt-6">
                 <input type="hidden" name="ProductId" value="@Model.Id" />
                 <input type="hidden" name="UserId" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />

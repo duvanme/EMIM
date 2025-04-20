@@ -5,6 +5,8 @@ using EMIM.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using EMIM.Models;
+using Microsoft.AspNetCore.Identity;
+using Stripe.V2;
 
 namespace EMIM.Controllers
 {
@@ -16,15 +18,17 @@ namespace EMIM.Controllers
     private readonly IAdminService _adminService;
     private readonly IStoreService _storeService;
     private readonly IEmailService _emailService;
+    private readonly UserManager<User> _userManager;
 
-    //Constructor que inyecta el servicio de usuario
+        //Constructor que inyecta el servicio de usuario
 
-    public AdminController(IAdminService adminService, IStoreService storeService, EmimContext context, IEmailService emailService)
+        public AdminController(IAdminService adminService, IStoreService storeService, EmimContext context, IEmailService emailService, UserManager<User> userManager)
     {
         _adminService = adminService;
         _storeService = storeService;
         _context = context;
         _emailService = emailService;
+        _userManager = userManager;
     }
 
     //Mostrar la vista para crear un nuevo usuario
@@ -140,15 +144,20 @@ namespace EMIM.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AdminCreationShop(int storeId)
-        {
+        public async Task<IActionResult> AdminCreationShop(int storeId, string userId)
+        {    
+
             var store = _context.Stores.FirstOrDefault(s => s.Id == storeId);
             if (store == null)
             {
                 return NotFound();
             }
 
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return null;
+
             await _storeService.AcceptCreateStore(store);
+            await _storeService.AssignVendorRoleAsync(user);
 
             return RedirectToAction("AdminCreationShop");
         }

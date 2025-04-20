@@ -1,9 +1,11 @@
-﻿using EMIM.Models;
+﻿using EMIM.Data;
+using EMIM.Models;
 using EMIM.Services;
 using EMIM.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace EMIM.Controllers
 {
@@ -13,14 +15,28 @@ namespace EMIM.Controllers
         private readonly IQuestionService _questionService; // Añade esto
         private readonly IStoreService _storeService;
         private readonly UserManager<User> _userManager;
+        private readonly IFavoriteService _favoriteService;
+        private readonly ISaleOrderService _orderService;
+        private readonly EmimContext _context; // o el nombre que uses para tu DbContext
+
 
         public ProductController(
-            IProductService productService, IQuestionService questionService, IStoreService storeService, UserManager<User> userManager) // Añade este parámetro
+            IProductService productService,
+            IQuestionService questionService,
+            IStoreService storeService,
+            UserManager<User> userManager,
+            ISaleOrderService orderService,
+            EmimContext context,
+            IFavoriteService favoriteService) // Añade este parámetro
         {
             _productService = productService;
             _questionService = questionService; // Añade esta línea
             _storeService = storeService;
             _userManager = userManager;
+            _favoriteService = favoriteService;
+            _orderService = orderService;
+            _context = context;
+
         }
 
         public async Task<IActionResult> ProductosBloqueados()
@@ -35,6 +51,13 @@ namespace EMIM.Controllers
             if (id <= 0) return BadRequest("ID inválido");
             var product = await _productService.GetProductByIdAsync(id);
             if (product == null) return NotFound($"No se encontró el producto con ID {id}");
+
+            // Verificar si es favorito
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = _userManager.GetUserId(User);
+                product.IsFavorite = await _favoriteService.IsFavoriteAsync(userId, id);
+            }
 
             var answeredQuestions = await _questionService.GetAnsweredQuestionsByProductIdAsync(id);
             ViewBag.AnsweredQuestions = answeredQuestions;
@@ -116,8 +139,16 @@ namespace EMIM.Controllers
             var productVM = await _productService.GetProductByIdAsync(id);
             if (productVM == null) return NotFound();
 
+            // Verificar que el usuario actual tiene permisos para editar este producto
+            var user = await _userManager.GetUserAsync(User);
+            var userStoreId = await _storeService.GetStoreIdForVendorAsync(user.Id);
+
+            if (userStoreId != productVM.StoreId && !User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
+
             ViewBag.Categories = _productService.GetCategories();
-            ViewBag.Stores = _productService.GetStores();
 
             return View(productVM);
         }
@@ -128,20 +159,30 @@ namespace EMIM.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Categories = _productService.GetCategories();
-                ViewBag.Stores = new SelectList(await _productService.GetStoresAsync(), "Id", "Name");
                 return View("EditProduct", productVM);
             }
 
-            bool storeExists = await _productService.StoreExistsAsync(productVM.StoreId);
-            if (!storeExists)
+            // Obtener el ID de tienda original del producto
+            var originalProduct = await _productService.GetProductByIdAsync(productVM.Id);
+            if (originalProduct == null)
             {
-                ModelState.AddModelError("StoreId", "La tienda seleccionada no es válida.");
-                ViewBag.Categories = _productService.GetCategories();
-                ViewBag.Stores = new SelectList(await _productService.GetStoresAsync(), "Id", "Name");
-                return View("EditProduct", productVM);
+                return NotFound();
             }
 
-            if (productVM.ImageFile != null)
+            // Asegurarse de que no se cambie la tienda
+            productVM.StoreId = originalProduct.StoreId;
+
+            // Verificar que el usuario actual tiene permisos para editar productos de esta tienda
+            var user = await _userManager.GetUserAsync(User);
+            var userStoreId = await _storeService.GetStoreIdForVendorAsync(user.Id);
+
+            if (userStoreId != productVM.StoreId && !User.IsInRole("Admin"))
+            {
+                return Forbid();
+            }
+
+            // Procesar la imagen si se ha subido una nueva
+            if (productVM.ImageFile != null && productVM.ImageFile.Length > 0)
             {
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
                 Directory.CreateDirectory(uploadsFolder);
@@ -157,8 +198,7 @@ namespace EMIM.Controllers
             }
             else
             {
-                var existingProduct = await _productService.GetProductByIdAsync(productVM.Id);
-                productVM.ImageUrl = existingProduct?.ImageUrl;
+                productVM.ImageUrl = originalProduct.ImageUrl;
             }
 
             var success = await _productService.UpdateProductAsync(productVM);
@@ -166,14 +206,43 @@ namespace EMIM.Controllers
             {
                 ModelState.AddModelError("", "⚠️ Error al actualizar el producto en la base de datos.");
                 ViewBag.Categories = _productService.GetCategories();
-                ViewBag.Stores = new SelectList(await _productService.GetStoresAsync(), "Id", "Name");
                 return View("EditProduct", productVM);
             }
 
             return RedirectToAction("StoreProfile", "Store", new { id = productVM.StoreId });
         }
 
-        public IActionResult MyProducts() => View();
+        public async Task<IActionResult> MyProducts()
+        {
+            var userId = _userManager.GetUserId(User); // método que se usa para obtener el usuario actual
+            var orders = await _context.SaleOrders
+                .Include(o => o.SaleOrderLine)
+                .ThenInclude(line => line.Product)
+                .Include(o => o.SaleOrderStatus)
+                .Include(o => o.User)
+                .Where(o => o.UserId == userId)
+                .ToListAsync();
+
+            return View(orders);
+        }
+
+        public async Task<IActionResult> OrderDetails(int id)
+        {
+            var order = await _context.SaleOrders
+                .Include(o => o.SaleOrderLine)
+                .ThenInclude(line => line.Product)
+                .Include(o => o.SaleOrderStatus)
+                .Include(o => o.User)
+                .FirstOrDefaultAsync(o => o.Id == id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return View(order);
+        }
+
 
 
         public async Task<IActionResult> FilterByCategory(int categoryId)

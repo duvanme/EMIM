@@ -22,6 +22,8 @@ namespace EMIM.ViewModel
 
         public string? StoreName { get; set; } 
 
+        public bool IsFavorite { get; set; }
+
     }
 
 }

@@ -12,10 +12,14 @@ public class ProductCardViewComponent : ViewComponent
     private readonly IProductService _productService;
     private readonly UserManager<User> _userManager;
 
-    public ProductCardViewComponent(IProductService productService, UserManager<User> userManager)
+    private readonly IFavoriteService _favoriteService;
+
+
+    public ProductCardViewComponent(IProductService productService, UserManager<User> userManager, IFavoriteService favoriteService)
     {
         _productService = productService;
         _userManager = userManager;
+        _favoriteService = favoriteService;
     }
 
     public async Task<IViewComponentResult> InvokeAsync(
@@ -23,7 +27,7 @@ public class ProductCardViewComponent : ViewComponent
     int? storeId = null,
     string query = null,
     int page = 1,
-    int pageSize = 5,
+    int pageSize = 12,
     string sort = null)
     {
         List<ProductViewModel> allProducts;
@@ -89,6 +93,14 @@ public class ProductCardViewComponent : ViewComponent
 
         var user = await _userManager.GetUserAsync(HttpContext.User);
         var roles = user != null ? await _userManager.GetRolesAsync(user) : new List<string>();
+
+        if (user != null)
+        {
+            foreach (var product in paginatedProducts)
+            {
+                product.IsFavorite = await _favoriteService.IsFavoriteAsync(user.Id, product.Id);
+            }
+        }
 
         var model = new ProductCardViewModel
         {

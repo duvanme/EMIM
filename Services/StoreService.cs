@@ -86,6 +86,7 @@ namespace EMIM.Services
                 await userManager.AddToRoleAsync(user, "Vendor");
                 return true;
             }
+
             return false;
         }
 

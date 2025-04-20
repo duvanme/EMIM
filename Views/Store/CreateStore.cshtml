@@ -16,7 +16,7 @@
                     class="object-cover w-full h-full rounded-l-lg ">
             </div>
 
-            <form asp-action="CreateNewStore" method="post" class="bg-white rounded  w-full md:w-1/2 mx-5" id="formulario-registrar-tienda" enctype="multipart/form-data">
+            <form asp-action="CreateStore" method="post" class="bg-white rounded  w-full md:w-1/2 mx-5" id="formulario-registrar-tienda" enctype="multipart/form-data">
                 <h2 class="border font-bold text-4xl text-center h-16 p-2 text-gray-800 mb-6 rounded-lg"
                     style="background-color: #56b6cc;">Crear tu tienda</h2>
 
@@ -31,12 +31,26 @@
                 <div id="emprendedor-form" class="">
                     <div class="mb-4">
                         <input asp-for="Name" type="text" class="w-full p-2 mb-4 border border-gray-300 rounded-full"
-                            placeholder="Nombre del emprendimiento" />
+                            placeholder="Nombre del emprendimiento:" />
+                        <span asp-validation-for="Name"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <input asp-for="Nit" type="text" class="w-full p-2 mb-4 border border-gray-300 rounded-full"
+                               placeholder="NIT (Numero de Identificacion Tributaria) del emprendimiento:" />
+                        <span asp-validation-for="Nit"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <input asp-for="Location" class="w-full p-2 mb-4 border border-gray-300 rounded-full"
+                               placeholder="Dirección:" />
+                        <span asp-validation-for="Location"></span>
                     </div>
 
                     <div class="mb-4">
                         <input asp-for="Description" class="w-full p-2 mb-4 border border-gray-300 rounded-full"
-                            placeholder="Descripción" />
+                            placeholder="Descripción:" />
+                        <span asp-validation-for="Description"></span>
                     </div>
 
                     <div class="mb-4">
@@ -47,6 +61,7 @@
                             <p class="text-sm text-right text-gray-600">Debe contener al menos 6 caracteres</p>
                         </div>
                         -->
+                        <span asp-validation-for="StoreProfilePicture"></span>
                     </div>
 
                 </div>

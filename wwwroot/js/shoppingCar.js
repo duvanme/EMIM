@@ -43,9 +43,9 @@ function renderCart() {
             console.error('Error al convertir precio:', producto.price);
         }
 
-        const totalProducto = precioNumerico * producto.quantity;
+        const totalProducto = precioNumerico * producto.itemQuantity;
 
-        totalItems += producto.quantity;
+        totalItems += producto.itemQuantity;
         totalPrice += totalProducto;
 
         const imgElement = document.createElement('img');
@@ -76,8 +76,10 @@ function renderCart() {
     </div>
     <div class="flex justify-center items-center gap-2">
         <button class="decrease-btn border ml-10 mr-[-15px] px-2 py-1">-</button>
-        <span class="quantity px-4 quantity">${producto.quantity}</span>
-        <button class="increase-btn border ml-[-15px] px-2 py-1">+</button>
+        <span class="quantity px-4 quantity">${producto.itemQuantity}</span>
+        ${producto.itemQuantity < producto.quantity
+                ? `<button class="increase-btn border ml-[-15px] px-2 py-1">+</button>`
+                : ''}
     </div>
     <div class="flex justify-end items-center gap-3">
         <span class="price">${producto.price}</span>
@@ -91,6 +93,7 @@ function renderCart() {
     // Costo de envío
     const costoEnvio = 10000;
     const precioTotal = totalPrice + costoEnvio;
+    
 
     // Actualizar elementos de resumen
     totalItemsSpan.textContent = `${totalItems} items`;
@@ -124,7 +127,7 @@ function agregarEventosCarrito() {
         boton.addEventListener('click', function () {
             const contenedorProducto = this.closest('[data-product-id]');
             const idProducto = contenedorProducto.getAttribute('data-product-id');
-            actualizarCantidad(idProducto, 1);
+            actualizarCantidad(idProducto, 1);       
         });
     });
 
@@ -143,10 +146,10 @@ function actualizarCantidad(idProducto, cambio) {
     const indiceProducto = carrito.findIndex(item => item.id === idProducto);
 
     if (indiceProducto > -1) {
-        carrito[indiceProducto].quantity += cambio;
+        carrito[indiceProducto].itemQuantity += cambio;
 
         // Eliminar si la cantidad llega a 0
-        if (carrito[indiceProducto].quantity <= 0) {
+        if (carrito[indiceProducto].itemQuantity <= 0) {
             carrito.splice(indiceProducto, 1);
         }
 

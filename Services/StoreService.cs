@@ -31,6 +31,8 @@ namespace EMIM.Services
             {
                 Name = model.Name,
                 Description = model.Description,
+                Nit = model.Nit,
+                Location = model.Location,
                 StoreStatus = "pending",
                 UserId = userId,
                 StoreProfilePicture = filePath
@@ -84,6 +86,7 @@ namespace EMIM.Services
                 await userManager.AddToRoleAsync(user, "Vendor");
                 return true;
             }
+
             return false;
         }
 

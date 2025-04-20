@@ -1,5 +1,5 @@
 using EMIM.Services;
-using EMIM.Models; // Para acceder a Question y QuestionStatus
+using EMIM.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using EMIM.ViewModels;
@@ -28,7 +28,7 @@ public class QuestionController : Controller
         if (string.IsNullOrEmpty(UserId) || string.IsNullOrEmpty(QuestionText))
         {
             // Manejar el caso de datos inválidos
-            return RedirectToAction("QuestionsAnswers", "Question", new { productId = ProductId });
+            return RedirectToAction("productDisplay", "Product", new { id = ProductId });
         }
 
         // Crear directamente el objeto Question
@@ -43,8 +43,14 @@ public class QuestionController : Controller
         // Agregar a la BD directamente o usar un método simple del servicio
         await _questionService.SaveQuestionAsync(question);
 
-        // Redirigir a la página del producto
-        return RedirectToAction("QuestionsAnswers", "Question", new { productId = ProductId });
+        // Si el usuario es vendedor, redirigir a la página de preguntas
+        if (User.IsInRole("Vendor"))
+        {
+            return RedirectToAction("QuestionsAnswers", "Question", new { productId = ProductId });
+        }
+        
+        // Si es un usuario normal, redirigir de vuelta a la página del producto
+        return RedirectToAction("productDisplay", "Product", new { id = ProductId });
     }
 
     // La acción de ver preguntas filtra por tienda si es vendedor
@@ -83,16 +89,16 @@ public class QuestionController : Controller
             return View(storeQuestions);
         }
 
-        // Si no es vendedor y hay productId, mostrar preguntas públicas
+        // Si no es vendedor y hay productId, redirigir a la vista del producto
         if (productId.HasValue)
         {
-            var questions = await _questionService.GetQuestionsByProductIdAsync(productId.Value);
-            return View(questions);
+            return RedirectToAction("productDisplay", "Product", new { id = productId.Value });
         }
 
         // Si no es vendedor y no hay productId, redirigir al inicio
         return RedirectToAction("Index", "Home");
     }
+    
     [Authorize(Roles = "Vendor")]
     [HttpPost]
     public async Task<IActionResult> AnswerQuestion(int id, string answer)

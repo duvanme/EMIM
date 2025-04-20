@@ -18,6 +18,9 @@ namespace EMIM.ViewModel
         [Compare("ConfirmPassword", ErrorMessage ="Password does not match")]
         public required string Password { get; set; }
 
+        [Required(ErrorMessage = "Ingresa tu dirección para poder entregar tus productos")]
+        public required string Address { get; set; }
+
         [Required(ErrorMessage = "Conmfirmed password is required characters long")]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]

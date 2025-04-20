@@ -24,9 +24,11 @@
                 <h1 class="text-2xl font-bold text-gray-800 mb-2">@Model.Name</h1>
                 <h2 class="text-lg text-gray-600 mb-2">Vendido por: @Model.StoreName</h2>
                 <h2 class="text-3xl text-gray-800 font-bold mb-4">@Model.Price.ToString("C")</h2>
+                <input type="hidden" name="ProductQuantity" value="@Model.Quantity" />
 
                 <div class="between flex gap-x-4">
                     <!-- Botón de carrito -->
+
                     @if (User.Identity.IsAuthenticated)
                     {
                         <button id="add-to-cart-btn" class="w-full flex items-center justify-center bg-[#13678A] text-white py-3 rounded-lg shadow hover:bg-[#0D4F65]">
@@ -46,15 +48,17 @@
                         </button>
                     }
 
+
                     <!-- Botón de favoritos -->
-                    <button
-                        class="w-full flex items-center justify-center bg-[#13678A] text-white py-3 rounded-lg shadow hover:bg-[#0D4F65]">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            class="h-5 w-5 mr-2">
+                    <button id="add-to-favorite-btn"
+                        class="w-full flex items-center justify-center @(Model.IsFavorite ? "bg-red-500" : "bg-[#13678A]") text-white py-3 rounded-lg shadow hover:bg-[#0D4F65]"
+                        data-id="@Model.Id">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill='@(Model.IsFavorite ? "currentColor" : "none")'
+                            viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5 mr-2">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6a4 4 0 000 5.6L12 21l8-9.4a4 4 0 10-5.6-5.6L12 7l-2.4-2.4A4 4 0 004 6z" />
                         </svg>
-                        Añadir a favoritos
+                        @(Model.IsFavorite ? "Quitar de favoritos" : "Añadir a favoritos")
                     </button>
                 </div>
 
@@ -68,17 +72,7 @@
 
         <!-- Sección de calificación mejorada -->
         <div class="rating-section mt-10 p-6 bg-white w-full md:w-2/3 mx-auto text-center">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Califica esta publicación</h3>
-
-            <!-- Calificación con estrellas -->
-            <div class="stars flex justify-center gap-2 mb-4">
-                <span class="star text-gray-400 cursor-pointer text-3xl" data-value="1">★</span>
-                <span class="star text-gray-400 cursor-pointer text-3xl" data-value="2">★</span>
-                <span class="star text-gray-400 cursor-pointer text-3xl" data-value="3">★</span>
-                <span class="star text-gray-400 cursor-pointer text-3xl" data-value="4">★</span>
-                <span class="star text-gray-400 cursor-pointer text-3xl" data-value="5">★</span>
-            </div>
-
+        
             <form asp-controller="Question" asp-action="AskQuestion" method="post" class="mt-6">
                 <input type="hidden" name="ProductId" value="@Model.Id" />
                 <input type="hidden" name="UserId" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
@@ -120,9 +114,12 @@
 
     </section>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/js/FavoriteButton.js"></script>
 </main>
 
 @if (User.Identity.IsAuthenticated)
 {
     <script src="~/js/productDisplay.js" defer></script>
+
 }
+

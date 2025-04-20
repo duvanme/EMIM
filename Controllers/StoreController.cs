@@ -74,7 +74,7 @@ namespace EMIM.Controllers
         public IActionResult CreateStore() => View();
 
         [HttpPost]
-        public async Task<IActionResult> CreateNewStore(CreateStoreViewModel model)
+        public async Task<IActionResult> CreateStore(CreateStoreViewModel model)
         {
             var user = await userManager.GetUserAsync(User);
             if (user == null)
@@ -128,7 +128,7 @@ namespace EMIM.Controllers
                 TempData["Success"] = "Store created successfully!";
             }
 
-            await storeService.AssignVendorRoleAsync(user);
+            //await storeService.AssignVendorRoleAsync(user);
 
             return RedirectToAction("UserProfile", "User", new { id = user.Id });
         }

@@ -181,10 +181,20 @@ namespace EMIM.Controllers
                 return Forbid();
             }
 
-            // El resto de tu código de actualización...
-            if (productVM.ImageFile != null)
+            // Procesar la imagen si se ha subido una nueva
+            if (productVM.ImageFile != null && productVM.ImageFile.Length > 0)
             {
-                // Código de subida de imágenes...
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                Directory.CreateDirectory(uploadsFolder);
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(productVM.ImageFile.FileName);
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await productVM.ImageFile.CopyToAsync(fileStream);
+                }
+
+                productVM.ImageUrl = "/images/" + fileName;
             }
             else
             {

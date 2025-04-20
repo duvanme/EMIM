@@ -1,4 +1,3 @@
-// wwwroot/js/orders.js
 document.addEventListener('DOMContentLoaded', function() {
     // Evento para filtrar órdenes por estado
     const statusFilter = document.getElementById('statusFilter');
@@ -15,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function applyFilters() {
         const status = statusFilter.value;
         const sort = sortOrder.value;
-        window.location.href = `/Order/MyOrders?statusFilter=${status}&sortOrder=${sort}`;
+       
+        window.location.href = `/Store/Purchase?statusFilter=${status}&sortOrder=${sort}`;
     }
 });

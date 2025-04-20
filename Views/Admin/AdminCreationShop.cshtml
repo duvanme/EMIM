@@ -24,6 +24,7 @@
                     <div class="flex items-center bg-[#469bae] text-white rounded-lg shadow-md p-4 my-2 cursor-pointer tarjeta"
                              data-id="@store.Nit"
                              data-store-id="@store.StoreId"
+                             data-user-id ="@user.UserId"
                              data-store-name="@store.Name"
                              data-store-location="@store.Location"
                              data-user-first-name="@user.FirstName"
@@ -34,6 +35,7 @@
                         <span class="w-1/3">@store.Description</span>
                         <span class="w-1/6 text-right underline ver-mas">Ver más...</span>
                         <span class="w-4 h-4 bg-red-500 rounded-full ml-4"></span>
+
                     </div>
                     }
                 }
@@ -50,6 +52,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <input type="hidden" name="storeId" id="storeId" value=""/>
+                    <input type="hidden" name="userId" id="userId" value="" />
                     <p><strong>Nombre de la Tienda</strong></p>
                     <p class="text-gray-500"><span id="storeName"></span></p>
 

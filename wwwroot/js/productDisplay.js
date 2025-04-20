@@ -8,48 +8,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // Asignar el nuevo escuchador
         addToCartButton.addEventListener('click', handleAddToCart);
     }
-
-    // Código de calificación con estrellas
-    const stars = document.querySelectorAll(".star");
-
-    if (stars.length === 0) return;
-
-    let selectedRating = 0;
-
-    function updateStars(rating, isHover = false) {
-        stars.forEach((star, index) => {
-            const starValue = parseInt(star.getAttribute("data-value"));
-
-            if ((isHover && starValue <= rating) || (!isHover && starValue <= selectedRating)) {
-                star.classList.remove("text-gray-400");
-                star.classList.add("text-yellow-500");
-            } else {
-                star.classList.remove("text-yellow-500");
-                star.classList.add("text-gray-400");
-            }
-        });
-    }
-    // Eventos de calificación con estrellas
-    stars.forEach(star => {
-        star.addEventListener("mouseenter", function () {
-            const value = parseInt(this.getAttribute("data-value"));
-            updateStars(value, true);
-        });
-
-        star.addEventListener("mouseleave", function () {
-            updateStars(selectedRating, false);
-        });
-
-        star.addEventListener("click", function () {
-            selectedRating = parseInt(this.getAttribute("data-value"));
-            updateStars(selectedRating, false);
-
-            const ratingInput = document.getElementById("rating-input");
-            if (ratingInput) {
-                ratingInput.value = selectedRating;
-            }
-        });
-    });
 });
 function handleAddToCart(e) {
     e.preventDefault();

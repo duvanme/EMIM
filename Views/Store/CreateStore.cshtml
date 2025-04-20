@@ -1,10 +1,9 @@
 @using EMIM.ViewModel
 @model CreateStoreViewModel
 
-@{
-    ViewData["Title"] = "Create Store";
-    Layout = "~/Views/Shared/_StoreLayout.cshtml";
-}
+<header>
+    @await Html.PartialAsync("_AuthenticatedHeader")
+</header>
 
 <main>
       @await Component.InvokeAsync("BackButton")

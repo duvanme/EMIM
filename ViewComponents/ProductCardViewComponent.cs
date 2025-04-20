@@ -27,7 +27,7 @@ public class ProductCardViewComponent : ViewComponent
     int? storeId = null,
     string query = null,
     int page = 1,
-    int pageSize = 5,
+    int pageSize = 12,
     string sort = null)
     {
         List<ProductViewModel> allProducts;

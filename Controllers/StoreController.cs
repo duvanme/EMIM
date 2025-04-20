@@ -128,7 +128,7 @@ namespace EMIM.Controllers
                 TempData["Success"] = "Store created successfully!";
             }
 
-            await storeService.AssignVendorRoleAsync(user);
+            //await storeService.AssignVendorRoleAsync(user);
 
             return RedirectToAction("UserProfile", "User", new { id = user.Id });
         }

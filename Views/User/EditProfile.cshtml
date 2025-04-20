@@ -1,7 +1,11 @@
 @using EMIM.ViewModel
 @model EditUserProfileViewModel
 
+
+    @await Html.PartialAsync("_AuthenticatedHeader")
+
 <main class="p-4 md:p-10">
+
     @await Component.InvokeAsync("BackButton")
 
     <section class="flex justify-center items-center w-full">

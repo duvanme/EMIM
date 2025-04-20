@@ -1,6 +1,7 @@
 ﻿@{
     var userName = User.Identity.Name;
     var Address = User.FindFirst("Address")?.Value ?? "Address";
+    var profileImage = User.FindFirst("UserProfilePicture")?.Value ?? "default-profile-image.png";
 }
 
 <header class="w-full h-[60px] bg-[#56b6cc] flex justify-center">
@@ -28,7 +29,8 @@
         <div class="h-[50px] flex items-center justify-center relative group">
             <!-- Profile Avatar with Dropdown -->
             <div class="relative">
-                <span class="h-[40px] w-[40px] bg-gray-800 rounded-full text-white flex items-center justify-center cursor-pointer hover:bg-gray-700 transition-colors duration-200">D</span>
+                <img src="~/@profileImage" alt="Profile Image"
+                     class="h-[50px] w-[50px] object-cover rounded-full shadow-md ring-1 ring-white transition-transform duration-200 hover:scale-105">
 
                 <!-- Dropdown Menu -->
                 <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 origin-top-right">

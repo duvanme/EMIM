@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     const modalOverlay = document.getElementById("modal-overlay");
     const tarjetas = document.querySelectorAll(".tarjeta");
+    console.log(tarjetas);
     const cerrarModal = document.getElementById("cerrar-modal");
         const form = document.querySelector("form");
         const storeIdInput = document.getElementById("storeId")
@@ -9,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     tarjetas.forEach(tarjetica => {
         tarjetica.addEventListener("click", function (event) {
             document.getElementById("storeId").value = this.dataset.storeId;
+            document.getElementById("userId").value = this.dataset.userId;
             document.getElementById("storeName").textContent = this.dataset.storeName || "Sin nombre";
             document.getElementById("storeLocation").textContent = this.dataset.storeLocation || "Sin nombre";
             document.getElementById("userName").textContent = `${this.dataset.userFirstName || "Sin nombre"} ${this.dataset.userLastName || ""}`;

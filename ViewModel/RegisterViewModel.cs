@@ -21,10 +21,15 @@ namespace EMIM.ViewModel
         [Required(ErrorMessage = "Ingresa tu dirección para poder entregar tus productos")]
         public required string Address { get; set; }
 
-        [Required(ErrorMessage = "Conmfirmed password is required characters long")]
+        [Required(ErrorMessage = "Confirmed password is required characters long")]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         public required string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "La fecha de nacimiento es obligatoria")]
+        [DataType(DataType.Date)]
+        [Display(Name = "Fecha de nacimiento")]
+        public DateTime DateOfBirth { get; set; }
 
         [Required]
         public Role Role { get; set; }

@@ -43,7 +43,8 @@ namespace EMIM.Services
                 Address = model.Address,
                 CreatedAt = DateTime.UtcNow,
                 ModifiedAt = DateTime.UtcNow,
-                EmailConfirmed = false
+                EmailConfirmed = false,
+                DateOfBirth = model.DateOfBirth
             };
 
             var result = await userManager.CreateAsync(user, model.Password);

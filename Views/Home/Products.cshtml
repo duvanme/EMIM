@@ -7,7 +7,6 @@
     string sort = Context.Request.Query["sort"].FirstOrDefault();
 }
 
-
 @if(!User.Identity.IsAuthenticated){
     @await Html.PartialAsync("_Header")
 }

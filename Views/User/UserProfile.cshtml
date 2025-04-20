@@ -1,5 +1,8 @@
 @using EMIM.ViewModel
 @model UserViewModel
+
+@await Html.PartialAsync("_AuthenticatedHeader")
+
 <main>
     @await Component.InvokeAsync("BackButton")
 

@@ -19,6 +19,7 @@ namespace EMIM.Services
         protected override async Task<ClaimsIdentity> GenerateClaimsAsync(User user)
         {
             var identity = await base.GenerateClaimsAsync(user);
+            identity.AddClaim(new Claim("FirstName", user.FirstName ?? ""));
             identity.AddClaim(new Claim("Address", user.Address ?? ""));
             identity.AddClaim(new Claim("UserProfilePicture", user.UserProfilePicture ?? ""));
             identity.AddClaim(new Claim("Id", user.Id ?? ""));

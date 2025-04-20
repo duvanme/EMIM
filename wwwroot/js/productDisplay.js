@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 function handleAddToCart(e) {
     e.preventDefault();
-    // Tu lógica para agregar al carrito
     // Obtener detalles del producto de manera más robusta
     const productId = document.querySelector('input[name="ProductId"]')?.value || Date.now().toString();
     const productName = document.querySelector('h1.text-2xl').textContent.trim();
@@ -34,8 +33,8 @@ function handleAddToCart(e) {
         name: productName,
         price: productPrice,  // Mantener el formato original
         image: productImage,
-        itemQuantity: 1,
-        quantity: productQuantity
+        itemQuantity: 1,  //Inicializar cantidad en 1
+        quantity: productQuantity  //Cantidad disponible
     });
 
     mostrarNotificacionCarrito(productName);

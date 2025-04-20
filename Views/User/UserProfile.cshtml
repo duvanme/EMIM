@@ -4,46 +4,65 @@
     @await Component.InvokeAsync("BackButton")
 
 
-    <section class="flex flex-col md:flex-row justify-center items-center w-full h-full relative">
-        <div class="bg-white rounded-lg shadow-lg flex flex-col md:flex-row items-center justify-center w-4/5 p-6">
-            <div class="flex flex-row md:flex-col justify-center items-center mb-8 w-full md:w-1/2">
-                <div class="relative">
-                    <img id="profile-image" src="~/@Model.UserProfilePicture" alt="User"
-                        class="w-[80%] h-[70%] rounded-full object-cover mb-4">
+    <section class="flex flex-col items-center justify-center w-full px-4 py-8 md:px-0">
+        <div class="bg-white rounded-2xl shadow-lg flex flex-col md:flex-row items-center w-full max-w-5xl p-6 space-y-6 md:space-y-0 md:space-x-6">
+
+            <!-- Profile Pic -->
+            <div class="w-full md:w-1/2 flex justify-center">
+                <div class="relative w-40 h-40 md:w-48 md:h-48">
+                    <img id="profile-image"
+                         src="~/@Model.UserProfilePicture"
+                         alt="User"
+                         class="w-full h-full rounded-full object-cover border-4 border-[#A9C8CF] shadow-md">
                     <input type="file" id="file-input" class="hidden" accept="image/*">
                 </div>
             </div>
-            <div class="flex flex-col justify-center items-center ml-8 md:flex h-full w-full md:w-1/2">
-                <div class="flex flex-col">
-                    <h2 class="text-2xl font-bold mb-2 name">@Model.FirstName @Model.LastName</h2>
-                    <p>Información</p>
-                    <hr>
-                    <div class="flex justify-between">
-                        <div class="w-1/2 py-2 pr-2 md:w-1/2">
-                            <h5>Correo electrónico</h5>
-                            <p class="mb-2 text-gray-500 email">@Model.Email</p>
-                        </div>
-                        <div class="w-1/2 py-2 pr-2">
-                            <button class="bg-[#A9C8CF] rounded-lg shadow-lg flex flex-row md:flex-col">35
-                                seguidos</button>
-                        </div>
+
+            <!-- Información -->
+            <div class="w-full md:w-1/2 flex flex-col justify-center">
+                <h2 class="text-2xl md:text-3xl font-bold mb-2 text-center md:text-left name">
+                    @Model.FirstName @Model.LastName
+                </h2>
+                <p class="text-center md:text-left text-gray-600 mb-2">Información</p>
+                <hr class="mb-4 border-gray-300">
+
+                <!-- Correo electrónico -->
+                <div class="flex flex-col sm:flex-row sm:justify-between mb-4 gap-4">
+                    <div class="sm:w-1/2">
+                        <h5 class="font-medium">Correo electrónico</h5>
+                        <p class="text-gray-500 email">@Model.Email</p>
                     </div>
-                    <h5>Número de contacto</h5>
-                    <p class="mb-2 text-gray-500 phone">@Model.PhoneNumber</p>
-                    <h5>Dirección</h5>
-                    <p class="mb-2 text-gray-500 address">@Model.Address</p>
+                    <!--
+                    <div class="sm:w-1/2 flex sm:justify-end">
+                        <button class="bg-[#A9C8CF] text-white font-semibold py-2 px-4 rounded-lg shadow-md">
+                            35 seguidos
+                        </button>
+                    </div>
+                    -->
+                </div>
+
+                <!-- Telefono -->
+                <div class="mb-4">
+                    <h5 class="font-medium">Número de contacto</h5>
+                    <p class="text-gray-500 phone">@Model.PhoneNumber</p>
+                </div>
+
+                <!-- Dirección -->
+                <div>
+                    <h5 class="font-medium">Dirección</h5>
+                    <p class="text-gray-500 address">@Model.Address</p>
                 </div>
             </div>
         </div>
-
     </section>
+
 
     <section class="flex justify-center items-center w-full h-full">
         <div class="bg-inherit rounded-lg shadow-lg flex flex-col md:flex-col items-center justify-center w-4/5 p-6">
             <hr>
             <div class="flex flex-col md:flex-row justify-between items-right w-full h-full">
                 <h5 class="font-bold">Favoritos</h5>
-                <button class="bg-[#A9C8CF] rounded-lg shadow-lg flex flex-row">
+                <button class="bg-[#A9C8CF] text-sm font-semibold p-1 rounded-lg shadow-lg flex flex-row">
                     @Model.FavoriteCount productos en favoritos
                 </button>
             </div>
@@ -53,7 +72,7 @@
                 {
                     @foreach (var product in Model.FavoriteProducts.Take(3))
                     {
-                        <div class="bg-white rounded-lg shadow-lg flex flex-col items-center justify-center w-full md:w-1/3 p-4 product-card"
+                        <div class="bg-white m-4 rounded-lg shadow-lg flex flex-col items-center justify-center w-full md:w-1/3 p-4 product-card"
                             data-id="@product.Id" style="cursor: pointer;">
                             <img class="w-full h-48 object-cover rounded-t-lg" src="@product.ImageUrl" alt="@product.Name">
                             <div class="p-4 w-full">

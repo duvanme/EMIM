@@ -13,12 +13,12 @@
             <form id="nav-search" class="w-full" method="get" asp-controller="Home" asp-action="Products">
                 <div class="relative w-full">
                     <input type="text" name="query"
-                        class="w-full pl-3 pr-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
-                        placeholder="Buscar productos, marcas y más..." />
+                    class="w-full pl-3 pr-10 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+                    placeholder="Buscar productos, marcas y más..." />
                     <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                         <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </div>
                 </div>
@@ -55,14 +55,21 @@
                     </a>
                     <!-- Dropdown menu with higher z-index -->
                     <div
-                        class="absolute hidden group-hover:block bg-white min-w-[200px] rounded-md shadow-lg z-40 left-1/2 transform -translate-x-1/2 mt-0">
+                    class="absolute hidden group-hover:block bg-white min-w-[200px] rounded-md shadow-lg z-40 left-1/2 transform -translate-x-1/2 mt-0">
                         <ul class="py-1 text-[#0A2E38]">
                             @await Component.InvokeAsync("CategoryOption")
                             <!-- ... more items ... -->
                         </ul>
                     </div>
                 </li>
-                <li><a asp-controller="account" asp-action="login">Crear Tienda</a></li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li><a asp-controller="store" asp-action="createstore">Crear Tienda</a></li>
+                }
+                else
+                {
+                    <li><a asp-controller="account" asp-action="login">Crear Tienda</a></li>
+                }
                 <li><a asp-controller="general" asp-action="help">Ayuda</a></li>
                 <li><a asp-controller="general" asp-action="underconstruction">Nosotros</a></li>
                 <li><a asp-controller="general" asp-action="help">Contacto</a></li>

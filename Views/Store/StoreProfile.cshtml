@@ -8,7 +8,7 @@
 
 <main class="w-full h-full flex flex-col justify-center items-center">
   
-  <section class="w-full max-w-4xl h-auto md:h-[350px] shadow-2xl flex flex-col md:flex-row rounded-2xl mt-8 p-4">
+  <section class="relative w-full max-w-4xl h-auto md:h-[350px] shadow-2xl flex flex-col md:flex-row rounded-2xl mt-8 p-4">
     <!--imagen -->
     <section class="flex items-center justify-center w-full md:w-1/2">
       <div class="store-profile-picture">
@@ -35,7 +35,7 @@
     </div>
 
     <!-- enlace de edición -->
-    <a class="flex justify-center items-center mt-4 md:mt-[-300px]" asp-controller="Store" asp-action="EditStore" asp-route-id="@Model.Store.Id">
+    <a class="absolute right-4 top-1/1 transform -translate-y-1/1 md:right-4" asp-controller="Store" asp-action="EditStore" asp-route-id="@Model.Store.Id">
       <img src="~/images/edit.png" alt="edit" class="w-6 h-6">
     </a>
   </section>

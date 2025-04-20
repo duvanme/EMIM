@@ -62,6 +62,12 @@ namespace EMIM.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+
+            if (model.DateOfBirth > DateTime.Today.AddYears(-18))
+            {
+                ModelState.AddModelError("DateOfBirth", "Debes tener al menos 18 años.");
+            }
+
             if (!ModelState.IsValid) return View(model);
 
             var result = await accountService.RegisterAsync(model);

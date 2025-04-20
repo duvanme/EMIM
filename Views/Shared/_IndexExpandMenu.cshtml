@@ -1,10 +1,26 @@
 ﻿<section class="hidden flex-col w-full text-sm p-4 bg-gray-100 rounded-lg shadow-md" id="exp-menu">
+
     <a asp-controller="home" asp-action="products" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Categorías</a>
-    <a asp-controller="account" asp-action="login" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Ingresar</a>
-    <a asp-controller="account" asp-action="register" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Crear cuenta</a>
-    <a asp-controller="account" asp-action="store" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Crear tienda</a>
+
+    @if (!User.Identity.IsAuthenticated)
+    { 
+
+        <a asp-controller="account" asp-action="login" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Ingresar</a>
+        <a asp-controller="account" asp-action="register" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Crear cuenta</a>
+        <a asp-controller="account" asp-action="login" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Crear tienda</a>
+
+    } else
+    {
+        <a asp-controller="store" asp-action="createstore" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Crear tienda</a>
+
+    }
+
     <a asp-controller="general" asp-action="help" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Ayuda</a>
-    <a class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Sobre nosotros</a>
-    <a class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Contacto</a>
-    <a class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Preguntas frecuentes</a>
+    <a asp-controller="general" asp-action="underconstruction" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Sobre nosotros</a>
+    <a asp-controller="general" asp-action="help" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Contacto</a>
+    <a asp-controller="general" asp-action="underconstruction" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Preguntas frecuentes</a>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <a asp-controller="account" asp-action="Logout" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Cerrar Sesión</a>
+    }
 </section>

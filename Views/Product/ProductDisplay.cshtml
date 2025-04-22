@@ -4,9 +4,19 @@
 @inject IAuthorizationService AuthorizationService
 @model ProductViewModel
 
-<header>
+@if (User.Identity.IsAuthenticated)
+{
+    <header>
     @await Html.PartialAsync("_AuthenticatedHeader")
-</header>
+    </header>
+
+} else
+{
+    <header>
+        @await Html.PartialAsync("_GeneralHeader")
+    </header>
+}
+
 <main>
     @await Component.InvokeAsync("BackButton")
 

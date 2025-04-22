@@ -173,9 +173,7 @@ emptyCartButton?.addEventListener('click', function () {
 });
 
 // Funcionalidad de checkout (placeholder)
-checkoutButton?.addEventListener('click', function () {
-    alert('Funcionalidad de checkout próximamente');
-});
+
 
 // Renderizar carrito inicial
 renderCart();

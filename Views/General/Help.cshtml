@@ -1,7 +1,11 @@
+@{
+    var isAuthenticated = User.Identity.IsAuthenticated;
+    var userFirstName = User.FindFirst("FirstName")?.Value;
+    var userName = User.Identity.Name;
+}
+
 <main>
-
       @await Component.InvokeAsync("BackButton")
-
 
     <section class="flex justify-center w-full py-6">
         <div class="bg-white rounded-lg shadow-lg w-4/5 p-6">
@@ -10,13 +14,15 @@
                 <div class="flex flex-col md:flex-row md:justify-center">
                     <div class="w-full md:w-1/2 py-2 md:pr-2">
                         <label for="nombre" class="flex text-left">Nombre</label>
-                        <input type="text" id="nombre"
-                            class="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <input type="text" id="nombre" name="nombre"
+                            class="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 @(isAuthenticated ? "bg-gray-100 cursor-not-allowed" : "")"
+                            value="@(isAuthenticated ? userFirstName : "")"   @(isAuthenticated ? "readonly" : "")/>
                     </div>
                     <div class="w-full md:w-1/2 py-2">
                         <label for="correo" class="flex text-left">Correo</label>
-                        <input type="email" id="correo"
-                            class="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <input type="email" id="correo" name="correo"
+                            class="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 @(isAuthenticated ? "bg-gray-100 cursor-not-allowed" : "")"
+                            value="@(isAuthenticated ? userName : "")" @(isAuthenticated ? "readonly" : "")/>
                     </div>
                 </div>
                 <div class="flex flex-col">

@@ -5,6 +5,7 @@
     int? categoryId = ViewData["SelectedCategoryId"] as int?;
     string query = Context.Request.Query["query"].FirstOrDefault();
     string sort = Context.Request.Query["sort"].FirstOrDefault();
+    string categoryName = ViewData["SelectedCategoryName"] as string;
 }
 
 @if(!User.Identity.IsAuthenticated){
@@ -33,14 +34,20 @@ else{
 <div class="px-16 py-8">
 
     <h1 class="pagination mb-4 text-xl font-bold" id="label_search">
-        @if (!string.IsNullOrWhiteSpace(query))
-        {
-            <text>Top resultados para "@query"</text>
-        }
-        else
-        {
-            <text>Todos los productos</text>
-        }
+        <span id="productLabel">
+            @if (!string.IsNullOrWhiteSpace(query))
+            {
+                <text>Top resultados para "@query"</text>
+            }
+            else if (categoryId.HasValue && !string.IsNullOrWhiteSpace(categoryName))
+            {
+                <text>Productos en la categoría "@categoryName"</text>
+            }
+            else
+            {
+                <text>Todos los productos</text>
+            }
+        </span>
     </h1>
 
     <div class="flex flex-col">

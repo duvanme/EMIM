@@ -149,6 +149,7 @@ namespace EMIM.Controllers
             user.LastName = model.LastName;
             user.Address = model.Address;
             user.Email = model.Email;
+            user.UserName = model.Email; // Update username to match email
             user.PhoneNumber = model.PhoneNumber;
             user.DateOfBirth = (DateTime)model.DateOfBirth;
 

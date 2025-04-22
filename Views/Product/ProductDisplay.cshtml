@@ -38,27 +38,28 @@
 
                 <div class="between flex gap-x-4">
                     <!-- Botón de carrito -->
-
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.IsInRole("Customer"))
                     {
-                        <button id="add-to-cart-btn" class="w-full flex items-center justify-center bg-[#13678A] text-white py-3 rounded-lg shadow hover:bg-[#0D4F65]">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5 mr-2">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l3.4-6H6.6M7 13l-1.3 6.4A1 1 0 007.7 21h8.6a1 1 0 001-.9l1.3-6.1M10 21a2 2 0 11-4 0M20 21a2 2 0 11-4 0" />
-                            </svg>
-                            Añadir al carrito
-                        </button>
-                    }
-                    else
-                    {
-                        <button onclick="window.location.href='@Url.Action("Login", "Account")'" class="w-full flex items-center justify-center bg-[#13678A] text-white py-3 rounded-lg shadow hover:bg-[#0D4F65]">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5 mr-2">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l3.4-6H6.6M7 13l-1.3 6.4A1 1 0 007.7 21h8.6a1 1 0 001-.9l1.3-6.1M10 21a2 2 0 11-4 0M20 21a2 2 0 11-4 0" />
-                            </svg>
-                            Añadir al carrito
-                        </button>
-                    }
-
-
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <button id="add-to-cart-btn" class="w-full flex items-center justify-center bg-[#13678A] text-white py-3 rounded-lg shadow hover:bg-[#0D4F65]">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l3.4-6H6.6M7 13l-1.3 6.4A1 1 0 007.7 21h8.6a1 1 0 001-.9l1.3-6.1M10 21a2 2 0 11-4 0M20 21a2 2 0 11-4 0" />
+                                </svg>
+                                Añadir al carrito
+                            </button>
+                        }
+                        else
+                        {
+                            <button onclick="window.location.href='@Url.Action("Login", "Account")'" class="w-full flex items-center justify-center bg-[#13678A] text-white py-3 rounded-lg shadow hover:bg-[#0D4F65]">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-5 w-5 mr-2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l3.4-6H6.6M7 13l-1.3 6.4A1 1 0 007.7 21h8.6a1 1 0 001-.9l1.3-6.1M10 21a2 2 0 11-4 0M20 21a2 2 0 11-4 0" />
+                                </svg>
+                                Añadir al carrito
+                            </button>
+                        }
+                    
+                    
                     <!-- Botón de favoritos -->
                     <button id="add-to-favorite-btn"
                         class="w-full flex items-center justify-center @(Model.IsFavorite ? "bg-red-500" : "bg-[#13678A]") text-white py-3 rounded-lg shadow hover:bg-[#0D4F65]"
@@ -70,8 +71,9 @@
                         </svg>
                         @(Model.IsFavorite ? "Quitar de favoritos" : "Añadir a favoritos")
                     </button>
+                    }
                 </div>
-
+                
                 <!-- Descripción -->
                 <div class="mt-6">
                     <h3 class="text-lg font-semibold text-gray-800 mb-2">Descripción</h3>

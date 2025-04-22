@@ -79,9 +79,9 @@
         <div class="hidden lg:flex h-[50px] flex items-center justify-center">
             @if (User.Identity.IsAuthenticated)
             {
-                <div class="h-[50px] flex items-center justify-center relative group">
+                <div class="h-[50px] flex items-center justify-center relative">
                     <!-- Profile Avatar with Dropdown -->
-                    <div class="relative pb-2">
+                    <div class="relative pb-2 group">
                         <img src="~/@profileImage" alt="Profile Image"
                              class="h-[50px] w-[50px] object-cover rounded-full shadow-md ring-1 ring-white transition-transform duration-200 hover:scale-105">
 
@@ -98,7 +98,7 @@
                             </div>
                         </div>
                     </div>
-                    <a asp-action="ShoppingCart" asp-controller="ShoppingCart"><img src="~/images/shopping-cart.svg" class="h-[30px] w-[30px] ml-4 mr-[10px]" alt="" id="burger-icon"></a>
+                    <a asp-action="ShoppingCart" asp-controller="ShoppingCart"><img src="~/images/shopping-cart.svg" class="h-[25px] w-[30px] ml-8 mt-2 mr-[10px]" alt="" id="burger-icon"><span class="text-sm text-[#FFFFFF] font-semibold ml-4">Mi Carrito</span></a>
                 </div>
             }
             else

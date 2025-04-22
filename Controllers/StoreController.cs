@@ -115,6 +115,7 @@ namespace EMIM.Controllers
                 }
 
                 // Guardar la ruta relativa para la base de datos
+                model.ImageUrl = "/images/uploads/" + uniqueFileName;
                 storePicturePath = Path.Combine("images", "uploads", uniqueFileName);
             }
 
@@ -127,8 +128,6 @@ namespace EMIM.Controllers
             {
                 TempData["Success"] = "Store created successfully!";
             }
-
-            //await storeService.AssignVendorRoleAsync(user);
 
             return RedirectToAction("UserProfile", "User", new { id = user.Id });
         }

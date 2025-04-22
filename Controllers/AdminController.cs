@@ -115,9 +115,16 @@ namespace EMIM.Controllers
         return View(model);
     }
 
-        public IActionResult AdminCreationShop()
+        public async Task<IActionResult> AdminCreationShop()
         {
-         var users = _context.Users
+
+            var user = await _userManager.GetUserAsync(User);
+            if (!User.IsInRole("Admin"))
+            {
+                return Unauthorized();
+            }
+
+            var users = _context.Users
         .Include(u => u.Stores) // Cargar las tiendas relacionadas
         .ToList();
 
@@ -136,7 +143,7 @@ namespace EMIM.Controllers
                     Description = t.Description,
                     Nit = t.Nit,
                     Location = t.Location,
-                    //StoreProfilePicture = t.StoreProfilePicture
+                    ImageUrl = t.ImageUrl
                 }).ToList()
             }).ToList();
 

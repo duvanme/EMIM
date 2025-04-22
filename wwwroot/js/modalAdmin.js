@@ -9,10 +9,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // Mostrar el modal al hacer clic en cualquier parte de la tarjeta o en "Ver más..."
     tarjetas.forEach(tarjetica => {
         tarjetica.addEventListener("click", function (event) {
+            const imageUrl = this.dataset.storeImage;
             document.getElementById("storeId").value = this.dataset.storeId;
             document.getElementById("userId").value = this.dataset.userId;
             document.getElementById("storeName").textContent = this.dataset.storeName || "Sin nombre";
             document.getElementById("storeLocation").textContent = this.dataset.storeLocation || "Sin nombre";
+            document.getElementById("modalImage").src = imageUrl;
             document.getElementById("userName").textContent = `${this.dataset.userFirstName || "Sin nombre"} ${this.dataset.userLastName || ""}`;
             document.getElementById("userEmail").textContent = this.dataset.userEmail || "Sin nombre";
             document.getElementById("storeNit").textContent = this.dataset.id || "Sin nombre";

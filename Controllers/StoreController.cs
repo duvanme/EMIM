@@ -70,6 +70,36 @@ namespace EMIM.Controllers
             return View(viewModel);
         }
 
+        [AllowAnonymous] //solo usuarios logueados pueden ver
+        [HttpGet]
+        public async Task<IActionResult> StoreDetails(int id)
+        {
+            var store = await storeService.GetStoreDetailsAsync(id);
+            if (store == null)
+            {
+                return NotFound();
+            }
+
+            var storeProducts = await _productService.GetProductsByStoreIdAsync(id);
+
+            var viewModel = new StoreProfileViewModel
+            {
+                Store = new StoreViewModel
+                {
+                    Id = store.Id,
+                    Name = store.Name,
+                    Description = store.Description,
+                    StoreProfilePicture = store.StoreProfilePicture,
+                    UserId = store.UserId,
+                    User = store.User
+                },
+                Products = storeProducts
+            };
+
+            return View("StoreProfile", viewModel); // puedes reutilizar la misma vista
+        }
+
+
         [Authorize]
         public IActionResult CreateStore() => View();
 

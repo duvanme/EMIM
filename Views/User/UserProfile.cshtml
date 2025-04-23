@@ -5,9 +5,19 @@
 
 <main>
     @await Component.InvokeAsync("BackButton")
-
-
+    @if (TempData["Success"] != null)
+    {
+        <div id="alertaSuccess" class="max-w-md mx-auto mt-4 p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 text-center shadow-md relative" role="alert">
+            <button type="button"
+                    onclick="document.getElementById('alertaSuccess').style.display='none'"
+                    class="absolute top-2 right-2 text-2xl font-bold text-green-800 hover:text-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 rounded">
+                &times;
+            </button>
+            <span class="font-medium">¡Tienda creada! </span>@TempData["Success"]
+        </div>
+    }
     <section class="flex flex-col items-center justify-center w-full px-4 py-8 md:px-0">
+        
         <div class="bg-white rounded-2xl shadow-lg flex flex-col md:flex-row items-center w-full max-w-5xl p-6 space-y-6 md:space-y-0 md:space-x-6">
 
             <!-- Profile Pic -->

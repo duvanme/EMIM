@@ -152,14 +152,14 @@ namespace EMIM.Controllers
             var store = await storeService.CreateStoreAsync(user.Id, model, storePicturePath);
             if (store == null)
             {
-                TempData["Error"] = "You already have a store!";
+                TempData["Error"] = " Ya creaste una tienda, o existe una con el mismo NIT";
+                return RedirectToAction("CreateStore");
             }
             else
             {
-                TempData["Success"] = "Store created successfully!";
+                TempData["Success"] = "Espera a que un administrador apruebe tu peticion para acceder a las funciones de vendedor.";
+                return RedirectToAction("UserProfile", "User", new { id = user.Id });
             }
-
-            return RedirectToAction("UserProfile", "User", new { id = user.Id });
         }
 
         public async Task<bool> UpdateStoreAsync(EditStoreViewModel model, string? storePicturePath)

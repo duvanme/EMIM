@@ -8,10 +8,13 @@
         <a asp-controller="account" asp-action="login" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Ingresar</a>
         <a asp-controller="account" asp-action="register" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Crear cuenta</a>
         <a asp-controller="account" asp-action="login" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Crear tienda</a>
+        
 
     } else
     {
         <a asp-controller="store" asp-action="createstore" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Crear tienda</a>
+        <a asp-controller="account" asp-action="verifyemail" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Cambiar contraseña</a>
+        <a asp-controller="ShoppingCart" asp-action="ShoppingCart" class="text-center py-2 px-4 mb-2 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300">Mis compras</a>
 
     }
 

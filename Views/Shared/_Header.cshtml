@@ -95,7 +95,7 @@
                                 <a asp-controller="account" asp-action="verifyemail" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cambiar contraseña</a>
                                 <a asp-controller="store" asp-action="createstore" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Crear Tienda</a>
                                 <div class="border-t border-gray-200"></div>
-                                <a asp-controller="account" asp-action="logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Cerrar Sesión</a>
+                                <a asp-controller="account" asp-action="logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-100">Cerrar Sesión</a>
                             </div>
                         </div>
                     </div>
@@ -104,7 +104,7 @@
             }
             else
             {
-                <ul class="w-full flex justify-around text-sm text-[#FFFFFF] font-semibold">
+                <ul class="w-full flex justify-around text-sm text-[#FFFFFF] mt-1 font-semibold">
                     <li><a asp-controller="account" asp-action="register">Crear cuenta</a></li>
                     <li><a asp-controller="account" asp-action="login">Ingresar</a></li>
                     <li><a asp-controller="account" asp-action="login"><img src="~/images/shopping-cart.svg" class="h-[25x] w-[25px]" alt=""></a></li>

@@ -22,7 +22,7 @@
             <div class="container mx-auto flex justify-between items-center">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <img src="~/images/logo_sin_fondo.png" alt="logo" class="h-16 w-auto p-2">
+                    <a asp-action="AdminProfile" asp-controller="Admin"><img src="~/images/logo_sin_fondo.png" class="h-[45px] w-[40px]" alt="logo"></a>
                 </div>
 
                 <!-- Mobile menu button -->
@@ -40,7 +40,7 @@
                     <a class="bg-[#A9C8CF] p-2 rounded-full border border-black shadow-md flex items-center space-x-4"
                         asp-controller="Admin" asp-action="AdminCreationShop">
                         <i class="fas fa-user"></i>
-                        <span>SOLICITUDES</span>
+                        <span>PETICIONES</span>
                         @await Component.InvokeAsync("Notification")
                     </a>
 

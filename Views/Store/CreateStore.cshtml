@@ -7,9 +7,19 @@
 
 <main>
       @await Component.InvokeAsync("BackButton")
+    @if (TempData["Error"] != null)
+    {
+        <div id="alertaError" class="max-w-md mx-auto mt-4 p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 text-center shadow-md relative" role="alert">
+            <button type="button"
+                    onclick="document.getElementById('alertaError').style.display='none'"
+                    class="absolute top-2 right-2 text-2xl font-bold text-red-800 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 rounded">
+                &times;
+            </button>
+            <span class="font-medium">Error al crear tienda! </span>@TempData["Error"]
+        </div>
+    }
 
-
-    <section>
+    <section>    
         <div class="container flex flex-col items-center min-h-screen bg-white md:flex-row md:px-20 m-4">
             <div id="image" class="hidden w-full h-full md:flex md:w-1/2">
                 <img id="emprendedor-image" src="../images/Register-emprendedor.jpeg" alt="Grupo de emprendedores"

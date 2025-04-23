@@ -46,8 +46,11 @@ Construído con escalabilidad en mente, EMIM soporta multiples tiedas, transacci
 
 ### **Características Advanzadas**  
 🔹 **Soporte de multiples tiendas** – Cada tienda tiene su propio perfil.  
+
 🔹 **Integración De Pasarela De Pagos** – Suporte de pagos a través de Stripe.  
+
 🔹 **Notificaciones** – Para registro, compra y ayuda que llegan directamente al correo electrónico registrado en EMIM.
+
 🔹 **Sistema De Mensajes** – Usuarios y tiendas pueden comunicarse entre ellos a través de un Q&A en los productos.  
 
 ---

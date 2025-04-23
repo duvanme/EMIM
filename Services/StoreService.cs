@@ -35,6 +35,7 @@ namespace EMIM.Services
                 Location = model.Location,
                 StoreStatus = "pending",
                 UserId = userId,
+                ImageUrl = model.ImageUrl,
                 StoreProfilePicture = filePath
             };
 

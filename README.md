@@ -1,23 +1,21 @@
 # **EMIM - README**  
 
-## **Table of Contents**  
-1. [Resumen](#Resumen)  
-2. [Características](#Características)  
+## **Tabla de Contenido**  
+1. [Resumen](#resumen)  
+2. [Características](#raracterísticas)  
 3. [Getting Started](#getting-started)  
    - [Prerequisites](#prerequisites)  
-   - [Installation](#installation)  
+   - [Instalación](#instalación)  
    - [Configuration](#configuration)  
 4. [Usage](#usage)  
-   - [For Buyers](#for-buyers)  
-   - [For Sellers](#for-sellers)  
-   - [For Administrators](#for-administrators)  
-5. [API Documentation](#api-documentation)  
-6. [Security](#security)  
-7. [Payment Integration](#payment-integration)  
-8. [Deployment](#deployment)  
-9. [Contributing](#contributing)  
-10. [License](#license)  
-11. [Support & Contact](#support--contact)  
+   - [Para Compradores](#para-compradores)  
+   - [Para Tiendas](#para-tiendas)  
+   - [Para Administradores](#para-administradores)  
+5. [Seguridad](#security)  
+6. [Integración De Pago](#Integración-de-pago)  
+7. [Para contribuciones](#para-contribuciones)  
+8. [Licencia](#Licencia)  
+9. [soporte y contacto](#soporte-y-contacto)  
 
 ---
 
@@ -33,17 +31,26 @@ Construído con escalabilidad en mente, EMIM soporta multiples tiedas, transacci
 
 ### **Características Principales**  
 ✅ **Gestión De Usuarios** – Registro, Inicio de sesión, perfiles, y acceso basado en roles  (Usuario, Tienda, Admin).  
-✅ **Listado De Productos** – Las tiendas puedan añadir, editar y administrar productos con imágenes, descripción y categorías. 
+
+✅ **Listado De Productos** – Las tiendas puedan añadir, editar y administrar productos con imágenes, descripción y categorías.
+
 ✅ **Búsqueda & Filtros** – Búsqueda avanzada con filtros (Precio, categoría,nombre de la tienda, etc.).  
+
 ✅ **Carrito De Compras & Pago** – Los usuarios pueden añadir productos y realizar un pago seguro.
+
 ✅ **Gestión De Order** – Hacer seguimiento de órdenes, historial de órdenes, and gestión del estado de la orden (Pending, Shipped, Delivered, Cancelled).  
+
 ✅ **Reviews & Ratings** – Buyers can leave feedback on products and sellers.  
+
 ✅ **Admin Dashboard** – Manage users, products, orders, and site settings.  
 
 ### **Características Advanzadas**  
 🔹 **Soporte de multiples tiendas** – Cada tienda tiene su propio perfil.  
+
 🔹 **Integración De Pasarela De Pagos** – Suporte de pagos a través de Stripe.  
+
 🔹 **Notificaciones** – Para registro, compra y ayuda que llegan directamente al correo electrónico registrado en EMIM.
+
 🔹 **Sistema De Mensajes** – Usuarios y tiendas pueden comunicarse entre ellos a través de un Q&A en los productos.  
 
 ---
@@ -53,7 +60,7 @@ Construído con escalabilidad en mente, EMIM soporta multiples tiedas, transacci
 ### **Prerequisitos**  
 - **Backend**: Dotnet 8.0.0 / ASP.NET Core MVC  
 - **Frontend**: Tailwind CSS y Vanilla Javascript  
-- **Base De DAtos**: SQL Server 2019  
+- **Base De Datos**: SQL Server 2019  
 - **Servidor**: NA
 - **Procesador De Pagos**: Stripe 
 
@@ -86,111 +93,122 @@ Construído con escalabilidad en mente, EMIM soporta multiples tiedas, transacci
    ```  
 
 ### **Configuración**  
-- Rename `.env.example` to `.env` and fill in:  
-  ```env
-  DB_HOST=your_database_host
-  DB_USER=your_db_user
-  DB_PASS=your_db_password
-  STRIPE_API_KEY=your_stripe_key
-  JWT_SECRET=your_jwt_secret
-  ```  
+
+Actualizar la siguiente information en el `appsetting.json`
+
+```json
+{
+  "ConnectionStrings": {
+    "EMIMDB": "Server=YOUR_SERVER;Database=EMIM_DB;Trusted_Connection=true;TrustServerCertificate=true;"
+  },
+  "AdminUser": {
+    "Email": "admin@example.com",
+    "Password": "CHANGE_THIS_TO_A_STRONG_PASSWORD"
+  },
+  "EmailSettings": {
+    "SmtpServer": "smtp.gmail.com",
+    "Port": 587,
+    "SenderName": "Your App Name",
+    "SenderEmail": "your-email@gmail.com",
+    "UserName": "your-email@gmail.com",
+    "Password": "YOUR_APP_PASSWORD_OR_OAUTH_TOKEN",
+    "UseSSL": true
+  }
+}
+```
+1. **Conexión a la base de datos:** Reemplaza YOUR_SERVER con la instancia del servidor de SQL
+2. **Credenciales de Admin:** Cambiar en producción
+3. **Configuración de correo electrónico:** Requiere Gmail App Password y para dominions diferentes, actualizar `SmtpServer` y `Port`
+---
+
+## **Uso**  
+
+### **Para Compradores**  
+1. **Búsqueda de Productos** – Uso de filtros y categorias para buscar productos.  
+2. **Añadir Al Carrito De Compras** – Se selecciona la cantidad y se añade al carrito.  
+3. **Pasarela De Pagos** – Paga de forma segura con Stripe.  
+4. **Gestión De Órdenes** – Estado de la órden e historial de órdenes.
+
+### **Para tiendas**  
+1. **Creación De Tienda** – Aplicación y venta de productos
+2. **Publcación De Productos** – Para añadir detalle de producto, imágenes y precio .  
+3. **Gestión De Ordenes** – Para actualizar el estado de la órden y su entrega.  
+
+
+### **Para Administradores**  
+1. **Creación De Tiendas** – Para Revisar solicitudes de tiendas, aceptar o rechazar
+2. **Gestión De Usuarios** – Se aprueban nuevos usuarios y se manejan permisos.  
+3. **Ayuda y Contactos** – Para responder preguntas relacionadas con el funcionamiento de la plataforma
 
 ---
 
-## **Usage**  
+## **Seguridad**  
+- **Políticas de seguridad fuertes** 
+```csharp
+options.Password.RequireNonAlphanumeric = true;
+options.Password.RequiredLength = 12; // Mínimo 12 caracteres
+options.Password.RequireUppercase/Lowercase/Digit = true;
+```
+- **Correo electrónico único es requerido** 
+```csharp
+options.User.RequireUniqueEmail = true;
+```
+- **Gestión De Sesiones**
+```csharp
+services.AddSession(options => {
+    options.IdleTimeout = TimeSpan.FromMinutes(10);
+    options.Cookie.HttpOnly = true; // Prevents XSS access
+});
+```
+- **Protección CSRF** – Automáticamente activada en ASP.NET Core MVC via `[validateAntiForgeryToken]`.  
+- **Seguridad De Cookies**
+```csharp
+options.Cookie.IsEssential = true;
+```
+- **Inyección De Dependencias Para Servicios**
+```csharp
+services.AddScoped<IAccountService, AccountService>();
+```
 
-### **For Buyers**  
-1. **Browse Products** – Use search & filters to find items.  
-2. **Add to Cart** – Select quantity and add to cart.  
-3. **Checkout** – Enter shipping details and pay securely.  
-4. **Track Orders** – View order status in the dashboard.  
+- **Autorización Basada En Roles**
+```csharp
+services.AddIdentity<User, IdentityRole>() // Role management
+        .AddEntityFrameworkStores<EmimContext>();
+```
+- **Acceso Basado En Claims**
+```csharp
+services.AddScoped<IUserClaimsPrincipalFactory<User>, ApplicationUserClaimsPrincipalFactory>();
+```
 
-### **For Sellers**  
-1. **Register as a Seller** – Apply and get approved (if admin approval is required).  
-2. **List Products** – Add product details, images, and pricing.  
-3. **Manage Orders** – Update order status and handle shipping.  
-4. **View Earnings** – Track sales and withdraw funds.  
-
-### **For Administrators**  
-1. **Dashboard** – Monitor site activity, sales, and user growth.  
-2. **User Management** – Approve sellers, ban users, or adjust permissions.  
-3. **Product Moderation** – Review and remove inappropriate listings.  
-4. **Site Settings** – Configure fees, payment methods, and policies.  
 
 ---
 
-## **API Documentation**  
-The backend provides RESTful APIs for:  
-- **User Authentication** (`/api/auth`)  
-- **Product Management** (`/api/products`)  
-- **Order Processing** (`/api/orders`)  
-- **Payment Handling** (`/api/payments`)  
-
-See the full API docs [here](#) (link to Swagger/Postman docs).  
-
----
-
-## **Security**  
-- **Data Encryption** – All sensitive data is encrypted (AES-256).  
-- **Rate Limiting** – Prevents brute-force attacks.  
-- **CSRF Protection** – Secure form submissions.  
-- **Regular Audits** – Dependency checks with `npm audit` / `snyk`.  
-
----
-
-## **Payment Integration**  
+## **Integración De Pago**  
 Currently supports:  
 - **Stripe** (Credit/Debit Cards)  
-- **PayPal** (Express Checkout)  
-- **Bank Transfers** (Manual verification)  
+  
+---
 
-To enable a new payment method, update the `paymentConfig.js` file.  
+
+## **Para contribuciones**  
+1. Crea una copia del repositorio.  
+2. Crea una rama (`git checkout -b feature-branch`).  
+3. Haz Commit de los cambios (`git commit -m "Add new feature"`).  
+4. Haz push a la rama (`git push origin feature-branch`).  
+5. Abre un Pull Request.  
 
 ---
 
-## **Deployment**  
-### **Option 1: Cloud Hosting (AWS/Heroku)**  
-```bash
-heroku create
-git push heroku main
-```  
-### **Option 2: Docker Deployment**  
-```bash
-docker-compose up --build
-```  
+## **Licencia**  
+Este proyecto tiene una licencia **MIT License**. See [LICENSE](LICENSE) for details.  
 
 ---
 
-## **Contributing**  
-1. Fork the repository.  
-2. Create a new branch (`git checkout -b feature-branch`).  
-3. Commit changes (`git commit -m "Add new feature"`).  
-4. Push to the branch (`git push origin feature-branch`).  
-5. Open a Pull Request.  
-
----
-
-## **License**  
-This project is licensed under **MIT License**. See [LICENSE](LICENSE) for details.  
-
----
-
-## **Support & Contact**  
-For issues or questions, please:  
-📧 Email: support@marketplace.com  
+## **soporte y contacto**  
+Para reportar problemas o preguntas  
+📧 Email: 4dm1nemim@gmail.com  
 🐞 Open a GitHub Issue  
 
 ---
 
-**Happy Buying & Selling!** 🚀  
-
----
-
-You can customize this README by:  
-- Adding your project's specific tech stack  
-- Including screenshots or demo links  
-- Adjusting installation steps based on your setup  
-- Adding more API details if applicable  
-- Updating security and compliance policies  
-
-Let me know if you'd like any modifications!
+**Disfruta de tu compra y venta, de parte del equipo de desarollo de EMIM!** 🚀  

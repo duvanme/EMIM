@@ -5,7 +5,7 @@
 }
 
 <header class="w-full h-[60px] bg-[#56b6cc] flex justify-center">
-    <div class="w-[95%] h-full nav-bounds grid grid-cols-[15%_50%_35%] lg:grid-cols-[12%_78%_10%] gap-4 pt-[2px]">
+    <div class="w-[95%] h-full nav-bounds grid grid-cols-[15%_40%_45%] lg:grid-cols-[12%_78%_10%] gap-4 pt-[2px]">
         <!-- First row -->
         <div class="h-[50px] flex items-center justify-center">
             <a asp-controller="home" asp-action="index"><img src="~/images/logo_sin_fondo.png" class="h-[45px] w-[40px] mr-[10px]" alt="logo"></a>
@@ -26,9 +26,9 @@
                 </div>
             </form>
         </div>
-        <div class="h-[50px] flex items-center justify-center relative group">
+        <div class="h-[50px] flex items-center justify-center relative">
             <!-- Profile Avatar with Dropdown -->
-            <div class="relative">
+            <div class="relative group">
                 <img src="~/@profileImage" alt="Profile Image"
                      class="h-[50px] w-[50px] object-cover rounded-full shadow-md ring-1 ring-white transition-transform duration-200 hover:scale-105">
 
@@ -44,11 +44,12 @@
                     </div>
                 </div>
             </div>
-            <a asp-action="ShoppingCart" asp-controller="ShoppingCart"><img src="~/images/shopping-cart.svg" class="h-[30px] w-[30px] ml-4 mr-[10px]" alt="" id="burger-icon"></a>
+            <a asp-action="ShoppingCart" asp-controller="ShoppingCart"><img src="~/images/shopping-cart.svg" class="h-[25px] w-[30px] ml-8 mt-2 mr-[10px]" alt="" id="burger-icon"><span class="text-sm text-[#FFFFFF] font-semibold ml-4">Mi Carrito</span></a>
         </div>
     </div>
+
 </header>
 <div class="w-full bg-[#56b6cc] flex justify-center md:hidden border-x border-white/40">
     <img src="~/images/location.png" class="h-[35px] w-[35px]" alt="">
-    <span class="flex items-center text-white font-semibold text-xs">Tu Dirección</span>
+    <span class="flex items-center text-white font-semibold text-xs">@Address</span>
 </div>

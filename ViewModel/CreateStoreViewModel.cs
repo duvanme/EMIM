@@ -13,6 +13,7 @@ namespace EMIM.ViewModel
         public string Description { get; set; }
         [Required(ErrorMessage = "La direccion de la tienda es obligatoria")]
         public string Location { get; set; }
+        public string? ImageUrl { get; set; }
 
         [Required(ErrorMessage = "La imagen de la tienda es obligatorio")]
         public IFormFile StoreProfilePicture { get; set; }

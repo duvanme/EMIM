@@ -49,6 +49,8 @@
 
                     <a class="block px-4 py-2 text-white hover:text-gray-800" asp-controller="Admin"
                         asp-action="RegisterUser">Registrar Usuarios</a>
+                    <a class="block px-4 py-2 text-white hover:text-gray-800" asp-controller="Account"
+                       asp-action="VerifyEmail">Cambiar contraseña</a>
                     <a class="block px-4 py-2 text-white hover:text-red-400" asp-controller="Account" asp-action="Logout">
                         Cerrar sesión
                     </a>
@@ -68,6 +70,8 @@
                     asp-controller="Admin" asp-action="HelpQuestion">Preguntas de ayuda</a>
                 <a class="block py-3 px-4 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300"
                     asp-controller="Admin" asp-action="RegisterUser">Registrar Usuarios</a>
+                <a class="block py-3 px-4 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300"
+                   asp-controller="Account" asp-action="VerifyEmail">Cambiar contraseña</a>
                 <a class="block py-3 px-4 rounded hover:bg-[#56b6cc] hover:text-white transition duration-300"
                     asp-controller="Account" asp-action="Logout">Cerrar sesión</a>
             </div>

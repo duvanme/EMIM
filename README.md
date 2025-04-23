@@ -211,4 +211,4 @@ Para reportar problemas o preguntas
 
 ---
 
-**Disfruta de tu compra y venta, de parte del equipo de desarollo de EMIM!** 🚀  
+**Disfruta de tu compra y venta, de parte del equipo de desarrollo de EMIM!** 🚀  

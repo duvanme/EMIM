@@ -34,6 +34,7 @@ namespace EMIM.Services
 
         public async Task<IdentityResult> RegisterAsync(RegisterViewModel model)
         {
+            string fileName = "images/defaultUser.png";
             var user = new User
             {
                 FirstName = model.FirstName,
@@ -44,7 +45,8 @@ namespace EMIM.Services
                 CreatedAt = DateTime.UtcNow,
                 ModifiedAt = DateTime.UtcNow,
                 EmailConfirmed = false,
-                DateOfBirth = model.DateOfBirth
+                DateOfBirth = model.DateOfBirth,
+                UserProfilePicture = fileName
             };
 
             var result = await userManager.CreateAsync(user, model.Password);

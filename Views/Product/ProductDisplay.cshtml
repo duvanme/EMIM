@@ -4,19 +4,22 @@
 @inject IAuthorizationService AuthorizationService
 @model ProductViewModel
 
-@if (User.Identity.IsAuthenticated)
-{
-    <header>
-    @await Html.PartialAsync("_AuthenticatedHeader")
-    </header>
-
-} else
-{
-    <header>
-        @await Html.PartialAsync("_GeneralHeader")
-    </header>
+@{
+    if (User.IsInRole("Vendor"))
+    {
+        Layout = "~/Views/Shared/_StoreLayout.cshtml";
+    }
+    else if (User.IsInRole("Customer"))
+    {
+        @await Html.PartialAsync("_AuthenticatedHeader")
+    }
+    else
+    {
+        <header>
+            @await Html.PartialAsync("_GeneralHeader")
+        </header>
+    }
 }
-
 <main>
     @await Component.InvokeAsync("BackButton")
 
@@ -84,9 +87,10 @@
 
         <!-- Sección de calificación mejorada -->
         <div class="rating-section mt-10 p-6 bg-white w-full md:w-2/3 mx-auto text-center">
-        
-            <form asp-controller="Question" asp-action="AskQuestion" method="post" class="mt-6">
-                <input type="hidden" name="ProductId" value="@Model.Id" />
+        @if (User.IsInRole("Customer"))
+            {
+                <form asp-controller="Question" asp-action="AskQuestion" method="post" class="mt-6">
+                    <input type="hidden" name="ProductId" value="@Model.Id" />
                 <input type="hidden" name="UserId" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
                 <div class="mb-4">
                     <h3 class="text-lg font-semibold text-gray-800 mb-2">¿Tienes una pregunta sobre este producto?</h3>
@@ -97,7 +101,7 @@
                     Enviar pregunta
                 </button>
             </form>
-
+            }
             <!-- Después del formulario de preguntas, agrega esta sección -->
             <div class="mt-8">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Preguntas respondidas sobre este producto</h3>

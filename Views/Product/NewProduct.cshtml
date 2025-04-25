@@ -11,7 +11,7 @@
         <div class="w-full max-w-3xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
 
             <div class="bg-[#56b6cc] p-3 sm:p-4">
-                <h2 class="text-xl sm:text-2xl font-bold text-white text-center">Crear Producto</h2>
+                <h2 class="text-xl sm:text-2xl font-bold text-white text-center">Nuevo Producto</h2>
             </div>
 
             <div class="p-3 sm:p-4 md:p-6">
@@ -67,8 +67,12 @@
                                         <p class="mt-1 text-xs sm:text-sm text-gray-500">Imagen actual</p>
                                     </div>
                                 }
-                                <div class="mt-2">
+                                <div class="mt-2" id="image-upload">
                                     <input asp-for="ImageFile" accept="image/*" type="file" class="w-full text-sm sm:text-base file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-[#56b6cc] file:text-white hover:file:bg-[#13678A]" />
+                                    <div id="preview-container" class="mt-2 border rounded-lg p-2 text-center">
+                                        <img id="image-preview" class="mx-auto w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 object-cover rounded" />
+                                        <p class="mt-1 text-xs sm:text-sm text-gray-500">Vista previa</p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -104,4 +108,4 @@
       
 </main>
 
-<script src="~js/NewProduct.js"></script>
+<script src="~/js/NewProduct.js"></script>

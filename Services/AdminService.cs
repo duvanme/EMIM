@@ -96,6 +96,7 @@ namespace EMIM.Services
         //Registrar un nuvo usuario en el sistema
         public async Task<IdentityResult> RegisterUserAsync(AdminViewModel model)
         {
+            string fileName = "images/defaultUser.png";
             var user = new User
             {
                 FirstName = model.FirstName,
@@ -104,7 +105,8 @@ namespace EMIM.Services
                 UserName = model.Email, // Asegúrate de que UserName no sea nulo
                 CreatedAt = DateTime.UtcNow,
                 ModifiedAt = DateTime.UtcNow,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                UserProfilePicture = fileName
             };
 
             var password = GenerateRandomPassword(); // Generar la contraseña automáticamente

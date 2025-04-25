@@ -26,23 +26,28 @@ namespace EMIM.Services
             var user = await userManager.FindByIdAsync(userId);
             if (user == null) return null;
 
+            var storeSearchNit = emimcontext.Stores.FirstOrDefault(s => s.Nit == model.Nit);
+            var storeSearchUser = emimcontext.Stores.FirstOrDefault(s => s.UserId == user.Id);
 
-            var store = new Store
+            if (storeSearchNit == null && storeSearchUser == null)
             {
-                Name = model.Name,
-                Description = model.Description,
-                Nit = model.Nit,
-                Location = model.Location,
-                StoreStatus = "pending",
-                UserId = userId,
-                ImageUrl = model.ImageUrl,
-                StoreProfilePicture = filePath
-            };
+                var store = new Store
+                {
+                    Name = model.Name,
+                    Description = model.Description,
+                    Nit = model.Nit,
+                    Location = model.Location,
+                    StoreStatus = "pending",
+                    UserId = userId,
+                    ImageUrl = model.ImageUrl,
+                    StoreProfilePicture = filePath
+                };
 
-            emimcontext.Stores.Add(store);
-            await emimcontext.SaveChangesAsync();
+                emimcontext.Stores.Add(store);
+                await emimcontext.SaveChangesAsync();
 
-            return store;
+                return store;
+            }else return null;
         }
 
 
@@ -59,11 +64,11 @@ namespace EMIM.Services
 
         public async Task<Store?> DenyCreateStore(Store model)
         {
-            if (model != null)
+            var store = await emimcontext.Stores.FindAsync(model.Id);
+            if (store != null)
             {
-                model.StoreStatus = "denied";//Cambia estado de la tienda a habilitada.
-
-                emimcontext.SaveChanges();
+                emimcontext.Stores.Remove(store);
+                await emimcontext.SaveChangesAsync();
             }
             return model;
         }
